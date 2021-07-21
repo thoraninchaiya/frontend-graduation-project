@@ -7,8 +7,8 @@
     <v-img height="250" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
 
     <v-card-title>
-        <!-- <nuxt-link :to="{name: 'post-id', params: {id: post.id}}">{{post.title}}</nuxt-link> -->
-        <nuxt-link :to="{params: {id: post.id}}">{{post.title}}</nuxt-link>
+        <nuxt-link :to="{name: 'post-id', params: {id: post.id}}">{{post.title}}</nuxt-link>
+        <!-- <nuxt-link :to="{params: {id: post.id}}">{{post.title}}</nuxt-link> -->
     </v-card-title>
 
     <v-card-text>
