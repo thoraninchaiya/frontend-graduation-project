@@ -18,8 +18,7 @@
           <v-card>
             <v-card-title>
               <div>
-                สินค้าใหม่
-                สินค้าใหม่
+                สินค้าใหม่ 111
               </div>
             </v-card-title>
             <v-card-text class="d-flex align-content-start flex-wrap">
