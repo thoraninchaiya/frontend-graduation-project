@@ -19,7 +19,7 @@
             <v-card-title>
               <div>
                 สินค้าใหม่
-                
+                สินค้าใหม่
               </div>
             </v-card-title>
             <v-card-text class="d-flex align-content-start flex-wrap">
