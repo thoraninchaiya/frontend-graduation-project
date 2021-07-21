@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation :background-color="color" dark>
+  <v-bottom-navigation dark>
     <v-btn @click="$router.push('/')">
       <span class="font">หน้าแรก</span>
     </v-btn>
