@@ -1,7 +1,6 @@
 <template>
   <div>
-      about
-      <Info-Product/>
+      limited
   </div>
 </template>
 

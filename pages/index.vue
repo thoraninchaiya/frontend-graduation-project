@@ -12,29 +12,32 @@
       </v-carousel-item>
     </v-carousel>
 
-    <div class="mt-5">
-      <div class="d-lg-flex justify-center">
-        <v-app>
-          <v-card>
-            <v-card-title>
-              <div>
-                สินค้าใหม่
-              </div>
-            </v-card-title>
-            <v-card-text class="d-flex align-content-start flex-wrap">
-              <MainCard v-for="post in carddata" :key="post.id" :post="post" />
-            </v-card-text>
-          </v-card>
-        </v-app>
-      </div>
-    </div>
+    <v-container grid-list-xs>
+      <div class="mt-5">
+        <div class="d-lg-flex justify-center">
+          <v-app>
+            <v-card>
+              <v-card-title class="justify-center">
+                <div>
+                  สินค้าใหม่
+                </div>
+              </v-card-title>
+              <v-divider></v-divider>
+              <v-card-text class="d-flex align-content-start flex-wrap">
+                <Card-FirstCard v-for="post in carddata" :key="post.id" :post="post" />
+              </v-card-text>
+            </v-card>
+          </v-app>
+        </div>
+      </div>      
+    </v-container>
 
   </v-app>
 </template>
 
 <script>
 import axios from 'axios'
-import MainCard from '@/components/MainCard'
+import MainCard from '@/components/Card/FirstCard'
 
   export default {
     components:{
