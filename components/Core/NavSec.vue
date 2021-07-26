@@ -12,6 +12,9 @@
     <v-btn  @click="$router.push('promotion')">
       <span class="font">โปรโมชั่น</span>
     </v-btn>
+    <v-btn  @click="$router.push('limited')">
+      <span class="font">สินค้าลิมิเต็ด</span>
+    </v-btn>
     <v-btn @click="$router.push('about')">
       <span class="font">เกี่ยวกับ</span>
     </v-btn>
@@ -28,7 +31,7 @@ export default {
 </script>
 
 <style>
-    .font{
-        font-size: 1rem;
-    }
+  .font{
+      font-size: 1rem;
+  }
 </style>
