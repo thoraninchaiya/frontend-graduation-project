@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <v-app>
     <Core-NavTop/>
     <Core-NavSec/>
     <Nuxt/>
     <!-- <Core-Footer/> -->
-  </div>
+  </v-app>
 </template>
 
 <script>

@@ -1,8 +1,7 @@
 <template>
-  <div>
-      about
-      <Info-Product/>
-  </div>
+  <v-app>
+    
+  </v-app>
 </template>
 
 <script>

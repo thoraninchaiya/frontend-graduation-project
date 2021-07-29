@@ -16,7 +16,14 @@
           </v-card>
         </v-col>
       </v-row>
+
+
+    <div>
+      <Info-Product/>
+    </div>
+
     </v-container>
+
 
  </v-app>
 

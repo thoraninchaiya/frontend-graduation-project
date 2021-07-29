@@ -15,9 +15,9 @@
     <v-btn  @click="$router.push('limited')">
       <span class="font">สินค้าลิมิเต็ด</span>
     </v-btn>
-    <v-btn @click="$router.push('about')">
+    <!-- <v-btn @click="$router.push('about')">
       <span class="font">เกี่ยวกับ</span>
-    </v-btn>
+    </v-btn> -->
     <v-btn @click="$router.push('contact')">
       <span class="font">ติดต่อเรา</span>
     </v-btn>
