@@ -1,10 +1,10 @@
 <template>
-  <v-card class="mx-auto my-12" max-width="250">
+  <v-card class="mx-auto my-12 ml-2" max-width="350">
     <template slot="progress">
       <v-progress-linear color="deep-purple" height="10" indeterminate></v-progress-linear>
     </template>
 
-    <v-img height="200" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+    <v-img height="350" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
 
     <v-card-title>
         <nuxt-link :to="{name: 'post-id', params: {id: post.id}}">{{post.title}}</nuxt-link>

@@ -22,15 +22,12 @@
         <v-card>
           <v-card-text>
             <div v-show="ContactTab === 0">
-              About
               <More-About/>
             </div>
             <div v-show="ContactTab === 1">
-              Payment
               <More-Payment/>
             </div>
             <div v-show="ContactTab === 2">
-              Contact
               <More-Contact/>
             </div>              
           </v-card-text>

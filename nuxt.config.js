@@ -26,7 +26,10 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '@/addon/css/reset.css'
+    '@/addon/css/reset.css',
+    '@/addon/fontawesome-free-5.15.3-web/js/fontawesome.js',
+    '@/addon/fontawesome-free-5.15.3-web/js/solid.js',
+    '@/addon/fontawesome-free-5.15.3-web/js/regular.js',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
