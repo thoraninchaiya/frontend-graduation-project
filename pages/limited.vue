@@ -1,13 +1,12 @@
 <template>
   <div>
       limited
+      <Card-testcard/>
   </div>
 </template>
 
 <script>
-export default {
 
-}
 </script>
 
 <style>
