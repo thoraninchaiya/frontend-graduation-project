@@ -2,7 +2,7 @@
   <div class="d-flex">
 	  <v-card class="mx-auto my-12 ml-2" max-width="350">
 		  <div>
-			<v-img height="330" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+			<v-img height="330" src="/img/58570dc49447a3fb2d58c362cb1eb781.jpg"></v-img>
 		  </div>
 		<v-card-title class="">
 			Title

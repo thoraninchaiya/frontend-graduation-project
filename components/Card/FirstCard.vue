@@ -4,7 +4,7 @@
       <v-progress-linear color="deep-purple" height="10" indeterminate></v-progress-linear>
     </template>
 
-    <v-img height="250" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+    <v-img height="250" src="/img/58570dc49447a3fb2d58c362cb1eb781.jpg"></v-img>
 
     <v-card-title>
         <nuxt-link :to="{name: 'post-id', params: {id: post.id}}">{{post.title}}</nuxt-link>
