@@ -1,7 +1,7 @@
 <template>
   <v-app>
-      <v-btn @click="dialog=!dialog" color="success">text</v-btn>
-      <v-dialog v-model="dialog" scrollable :overlay="false" max-width="500px" transition="dialog-transition">
+      <v-btn @click="dialog=!dialog" color="success">test</v-btn>
+      <v-dialog v-model="dialog" scrollable :overlay="false" max-width="300px" transition="dialog-transition">
           <v-card>
               <v-card-title primary-title>
                   title
@@ -27,7 +27,9 @@ export default {
         dialog:false
     })},
     methods:{
-
+        async callback(){
+            this.dialog = false
+        }
     }
 }
 </script>
