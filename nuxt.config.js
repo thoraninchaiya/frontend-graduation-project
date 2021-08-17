@@ -1,5 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
 
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -7,7 +8,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - basic_course',
-    title: 'basic_course',
+    title: 'SALAFEX',
     htmlAttrs: {
       lang: 'en'
     },
@@ -30,7 +31,7 @@ export default {
     '@/addon/css/reset.css',
     '@/addon/fontawesome-free-5.15.3-web/js/fontawesome.js',
     '@/addon/fontawesome-free-5.15.3-web/js/solid.js',
-    '@/addon/fontawesome-free-5.15.3-web/js/regular.js',
+    // '@/addon/fontawesome-free-5.15.3-web/js/regular.js',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -50,7 +51,23 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/toast',
+    // '@nuxtjs/universal-storage',
   ],
+
+  toast: {
+    position: 'top-right',
+    register: [ // Register custom toasts
+      {
+        name: 'my-error',
+        message: 'Oops...Something went wrong',
+        duration: 5000,
+        options: {
+          type: 'error'
+        }
+      }
+    ]
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -73,5 +90,21 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+
+  // //Universal Storage Module: [https://github.com/nuxt-community/universal-storage-module]
+  // storage: {
+  //   //vuex, // boolean or {namespace}
+  //   localStorage: {
+  //     prefix: ''
+  //   }, // boolean or {prefix}
+  //   cookie: {
+  //     prefix: '',
+  //     options: {
+  //       path: '/'
+  //     }
+  //   }, // boolean or {prefix, options}
+  //   //initialState: { testParam: false },  // Object {}
+  //   ignoreException: false //
+  // },
 }

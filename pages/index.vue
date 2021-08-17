@@ -22,6 +22,7 @@
               </v-card-title>
               <v-divider></v-divider>
               <v-card-text class="d-flex align-content-start flex-wrap justify-center">
+                <!-- <Card-SecondaryCard v-for="post in carddata" :key="post.secretid" :post="post" /> -->
                 <Card-FirstCard v-for="post in carddata" :key="post.secretid" :post="post" />
               </v-card-text>
             </v-card>

@@ -28,7 +28,7 @@ export default {
   },
   async created() {
     await this.checkUser();
-    await this.getUser();
+    // await this.getUser();
   },
   methods: {
     async getUser() {
@@ -40,13 +40,18 @@ export default {
     async login() {
       await User.login(this.form);
       let account = await User.getUser();
+      console.log(account)
       if (account.email) {
         await location.reload();
       }
     },
     async checkUser() {
       let token = User.token;
-      await User.storeToken(token);
+      if(token){
+        await User.storeToken(token);
+        await this.$router.replace("/");
+      }
+
     },
   },
 };

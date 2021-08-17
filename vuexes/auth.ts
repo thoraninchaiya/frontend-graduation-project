@@ -9,12 +9,7 @@ class UserModule extends VuexModule {
     public user:any = {} // javascript => user = null
 
     // public profile:any = {}
-    public profile:any = { // ยังไม่ได้ต่อ หลังบ้าน
-      "username":"admin",
-      "frist_name":"Thanakorn",
-      "last_name":"Mangkhang",
-      "admin":true
-  }
+    public profile:any = {}
 
     public async setUser(user:any){
         this.user = user
@@ -29,8 +24,17 @@ class UserModule extends VuexModule {
           await this.storeTokenToStorage(key)  
           return key
         }else{
-          alert('ไม่สามารถเข้าสู่ระบบได้กรุณาตรวจสอบข้อมูลให้ถูกต้อง')
+          return(user)
         }
+    }
+
+    public async register(form:any){
+      let user = await Core.post(`/auth/register`, form)
+      if(user.status == 201){
+        return (user)
+      }else{
+        return (user.message)
+      }
     }
 
     public async getUser(){
@@ -50,11 +54,11 @@ class UserModule extends VuexModule {
     }
 
     public async storeTokenToStorage(token:any){
-        localStorage.setItem('token',token )
+        localStorage.setItem('token',token)
+        // $storage.setLocalStorage('token',token)
       }
 
     public async storeToken(token:any){
-        console.log(token);
         axios.defaults.headers.common['Authorization'] = (token != null )?`Token ${token}`:'';
     }
 

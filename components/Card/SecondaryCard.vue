@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="my-12 ml-5 mr-5" max-width="350" max-height="580">
+    <v-card class="my-12 ml-5 mr-5" max-width="330" max-height="580">
       <div>
         <nuxt-link :to="{ name: 'post-id', params: { id: post.secretid } }"></nuxt-link>
         <v-img height="350" :src="`${post.image}`"></v-img>

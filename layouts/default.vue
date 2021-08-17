@@ -9,6 +9,7 @@
 
 <script>
 import {User} from '@/vuexes/auth'
+
 export default {
 
     data:()=>{

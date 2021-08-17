@@ -3,9 +3,17 @@
         <v-app-bar dark>
             <h2 class="brand-name">SALAFEX</h2>
             <v-spacer></v-spacer>
-            <v-btn v-if="token == null" class="btn-white" @click="$router.push('/auth/login')">เข้าสู่ระบบ</v-btn>
-            <v-btn v-else @click="logout()" color="btn-white">Logout</v-btn>
-            
+            <div class="">
+              <Cart/>
+              <!-- <v-btn color="" ><i class="fas fa-shopping-cart"></i></v-btn> -->
+            </div>
+            <div class="ml-5">
+              <v-btn v-if="token == null" class="btn-white" @click="$router.push('/auth/login')">เข้าสู่ระบบ</v-btn>
+              <v-btn v-else @click="logout()" color="btn-white">Logout</v-btn>
+            </div>
+            <div>
+              
+            </div>
         </v-app-bar>
     </div>
 </template>
