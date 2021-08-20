@@ -51,7 +51,6 @@ export default {
         await User.storeToken(token);
         await this.$router.replace("/");
       }
-
     },
   },
 };
