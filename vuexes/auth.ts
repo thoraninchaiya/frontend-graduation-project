@@ -48,23 +48,23 @@ class UserModule extends VuexModule {
     }
 
     public async loadUserlogined(){
-        if(this.token){
-            this.user = this.profile
-        }
+      if(this.token){
+          this.user = this.profile
+      }
     }
 
     public async logout(){
-        await localStorage.clear()
-        await location.reload();
+      await localStorage.clear()
+      await location.reload();
     }
 
     public async storeTokenToStorage(token:any){
-        localStorage.setItem('token',token)
+      localStorage.setItem('token',token)
         // $storage.setLocalStorage('token',token)
-      }
+    }
 
     public async storeToken(token:any){
-        axios.defaults.headers.common['Authorization'] = (token != null )?`Token ${token}`:'';
+      axios.defaults.headers.common['Authorization'] = (token != null )?`Token ${token}`:'';
     }
 
 }
