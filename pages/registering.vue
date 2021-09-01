@@ -8,19 +8,20 @@
             <v-card-title>
               <div>สินค้าลงทะเบียน</div>
             </v-card-title>
-            <pre> {{carddata}} </pre>
             <!-- <pre>{{carddata}} </pre> -->
             <v-divider></v-divider>
             <!-- <v-card-text class="d-flex align-content-start flex-wrap justify-center"> -->
-              <div v-if="carddata != null">
-                <v-card-text>ไม่มีสินค้าในขณะนี้</v-card-text>
-              </div>
-              <div v-else>
-                <v-card-text class="d-flex align-content-start flex-wrap">
-                    <Card-SecondaryCard v-for="post in carddata" :key="post.secretid" :post="post" />
-                </v-card-text>
-              </div>
-          </v-card>      
+
+            <div v-if="carddata.status != 400">
+              <v-card-text>{{carddata.message}}</v-card-text>
+              <v-card-text class="d-flex align-content-start flex-wrap">
+                  <Card-SecondaryCard v-for="post in carddata" :key="post.secretid" :post="post" />
+              </v-card-text>
+            </div>
+            <div v-else>
+              <v-card-text>{{carddata.message}}</v-card-text>
+            </div>
+          </v-card>
       </v-col>
     </div>
   </v-app>

@@ -20,7 +20,6 @@
             <v-card-title>
               <div>สินค้าทั้งหมด</div>
             </v-card-title>
-            <pre> {{carddata}} </pre>
             <!-- <pre>{{carddata}} </pre> -->
             <v-divider></v-divider>
             <!-- <v-card-text class="d-flex align-content-start flex-wrap justify-center"> -->

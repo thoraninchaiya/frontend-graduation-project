@@ -38,7 +38,6 @@
 
 <script>
 import {Core} from '@/vuexes/core'
-import {Web} from '@/vuexes/web'
 import {User} from '@/vuexes/auth'
 import MainCard from '@/components/Card/FirstCard'
   export default{
