@@ -18,13 +18,20 @@ export default {
       })
     },
     async created(){
-
+      await this.checkUser()
+      await this.getUser()
     },
     methods:{
       async checkUser(){
         let token  = User.token
         await User.storeToken(token)
         this.response = true
+        // console.log("test:" + token)
+      },
+      async getUser() {
+        let account = await User.getUser();
+        // console.log("account")
+        // console.log(account)
       }
     }
 }

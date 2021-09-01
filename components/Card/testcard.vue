@@ -5,7 +5,7 @@
 			<v-img height="330" src="/img/58570dc49447a3fb2d58c362cb1eb781.jpg"></v-img>
 		  </div>
 		<v-card-title class="">
-			Title
+			Title sdsd
 			<!-- <nuxt-link :to="{params: {id: post.id}}">{{post.title}}</nuxt-link> -->
 		</v-card-title>
 		  <v-card-text>

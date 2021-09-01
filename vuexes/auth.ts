@@ -20,6 +20,7 @@ class UserModule extends VuexModule {
         let user = await Core.post(`/auth/login/`, form)
         if(user.token){
           let key = user.token
+          console.log(key)
           await this.storeToken(key)
           await this.storeTokenToStorage(key)  
           return key
@@ -38,8 +39,12 @@ class UserModule extends VuexModule {
     }
 
     public async getUser(){
-      let user = await Core.get(`/auth/route`)
-      return user;
+      // console.log("this token: " + this.token)
+
+      let user = await Core.get(`/user/profile`)
+      if(user){
+        return user;
+      }
     }
 
     public async loadUserlogined(){

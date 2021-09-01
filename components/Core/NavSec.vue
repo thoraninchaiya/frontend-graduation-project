@@ -12,6 +12,9 @@
     <v-btn  @click="$router.push('promotion')">
       <span class="font">โปรโมชั่น</span>
     </v-btn>
+    <v-btn  @click="$router.push('registering')">
+      <span class="font">ลงทะเบียน</span>
+    </v-btn>
     <v-btn  @click="$router.push('limited')">
       <span class="font">สินค้าลิมิเต็ด</span>
     </v-btn>

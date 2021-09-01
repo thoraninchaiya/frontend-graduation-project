@@ -3,30 +3,23 @@
     <!-- <div class="d-sm-inline-flex d-md-inline-flex"> -->
     <div class="d-flex">
 
-      <v-col cols="2">
-        <v-card>
-          <v-card-title class="justify-center">
-            หมวดหมู่สินค้า
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            
-          </v-card-text>
-        </v-card>
-      </v-col>
-
       <v-col class="" cols="">
           <v-card>
             <v-card-title>
-              <div>สินค้าทั้งหมด</div>
+              <div>สินค้าลงทะเบียน</div>
             </v-card-title>
             <pre> {{carddata}} </pre>
             <!-- <pre>{{carddata}} </pre> -->
             <v-divider></v-divider>
             <!-- <v-card-text class="d-flex align-content-start flex-wrap justify-center"> -->
-            <v-card-text class="d-flex align-content-start flex-wrap">
-                <Card-SecondaryCard v-for="post in carddata" :key="post.secretid" :post="post" />
-            </v-card-text>
+              <div v-if="carddata != null">
+                <v-card-text>ไม่มีสินค้าในขณะนี้</v-card-text>
+              </div>
+              <div v-else>
+                <v-card-text class="d-flex align-content-start flex-wrap">
+                    <Card-SecondaryCard v-for="post in carddata" :key="post.secretid" :post="post" />
+                </v-card-text>
+              </div>
           </v-card>      
       </v-col>
     </div>
@@ -51,7 +44,7 @@ import MainCard from '@/components/Card/SecondaryCard'
     },
     methods: {
       async getProducts(){
-        this.carddata = await Core.get(`/products`)
+        this.carddata = await Core.get(`/registeringproducts`)
       }
     },
     async Request(){

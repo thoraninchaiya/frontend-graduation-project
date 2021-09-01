@@ -10,6 +10,8 @@
       </v-carousel-item>
     </v-carousel>
 
+    <pre>{{user}}</pre>
+
     <v-container grid-list-xs>
       <div class="mt-5">
         <div class="d-lg-flex justify-center">
@@ -37,9 +39,9 @@
 <script>
 import {Core} from '@/vuexes/core'
 import {Web} from '@/vuexes/web'
+import {User} from '@/vuexes/auth'
 import MainCard from '@/components/Card/FirstCard'
-
-  export default {
+  export default{
     components:{
       MainCard
     },
@@ -47,6 +49,7 @@ import MainCard from '@/components/Card/FirstCard'
       return {
         carousel: [],
         carddata: [],
+        user: {},
       }
     },
     methods: {
@@ -64,6 +67,7 @@ import MainCard from '@/components/Card/FirstCard'
     async created() {
       await this.getProducts();
       await this.getCarousel();
+      this.user = await User.getUser();
     }
   }
 </script>
