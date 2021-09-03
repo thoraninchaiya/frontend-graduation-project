@@ -30,8 +30,6 @@ export default {
       },
       async getUser() {
         let account = await User.getUser();
-        // console.log("account")
-        // console.log(account)
       }
     }
 }

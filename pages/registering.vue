@@ -12,7 +12,7 @@
             <v-divider></v-divider>
             <!-- <v-card-text class="d-flex align-content-start flex-wrap justify-center"> -->
 
-            <div v-if="carddata.status != 400">
+            <div v-if="carddata.status != 404">
               <v-card-text>{{carddata.message}}</v-card-text>
               <v-card-text class="d-flex align-content-start flex-wrap">
                   <Card-SecondaryCard v-for="post in carddata" :key="post.secretid" :post="post" />

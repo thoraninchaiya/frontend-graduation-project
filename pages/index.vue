@@ -23,10 +23,16 @@
                 </div>
               </v-card-title>
               <v-divider></v-divider>
-              <v-card-text class="d-flex align-content-start flex-wrap justify-center">
-                <!-- <Card-SecondaryCard v-for="post in carddata" :key="post.secretid" :post="post" /> -->
-                <Card-FirstCard v-for="post in carddata" :key="post.secretid" :post="post" />
-              </v-card-text>
+              
+            <div v-if="carddata.status != 404">
+              <v-card-text class="d-flex align-content-start flex-wrap">
+                  <Card-SecondaryCard v-for="post in carddata" :key="post.secretid" :post="post" />
+              </v-card-text>              
+            </div>
+            <div v-else>
+              ไม่พบมีสินค้าในขณะนี้
+            </div>
+
             </v-card>
           </v-app>
         </div>

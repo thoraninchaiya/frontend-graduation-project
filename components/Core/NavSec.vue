@@ -9,9 +9,9 @@
     <v-btn @click="$router.push('product')">
       <span class="font">สินค้า</span>
     </v-btn>
-    <v-btn  @click="$router.push('promotion')">
+    <!-- <v-btn  @click="$router.push('promotion')">
       <span class="font">โปรโมชั่น</span>
-    </v-btn>
+    </v-btn> -->
     <v-btn  @click="$router.push('registering')">
       <span class="font">ลงทะเบียน</span>
     </v-btn>

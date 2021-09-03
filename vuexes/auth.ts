@@ -42,8 +42,10 @@ class UserModule extends VuexModule {
       // console.log("this token: " + this.token)
 
       let user = await Core.get(`/user/profile`)
-      if(user){
+      if(user.status != 400){
         return user;
+      }else{
+        return user.message
       }
     }
 
