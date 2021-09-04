@@ -3,33 +3,23 @@
     <!-- <div class="d-sm-inline-flex d-md-inline-flex"> -->
     <div class="d-flex">
 
-      <v-col cols="2">
-        <v-card>
-          <v-card-title class="justify-center">
-            หมวดหมู่สินค้า
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            
-          </v-card-text>
-        </v-card>
-      </v-col>
-
       <v-col class="" cols="">
           <v-card>
             <v-card-title>
-              <div>สินค้าทั้งหมด</div>
+              <div>สินค้าลงทะเบียน</div>
             </v-card-title>
             <!-- <pre>{{carddata}} </pre> -->
             <v-divider></v-divider>
             <!-- <v-card-text class="d-flex align-content-start flex-wrap justify-center"> -->
+
             <div v-if="carddata.status != 404">
+              <v-card-text>{{carddata.message}}</v-card-text>
               <v-card-text class="d-flex align-content-start flex-wrap">
                   <Card-Product v-for="post in carddata" :key="post.secretid" :post="post" />
-              </v-card-text>              
+              </v-card-text>
             </div>
             <div v-else>
-              ไม่พบมีสินค้าในขณะนี้
+              <v-card-text>{{carddata.message}}</v-card-text>
             </div>
           </v-card>
       </v-col>
@@ -55,7 +45,7 @@ import MainCard from '@/components/Card/Product'
     },
     methods: {
       async getProducts(){
-        this.carddata = await Core.get(`/products`)
+        this.carddata = await Core.get(`/registeringproducts`)
       }
     },
     async Request(){

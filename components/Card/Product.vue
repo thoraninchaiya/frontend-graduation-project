@@ -1,15 +1,14 @@
 <template>
   <div>
-    <v-card class="mx-auto my-12 ml-5 mr-5" max-width="330">
+    <v-card class="my-12 ml-5 mr-5" max-width="330" max-height="580">
       <div>
-        <nuxt-link :to="{name: 'post-id', params: {id: post.secretid}}"></nuxt-link>
-        <v-img height="250" :src="`${post.image}`"></v-img>
+        <nuxt-link :to="{ name: 'post-id', params: { id: post.secretid } }"></nuxt-link>
+        <v-img height="350" :src="`${post.image}`"></v-img>
         <v-card-title>
-            {{post.name}}
-            <!-- <nuxt-link :to="{params: {id: post.id}}">{{post.title}}</nuxt-link> -->
+          {{ post.name }}
+          <!-- <nuxt-link :to="{params: {id: post.id}}">{{post.title}}</nuxt-link> -->
         </v-card-title>
       </div>
-
       <v-card-text>
         <div class="card-body">
           <div class="card-title">ID: {{ post.pid }}</div>
@@ -25,9 +24,9 @@
 
 <script>
 export default {
-    props:{
-        post: Object
-    }
+  props: {
+    post: Object,
+  },
 };
 </script>
 
