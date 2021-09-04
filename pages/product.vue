@@ -25,13 +25,13 @@
             <!-- <v-card-text class="d-flex align-content-start flex-wrap justify-center"> -->
             <div v-if="carddata.status != 404">
               <v-card-text class="d-flex align-content-start flex-wrap">
-                  <Card-SecondaryCard v-for="post in carddata" :key="post.secretid" :post="post" />
+                  <Card-Product v-for="post in carddata" :key="post.secretid" :post="post" />
               </v-card-text>              
             </div>
             <div v-else>
               ไม่พบมีสินค้าในขณะนี้
             </div>
-          </v-card>      
+          </v-card>
       </v-col>
     </div>
   </v-app>
@@ -41,7 +41,7 @@
 <script>
 import  {Core} from '@/vuexes/core'
 import {Web} from '@/vuexes/web'
-import MainCard from '@/components/Card/SecondaryCard'
+import MainCard from '@/components/Card/Product'
 
   export default {
     components:{

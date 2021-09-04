@@ -6,22 +6,22 @@
     <!-- <v-btn @click="$router.push('newproduct')">
       <span class="font">สินค้าใหม่</span>
     </v-btn> -->
-    <v-btn @click="$router.push('product')">
+    <v-btn @click="$router.push('/product')">
       <span class="font">สินค้า</span>
     </v-btn>
     <!-- <v-btn  @click="$router.push('promotion')">
       <span class="font">โปรโมชั่น</span>
     </v-btn> -->
-    <v-btn  @click="$router.push('registering')">
+    <v-btn  @click="$router.push('/registering')">
       <span class="font">ลงทะเบียน</span>
     </v-btn>
-    <v-btn  @click="$router.push('limited')">
+    <!-- <v-btn  @click="$router.push('/limited')">
       <span class="font">สินค้าลิมิเต็ด</span>
-    </v-btn>
+    </v-btn> -->
     <!-- <v-btn @click="$router.push('about')">
       <span class="font">เกี่ยวกับ</span>
     </v-btn> -->
-    <v-btn @click="$router.push('contact')">
+    <v-btn @click="$router.push('/contact')">
       <span class="font">ติดต่อเรา</span>
     </v-btn>
   </v-bottom-navigation>

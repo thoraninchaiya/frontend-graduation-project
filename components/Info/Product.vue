@@ -11,22 +11,11 @@
                   </v-btn>
               </v-card-title>
               <v-card-text>
-                <div class="bgh">
-                  <div class="mt-16 flex justify-center items-center" width="800px">
-                    <v-card>
-                      <v-card-text>
-                        <form @submit.prevent="login()">
-                          <!-- <v-text-field required v-model="form.email" filled label="อีเมลล์" rounded type="text"></v-text-field> -->
-                          <v-text-field required v-model="form.email" filled label="อีเมลล์" rounded type="text"></v-text-field>
-                          <v-text-field required v-model="form.password" type="password" filled label="รหัสผ่าน" rounded></v-text-field>
-                          <v-btn depressed large color="success" class="w-full" type="submit" rounded >เข้าสู่ระบบ</v-btn>
-                          <br/><br/>
-                          <v-btn text large rounded color="primary" class="w-full font-bold" @click="$router.push('/auth/register')" >สมัครสมาชิก</v-btn>
-                        </form>
-                      </v-card-text>
-                    </v-card>
-                  </div>
-                </div>
+                <form @submit.prevent="addcart()">
+                  <v-text-field label="name" v-model="form.name"></v-text-field>
+                  <v-btn color="success" type="submit">text</v-btn>
+                </form>
+
               </v-card-text>
           </v-card>
       </v-dialog>
@@ -34,19 +23,48 @@
 </template>
 
 <script>
-export default {
-    props: {
+import {Core} from '@/vuexes/core'
+import {User} from '@/vuexes/auth'
 
-    },
-    data:()=>{return({
-        dialog:false,
-        form: {},
-    })},
-    methods:{
-        async callback(){
-            this.dialog = false
-        }
+export default {
+  props: {
+
+  },
+  data () {
+    return {
+      dialog: false,
+      form: {},
+      user: {},
+      cart: {}
     }
+  },
+  async created(){
+    await this.checkUser();
+    // console.log(this.token)
+  },
+  methods: {
+    async checkUser(){
+      let token = User.token
+      console.log("product com token: " + token)
+      if(token){
+        this.user = await User.getUser();
+      }
+    },
+    async callback(){
+      this.$emit('ending')
+    },
+    async addcart(){
+      let cart = await Core.post(`/addcart`, this.form)
+      if(cart.status != 400){
+        console.log("true")
+      }else{
+        return(cart.message)
+      }
+      // console.log(cart)
+      // console.log(this.form)
+    }
+    
+  }
 }
 </script>
 

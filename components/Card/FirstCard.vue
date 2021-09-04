@@ -12,7 +12,7 @@
 
       <v-card-text>
         <div class="card-body">
-          <div class="card-title">ID: {{ post.id }}</div>
+          <div class="card-title">ID: {{ post.pid }}</div>
           <div class="card-text">Price: {{ post.price }}</div>
         </div>
       </v-card-text>

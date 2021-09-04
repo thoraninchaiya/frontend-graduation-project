@@ -10,7 +10,9 @@
       </v-carousel-item>
     </v-carousel>
 
-    <pre>{{user}}</pre>
+    <pre>{{ user }}</pre>
+    <!-- <pre> {{carddata}} </pre> -->
+    <!-- <pre>{{ token }}</pre> -->
 
     <v-container grid-list-xs>
       <div class="mt-5">
@@ -26,7 +28,7 @@
               
             <div v-if="carddata.status != 404">
               <v-card-text class="d-flex align-content-start flex-wrap">
-                  <Card-SecondaryCard v-for="post in carddata" :key="post.secretid" :post="post" />
+                  <Card-Product v-for="post in carddata" :key="post.secretid" :post="post" />
               </v-card-text>              
             </div>
             <div v-else>
@@ -45,7 +47,7 @@
 <script>
 import {Core} from '@/vuexes/core'
 import {User} from '@/vuexes/auth'
-import MainCard from '@/components/Card/FirstCard'
+import MainCard from '@/components/Card/Product'
   export default{
     components:{
       MainCard
@@ -57,14 +59,6 @@ import MainCard from '@/components/Card/FirstCard'
         user: {},
       }
     },
-    methods: {
-      async getProducts(){
-        this.carddata = await Core.get(`/newproduct`)
-      },
-      async getCarousel(){
-        this.carousel = await Core.get(`/getcarousel`)
-      }
-    },
     async Request(){
       await getProducts();
       await getCarousel();
@@ -72,7 +66,22 @@ import MainCard from '@/components/Card/FirstCard'
     async created() {
       await this.getProducts();
       await this.getCarousel();
-      this.user = await User.getUser();
+      await this.checkUser();
+      // this.user = await User.getUser();
+    },
+    methods: {
+      async getProducts(){
+        this.carddata = await Core.get(`/newproduct`)
+      },
+      async getCarousel(){
+        this.carousel = await Core.get(`/getcarousel`)
+      },
+      async checkUser(){
+        let token = User.token
+        if(token){
+          this.user = await User.getUser();
+        }
+      }
     }
   }
 </script>

@@ -37,7 +37,31 @@
 </template> -->
 
 <script>
+import {Core} from '@/vuexes/core'
+import {User} from '@/vuexes/auth'
+
 export default {
+  data () {
+    return {
+      user: {}
+    }
+  },
+async Request(){
+
+},
+async created(){
+  await this.checkUser();
+},
+methods: {
+  async checkUser(){
+    let token = User.token
+    console.log("this promotion token: " + token)
+    if(token){
+      this.user = await User.getUser();
+    }
+  }
+}
+
 
 }
 </script>
