@@ -31,7 +31,7 @@ export default {
         // console.log("test:" + token)
         if(token){
           let account = await User.getUser();
-          console.log("this account in default page: " + JSON.stringify(account))
+          // console.log("this account in default page: " + JSON.stringify(account))
         }
       },
       async getUser() {

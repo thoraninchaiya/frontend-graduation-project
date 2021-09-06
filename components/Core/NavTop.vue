@@ -1,7 +1,9 @@
 <template>
     <div>
         <v-app-bar dark>
-            <h2 class="brand-name">SALAFEX</h2>
+            <h2 class="brand-name">
+              <v-btn @click="$router.push('/')">SALAFEX</v-btn>
+              </h2>
             <v-spacer></v-spacer>
             <div class="">
               <!-- <pre> {{cart}} </pre> -->
