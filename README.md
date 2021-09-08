@@ -1,4 +1,4 @@
-# basic_course
+# SALAFEX End project
 
 ## Build Setup
 
@@ -15,4 +15,14 @@ $ npm run start
 
 # generate static project
 $ npm run generate
+```
+
+
+### Status
+```
+[u] = update
+[c] = change
+[n] = new
+[e] = edit
+[d] = delete
 ```
