@@ -17,10 +17,10 @@ class UserModule extends VuexModule {
 
     // login
     public async login(form:any){ 
-        let user = await Core.post(`/auth/login/`, form)
+        let user = await Core.post(`/user/login`, form)
         if(user.token){
           let key = user.token
-          console.log(key)
+          // console.log(key)
           await this.storeToken(key)
           await this.storeTokenToStorage(key)  
           return key
@@ -30,7 +30,7 @@ class UserModule extends VuexModule {
     }
 
     public async register(form:any){
-      let user = await Core.post(`/auth/register`, form)
+      let user = await Core.post(`/user/register`, form)
       if(user.status == 201){
         return (user)
       }else{
@@ -39,10 +39,7 @@ class UserModule extends VuexModule {
     }
 
     public async getUser(){
-      // console.log("this token: " + this.token)
-
-      let user = await Core.get(`/user/profile`)
-      // console.log(user)
+      let user = await Core.get(`/user/info`)
       if(user.status != 401 || user.status != 400){
         return user;
       }else{

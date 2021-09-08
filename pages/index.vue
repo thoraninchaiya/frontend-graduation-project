@@ -10,7 +10,7 @@
       </v-carousel-item>
     </v-carousel>
 
-    <pre>{{ user }}</pre>
+    <!-- <pre>{{ user }}</pre> -->
     <!-- <pre> {{carddata}} </pre> -->
     <!-- <pre>{{ token }}</pre> -->
 
@@ -66,15 +66,15 @@ import MainCard from '@/components/Card/Product'
     async created() {
       await this.getProducts();
       await this.getCarousel();
-      await this.checkUser();
+      // await this.checkUser();
       // this.user = await User.getUser();
     },
     methods: {
       async getProducts(){
-        this.carddata = await Core.get(`/newproduct`)
+        this.carddata = await Core.get(`/product/new`)
       },
       async getCarousel(){
-        this.carousel = await Core.get(`/getcarousel`)
+        this.carousel = await Core.get(`/carousel/`)
       },
       async checkUser(){
         let token = User.token

@@ -74,9 +74,9 @@ export default {
   methods: {
     async getcart() {
       let token = User.token;
-      console.log(token);
+      // console.log(token);
       if (token) {
-        this.cart = await Core.get(`/getcart`);
+        this.cart = await Core.get(`/cart/get`);
       }
     },
   },
