@@ -55,7 +55,7 @@ async created(){
 methods: {
   async checkUser(){
     let token = User.token
-    console.log("this promotion token: " + token)
+    // console.log("this promotion token: " + token)
     if(token){
       this.user = await User.getUser();
     }

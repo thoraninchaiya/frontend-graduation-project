@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { User } from "@/vuexes/auth";
+
 export default {
   data: () => {
     return ({
@@ -45,6 +47,17 @@ export default {
       contactList: ['บัญชีของฉัน', 'การสั่งซื้อ', 'การชำระเงิน', 'ติดตามสินค้า']
     });
   },
+  async created(){
+    await this.checkToken();
+  },
+  methods: {
+    async checkToken(){
+      let token = User.token
+      if(!token){
+        await this.$router.replace('/');
+      }
+    }
+  }
 }
 </script>
 

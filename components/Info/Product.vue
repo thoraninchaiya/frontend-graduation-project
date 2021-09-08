@@ -15,7 +15,6 @@
                   <v-text-field label="name" v-model="form.name"></v-text-field>
                   <v-btn color="success" type="submit">text</v-btn>
                 </form>
-
               </v-card-text>
           </v-card>
       </v-dialog>
@@ -34,27 +33,19 @@ export default {
     return {
       dialog: false,
       form: {},
-      user: {},
       cart: {}
     }
   },
   async created(){
-    await this.checkUser();
+    // await this.checkUser();
     // console.log(this.token)
   },
   methods: {
-    async checkUser(){
-      let token = User.token
-      console.log("product com token: " + token)
-      if(token){
-        this.user = await User.getUser();
-      }
-    },
     async callback(){
       this.$emit('ending')
     },
     async addcart(){
-      let cart = await Core.post(`/addcart`, this.form)
+      let cart = await Core.post(`/cart/add`, this.form)
       if(cart.status != 400){
         console.log("true")
       }else{

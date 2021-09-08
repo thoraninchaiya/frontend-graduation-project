@@ -55,7 +55,7 @@ import MainCard from '@/components/Card/Product'
     },
     methods: {
       async getProducts(){
-        this.carddata = await Core.get(`/products`)
+        this.carddata = await Core.get(`/product/`)
       }
     },
     async Request(){

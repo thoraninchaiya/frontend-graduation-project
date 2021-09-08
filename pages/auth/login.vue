@@ -35,14 +35,12 @@ export default {
       let account = await User.getUser();
       if (account.email) {
         await this.$router.replace("/");
-        // console.log(account.email)
       }
     },
     async login() {
       await User.login(this.form);
       let account = await User.getUser();
-      // console.log(account)
-      if (account.email) {
+      if (account.uuid) {
         await location.reload();
       }
     },

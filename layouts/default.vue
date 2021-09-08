@@ -20,23 +20,18 @@ export default {
     async created(){
       await this.checkUser()
       // await this.getUser()
-      
     },
     methods:{
       async checkUser(){
         let token  = User.token
         await User.storeToken(token)
         this.response = true
-        // console.log(token)
-        // console.log("test:" + token)
-        if(token){
-          let account = await User.getUser();
-          console.log("this account in default page: " + JSON.stringify(account))
-        }
+        // if(token){
+        //   let account = await User.getUser();
+        // }
       },
       async getUser() {
         let account = await User.getUser();
-        console.log(account)
         if(account.status != 400 || account.status != 400){
           return account
         }else{
