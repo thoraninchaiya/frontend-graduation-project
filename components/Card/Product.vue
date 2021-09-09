@@ -6,7 +6,6 @@
         <v-img height="350" :src="`${post.image}`"></v-img>
         <v-card-title>
           {{ post.name }}
-          <!-- <nuxt-link :to="{params: {id: post.id}}">{{post.title}}</nuxt-link> -->
         </v-card-title>
       </div>
       <v-card-text>
@@ -16,17 +15,45 @@
         </div>
       </v-card-text>
       <div class="d-flex justify-center card-footer">
-        <v-btn color="success">เพิ่มลงตะกร้า</v-btn>
+        <form @submit.prevent="addcart()">
+          <v-btn color="success" type="submit">เพิ่มลงตะกร้า</v-btn>
+        </form>
       </div>
     </v-card>
   </div>
 </template>
 
 <script>
+import { Core } from "@/vuexes/core";
 export default {
+  data: () =>{
+    return {
+      producttocart: {
+        sid: {},
+        pid: {}
+      }
+    }
+  },
   props: {
     post: Object,
   },
+  async created(){
+    // console.log(this.post.id)
+  },
+  methods:{
+    async addcart(){
+      this.producttocart.sid = this.post.id
+      this.producttocart.pid = this.post.pid
+      let cartstatus = await Core.post(`/cart/add`, this.producttocart);
+      // console.log(cartstatus);
+      let toast = this.$toasted.show("ท่านได้เพิ่มสินค้าลงตะกร้า", { 
+      type: "success",
+	    theme: "toasted-primary",
+	    position: "top-right", 
+	    duration: 5000
+      });
+    }
+  }
 };
 </script>
 

@@ -2,12 +2,9 @@
   <div>
     <v-btn @click="cartdialog = !cartdialog;getcart(); "><i class="fas fa-shopping-cart"></i></v-btn>
     <v-dialog v-model="cartdialog" :overlay="false" max-width="800px" transition="dialog-transition">
-      <!-- <nuxt-link :to="{name: 'post-id', params:{id: post.cid}}"></nuxt-link> -->
-      <!-- <nuxt-link :to="{name: 'post-id', params:{id: post.cid}}"></nuxt-link> -->
       <v-card>
         <v-card-title primary-title> ตะกร้าสินค้า </v-card-title>
         <v-card-text>
-          <!-- <pre> {{cart}} </pre> -->
           <div v-if="`${cart.status}` != 400">
             <v-simple-table fixed-header max-height="600px">
               <template v-slot:default>
@@ -52,6 +49,9 @@
             </v-simple-table>
           </div>
           <div v-else>{{cart.message}}</div>
+          <div>
+            <v-btn color="success" @click="getcart();">test</v-btn>
+          </div>
         </v-card-text>
       </v-card>
     </v-dialog>
