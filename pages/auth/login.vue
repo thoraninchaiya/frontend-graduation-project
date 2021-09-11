@@ -38,7 +38,15 @@ export default {
       }
     },
     async login() {
-      await User.login(this.form);
+      let login = await User.login(this.form);
+      if(login.status == 400){
+        let toast = this.$toasted.show(login.message, { 
+        type: "error",
+	      theme: "toasted-primary",
+	      position: "top-right", 
+	      duration: 5000
+        });
+      }
       let account = await User.getUser();
       if (account.uuid) {
         await location.reload();

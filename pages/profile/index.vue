@@ -56,8 +56,8 @@ export default {
       if(!token){
         await this.$router.replace('/');
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

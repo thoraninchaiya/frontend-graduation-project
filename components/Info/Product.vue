@@ -54,7 +54,6 @@ export default {
       // console.log(cart)
       // console.log(this.form)
     }
-    
   }
 }
 </script>
