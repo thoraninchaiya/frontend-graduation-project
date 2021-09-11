@@ -30,7 +30,8 @@ export default {
     return {
       producttocart: {
         sid: {},
-        pid: {}
+        pid: {},
+        qty: 1
       }
     }
   },
