@@ -5,6 +5,8 @@
       <v-card>
         <v-card-title primary-title> ตะกร้าสินค้า </v-card-title>
         <v-card-text>
+          <!-- <pre>{{cartstock}}</pre> -->
+          <!-- <pre>{{cart}}</pre> -->
           <div v-if="`${cart.status}` != 400">
             <v-simple-table fixed-header max-height="600px">
               <template v-slot:default>
@@ -20,30 +22,38 @@
                 </thead>
 
                 <tbody class="">
-                  <tr v-for="item in cart" :key="item.cid">
-                    <td>
-                      <v-img class="cartimage" :src="`${item.image}`"></v-img>
-                    </td>
-                    <td>
-                      {{ item.name }}
-                    </td>
-                    <td>
-                      {{ item.price }}
-                    </td>
-                    <td>
-                      <div class="d-inline-flex">
-                        <div><v-btn color="success" small>-</v-btn></div>
-                        <div class="ma-1">{{ item.qty }}</div>
-                        <div><v-btn color="success" small>+</v-btn></div>
-                      </div>
-                    </td>
-                    <td>
-                      {{ item.price * item.qty }}
-                    </td>
-                    <td>
-                      <!-- {{ cart.calories }} -->
-                    </td>
-                  </tr>
+                  <template>
+                    <tr v-for="item in cart" :key="item.cid">
+                      <td>
+                        <v-img class="cartimage" :src="`${item.image}`"></v-img>
+                      </td>
+                      <td>
+                        {{ item.name }}
+                      </td>
+                      <td>
+                        {{ item.price }}
+                      </td>
+                      <td>
+                        <div class="d-inline-flex">
+                          <!-- <form @submit.prevent="removeone()"> -->
+                            <!-- <input v-model="item.id" disabled hidden> -->
+                            <div><v-btn color="success" small @click="removeone()">-</v-btn></div>
+                          <!-- </form> -->
+                          <div class="ma-1">{{ item.qty }}</div>
+                          <!-- <form @submit.prevent="addone()"> -->
+                            <!-- <input :value="item.qty" :v-model="add.id" disabled> -->
+                            <div><v-btn color="success" small type="submit">+</v-btn></div>
+                          <!-- </form> -->
+                        </div>
+                      </td>
+                      <td>
+                        {{ item.price * item.qty }}
+                      </td>
+                      <td>
+                        <!-- {{ cart.calories }} -->
+                      </td>
+                    </tr>
+                  </template>
                 </tbody>
               </template>
             </v-simple-table>
@@ -64,8 +74,19 @@ import { User } from "@/vuexes/auth";
 export default {
   data() {
     return {
+      item: {
+        id: null
+      },
       cartdialog: false,
-      cart: [],
+      cart: {},
+      remove: {},
+      add: {},
+      cartstock: {
+        cid: {},
+        pid: {},
+        productid: {},
+        qty: 0
+      },
     };
   },
   async created() {
@@ -79,6 +100,20 @@ export default {
         this.cart = await Core.get(`/cart/get`);
       }
     },
+    async addone(){
+      console.log(this.add);
+    },
+    async removeone(){
+      this.cartstock.cid = this.cart.cid
+      this.cartstock.pid = this.cart.pid
+      this.cartstock.productid = this.cart.productid
+      if(this.cartstock.qty > 0){
+        this.cartstock.qty = this.cartstock.qty-1
+      }
+    },
+    // async remove(){
+
+    // }
   },
 };
 </script>

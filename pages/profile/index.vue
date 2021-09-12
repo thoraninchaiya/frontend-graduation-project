@@ -21,10 +21,10 @@
               <User-About/>
             </div>
             <div v-show="ContactTab === 1">
-              <User-Payment/>
+              <User-Contact/>
             </div>
             <div v-show="ContactTab === 2">
-              <User-Contact/>
+              <User-Payment/>
             </div>              
             <div v-show="ContactTab === 3">
               <User-Delivery/>
