@@ -15,9 +15,9 @@
         </div>
       </v-card-text>
       <div class="d-flex justify-center card-footer">
-        <form @submit.prevent="addcart()">
+        <form @submit.prevent="">
           <div v-if="post.onstock == true">
-            <v-btn color="success" type="submit">เพิ่มลงตะกร้า</v-btn>
+            <v-btn color="success" type="submit">ลงทะเบียน</v-btn>
           </div>
           <div v-else>
             สินค้าหมด
@@ -51,13 +51,9 @@ export default {
       this.producttocart.sid = this.post.id
       this.producttocart.pid = this.post.pid
       let cartstatus = await Core.post(`/cart/add`, this.producttocart);
-      // console.log(cartstatus);
-      let toast = this.$toasted.show("ท่านได้เพิ่มสินค้าลงตะกร้า", { 
-      type: "success",
-	    theme: "toasted-primary",
-	    position: "top-right", 
-	    duration: 5000
-      });
+    },
+    async registering(){
+      
     }
   }
 };

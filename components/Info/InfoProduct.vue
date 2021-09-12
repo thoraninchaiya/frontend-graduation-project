@@ -1,12 +1,12 @@
 <template>
   <v-app>
-      <v-btn @click="dialog=!dialog" color="success">test</v-btn>
-      <v-dialog v-model="dialog" scrollable :overlay="false" max-width="1000px" transition="dialog-transition">
+      <v-btn @click="productdiaolginfo=!productdiaolginfo" color="success">test</v-btn>
+      <v-dialog v-model="productdiaolginfo" scrollable :overlay="false" max-width="1000px" transition="dialog-transition">
           <v-card>
               <v-card-title primary-title>
                   title
                   <v-spacer></v-spacer>
-                  <v-btn text @click="dialog=!dialog">
+                  <v-btn text @click="productdiaolginfo=!productdiaolginfo">
                       <i class="em em-x" aria-role="presentation" aria-label="CROSS MARK"></i>
                   </v-btn>
               </v-card-title>
@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      dialog: false,
+      productdiaolginfo: false,
       form: {},
       cart: {}
     }
@@ -42,6 +42,7 @@ export default {
   },
   methods: {
     async callback(){
+      this.productdiaolginfo = false
       this.$emit('ending')
     },
     async addcart(){

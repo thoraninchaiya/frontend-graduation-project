@@ -1,19 +1,21 @@
 <template>
   <div>
     <v-card class="my-12 ml-5 mr-5" max-width="330" max-height="580">
-      <div>
-        <nuxt-link :to="{ name: 'post-id', params: { id: post.secretid } }"></nuxt-link>
-        <v-img height="350" :src="`${post.image}`"></v-img>
-        <v-card-title>
-          {{ post.name }}
-        </v-card-title>
-      </div>
-      <v-card-text>
-        <div class="card-body">
-          <div class="card-title">ID: {{ post.pid }}</div>
-          <div class="card-text">Price: {{ post.price }}</div>
+      <a @click="console()">
+        <div>
+          <nuxt-link :to="{ name: 'post-id', params: { id: post.secretid } }"></nuxt-link>
+            <v-img height="350" :src="`${post.image}`"></v-img>
+          <v-card-title>
+            {{ post.name }}
+          </v-card-title>
         </div>
-      </v-card-text>
+        <v-card-text>
+          <div class="card-body">
+            <div class="card-title">ID: {{ post.pid }}</div>
+            <div class="card-text">Price: {{ post.price }}</div>
+          </div>
+        </v-card-text>
+      </a>
       <div class="d-flex justify-center card-footer">
         <form @submit.prevent="addcart()">
           <div v-if="post.onstock == true">
@@ -25,6 +27,15 @@
         </form>
       </div>
     </v-card>
+
+    <v-dialog v-model="dialog" :overlay="false" max-width="500px" transition="dialog-transition">
+      <v-card>
+        <v-card-text>
+          this product
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    
   </div>
 </template>
 
@@ -33,10 +44,11 @@ import { Core } from "@/vuexes/core";
 export default {
   data: () =>{
     return {
+      dialog: false,
       producttocart: {
         sid: {},
         pid: {},
-        qty: 1
+        qty: 1,
       }
     }
   },
@@ -58,6 +70,9 @@ export default {
 	    position: "top-right", 
 	    duration: 5000
       });
+    },
+    async console(){
+      console.log("hello world")
     }
   }
 };
