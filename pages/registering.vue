@@ -15,7 +15,7 @@
             <div v-if="carddata.status != 404">
               <v-card-text>{{carddata.message}}</v-card-text>
               <v-card-text class="d-flex align-content-start flex-wrap">
-                  <Card-Product v-for="post in carddata" :key="post.secretid" :post="post" />
+                  <Card-ProductRegistering v-for="post in carddata" :key="post.secretid" :post="post" />
               </v-card-text>
             </div>
             <div v-else>
@@ -31,7 +31,7 @@
 <script>
 import  {Core} from '@/vuexes/core'
 import {Web} from '@/vuexes/web'
-import MainCard from '@/components/Card/Product'
+import MainCard from '@/components/Card/ProductRegistering'
 
   export default {
     components:{

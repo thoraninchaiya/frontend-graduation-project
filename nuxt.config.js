@@ -31,6 +31,7 @@ export default {
     '@/addon/css/reset.css',
     '@/addon/fontawesome-free-5.15.3-web/js/fontawesome.js',
     '@/addon/fontawesome-free-5.15.3-web/js/solid.js',
+    '@/addon/fontawesome-free-5.15.3-web/js/brands.js',
     // '@/addon/fontawesome-free-5.15.3-web/js/regular.js',
   ],
 
