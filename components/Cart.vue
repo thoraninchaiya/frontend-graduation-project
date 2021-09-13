@@ -40,7 +40,7 @@
                                                 </div>
                                                 <div class="ma-1">{{ item.qty }}</div>
                                                 <div>
-                                                    <v-btn color="success" small type="submit" @click="addone()">+</v-btn>
+                                                    <v-btn color="success" small type="submit" @click="addone(item.qty, item.id)">+</v-btn>
                                                 </div>
                                             </div>
                                         </td>
@@ -96,7 +96,9 @@ export default {
                 this.cart = await Core.get(`/cart/get`);
             }
         },
-        async addone() {
+        async addone(itemqty, itemid) {
+          console.log(itemqty)
+          console.log(itemid)
           console.log("this one")
             this.cart.qty = this.cart.qty++
         },
