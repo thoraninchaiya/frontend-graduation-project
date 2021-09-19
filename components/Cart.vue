@@ -5,9 +5,9 @@
         <v-card>
             <v-card-title primary-title> ตะกร้าสินค้า </v-card-title>
             <v-card-text>
-                <!-- <pre>{{cartstock}}</pre>
-                <pre>{{cart}}</pre> -->
-                <pre> {{removeitem}} </pre>
+                <!-- <pre>{{cartstock}}</pre> -->
+                <!-- <pre>{{cart}}</pre> -->
+                <!-- <pre> {{remove}} </pre> -->
                 <div v-if="`${cart.status}` != 400">
                     <v-simple-table fixed-header max-height="600px">
                         <template v-slot:default>
@@ -50,7 +50,7 @@
                                         </td>
                                         <td>
                                             <div>
-                                                <v-btn color="error" small @click="removeitem(item.cid)">ลบ</v-btn>
+                                                <v-btn color="error" small @click="removeitem(item.cid, item.productid)">ลบ</v-btn>
                                             </div>
                                         </td>
                                     </tr>
@@ -77,8 +77,8 @@ export default {
         return {
             cartdialog: false,
             cart: {},
-            removeitem: {
-                cid: null
+            remove: {
+                cid: 0
             },
             add: {},
             cartstock: {
@@ -99,8 +99,14 @@ export default {
                 this.cart = await Core.get(`/cart/get`);
             }
         },
-        async removeitem(itemid){
-            console.log(itemid)
+        async removeitem(itemid, productid){
+            // console.log(itemid)
+            this.remove.cid = itemid
+            // this.remove.pid = productid
+            let cartremoveitem = await Core.post(`/cart/remove`, this.remove)
+            if(cartremoveitem.status == 200){
+                await this.getcart();
+            }
         },
         async addone(itemid, productid, qty) {
             this.cartstock.qty = 1
