@@ -6,8 +6,9 @@
             <v-card-title primary-title> ตะกร้าสินค้า </v-card-title>
             <v-card-text>
                 <!-- <pre>{{cartstock}}</pre> -->
-                <pre>{{cart}}</pre>
-                <div v-if="`${cart.status}` != 400">
+                <!-- <pre>{{cart}}</pre> -->
+                <!-- <pre> {{remove}} </pre> -->
+                <!-- <div v-if="`${cart.status}` == null"> -->
                     <v-simple-table fixed-header max-height="600px">
                         <template v-slot:default>
                             <thead>
@@ -36,11 +37,11 @@
                                         <td>
                                             <div class="d-inline-flex">
                                                 <div>
-                                                    <v-btn color="success" small @click="removeone()">-</v-btn>
+                                                    <v-btn color="success" small @click="removeone(item.cid, item.productid, item.qty)">-</v-btn>
                                                 </div>
                                                 <div class="ma-1">{{ item.qty }}</div>
                                                 <div>
-                                                    <v-btn color="success" small type="submit" @click="addone(item.qty, item.id)">+</v-btn>
+                                                    <v-btn color="success" small @click="addone(item.cid, item.productid, item.qty)">+</v-btn>
                                                 </div>
                                             </div>
                                         </td>
@@ -48,14 +49,17 @@
                                             {{ item.price * item.qty }}
                                         </td>
                                         <td>
+                                            <div>
+                                                <v-btn color="error" small @click="removeitem(item.cid, item.productid)">ลบ</v-btn>
+                                            </div>
                                         </td>
                                     </tr>
                                 </template>
                             </tbody>
                         </template>
                     </v-simple-table>
-                </div>
-                <div v-else>{{cart.message}}</div>
+                <!-- </div> -->
+                <!-- <div v-else>ไม่มีสินค้าในตะกร้าสินค้า</div> -->
                 <div>
                     <v-btn color="success" @click="getcart();">test</v-btn>
                 </div>
@@ -71,18 +75,17 @@ import { User } from "@/vuexes/auth";
 export default {
     data() {
         return {
-            item: {
-                id: null
-            },
             cartdialog: false,
             cart: {},
-            remove: {},
+            remove: {
+                cid: 0
+            },
             add: {},
             cartstock: {
                 cid: {},
-                pid: {},
                 productid: {},
-                qty: 0
+                qty: 0,
+                status: null
             },
         };
     },
@@ -96,23 +99,39 @@ export default {
                 this.cart = await Core.get(`/cart/get`);
             }
         },
-        async addone(itemqty, itemid) {
-          console.log(itemqty)
-          console.log(itemid)
-          console.log("this one")
-            this.cart.qty = this.cart.qty++
-        },
-        async removeone() {
-            this.cartstock.cid = this.cart.cid
-            this.cartstock.pid = this.cart.pid
-            this.cartstock.productid = this.cart.productid
-            if (this.cartstock.qty > 0) {
-                this.cartstock.qty = this.cartstock.qty - 1
+        async removeitem(itemid, productid){
+            // console.log(itemid)
+            this.remove.cid = itemid
+            // this.remove.pid = productid
+            let cartremoveitem = await Core.post(`/cart/remove`, this.remove)
+            if(cartremoveitem.status == 200){
+                await this.getcart();
             }
         },
-        // async remove(){
-
-        // }
+        async addone(itemid, productid, qty) {
+            this.cartstock.qty = 1
+            this.cartstock.cid = itemid
+            this.cartstock.productid = productid
+            this.cartstock.status = "add"
+            if(qty < 5){
+                let cartstockqty = await Core.put(`/cart/update`, this.cartstock)
+                if(cartstockqty.status == 200){
+                    await this.getcart();
+                }            
+            }
+        },
+        async removeone(itemid, productid, qty) {
+            this.cartstock.qty = 1
+            this.cartstock.cid = itemid
+            this.cartstock.productid = productid
+            this.cartstock.status = "minus"
+            if(qty > 0){
+                let cartstockqty = await Core.put(`/cart/update`, this.cartstock)
+                if(cartstockqty.status == 200){
+                    await this.getcart();
+                }            
+            }
+        }
     },
 };
 </script>
