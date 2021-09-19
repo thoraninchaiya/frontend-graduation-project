@@ -8,7 +8,7 @@
                 <!-- <pre>{{cartstock}}</pre> -->
                 <!-- <pre>{{cart}}</pre> -->
                 <!-- <pre> {{remove}} </pre> -->
-                <div v-if="`${cart.status}` != 400">
+                <!-- <div v-if="`${cart.status}` == null"> -->
                     <v-simple-table fixed-header max-height="600px">
                         <template v-slot:default>
                             <thead>
@@ -58,8 +58,8 @@
                             </tbody>
                         </template>
                     </v-simple-table>
-                </div>
-                <div v-else>{{cart.message}}</div>
+                <!-- </div> -->
+                <!-- <div v-else>ไม่มีสินค้าในตะกร้าสินค้า</div> -->
                 <div>
                     <v-btn color="success" @click="getcart();">test</v-btn>
                 </div>
