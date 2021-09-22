@@ -7,6 +7,7 @@
             <v-card-text>
                 <!-- <pre>{{cartstock}}</pre> -->
                 <!-- <pre>{{cart}}</pre> -->
+                <!-- <div v-if="`${item.cid}`">cart.id</div> -->
                 <!-- <pre> {{remove}} </pre> -->
                 <!-- <div v-if="`${cart.status}` == null"> -->
                     <v-simple-table fixed-header max-height="600px">

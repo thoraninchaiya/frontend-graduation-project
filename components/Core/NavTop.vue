@@ -43,6 +43,9 @@ export default {
       let token = User.token
       if(token){
         this.user = await User.getUser();
+        if(this.user.status == 401){
+          await User.logout()
+        }
       }
     }
   }
