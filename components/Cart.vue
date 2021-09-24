@@ -61,8 +61,9 @@
                     </v-simple-table>
                 <!-- </div> -->
                 <!-- <div v-else>ไม่มีสินค้าในตะกร้าสินค้า</div> -->
-                <div>
-                    <v-btn color="success" @click="getcart();">test</v-btn>
+                <div class="mt-5 d-flex justify-end">
+                    <!-- <v-btn color="success" @click="getcart();">test</v-btn> -->
+                    <v-btn color="success">สั่งซื้อสินค้า</v-btn>
                 </div>
             </v-card-text>
         </v-card>
