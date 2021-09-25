@@ -19,7 +19,7 @@
 
 
     <div>
-      <Info-Product/>
+      <Info-IProduct/>
     </div>
 
     </v-container>
