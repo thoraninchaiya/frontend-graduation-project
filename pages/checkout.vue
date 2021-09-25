@@ -52,10 +52,20 @@
                       </template>
                   </v-simple-table>
               </v-card-text>
-              <div class="d-flex justify-end">
-                  <v-btn color="success">ยืนยันการสั่งซื้อสินค้า</v-btn>
-              </div>
           </v-card-text>
+      </v-card>
+      <v-card class="mt-3">
+            <v-card-text>
+                <p class="font-weight-bold">บริษัทขนส่ง</p>
+                <v-divider></v-divider>
+                <div>
+                    <input type="radio" name="" id=""> kerry
+                </div>
+                <v-divider></v-divider>
+                <div class="d-flex justify-end">
+                    <v-btn color="success">ยืนยันการสั่งซื้อสินค้า</v-btn>
+                </div>
+            </v-card-text>
       </v-card>
   </v-container>
 </template>
