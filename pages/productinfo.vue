@@ -1,14 +1,8 @@
 <template>
-  <v-app>
-      <v-btn @click="infoproduct=!infoproduct" color="success">test</v-btn>
-      <v-dialog v-model="infoproduct" scrollable :overlay="false" max-width="1000px" transition="dialog-transition">
+  <v-container>
           <v-card>
               <v-card-title primary-title>
-                  
-                  <v-spacer></v-spacer>
-                  <v-btn text @click="infoproduct=!infoproduct">
-                      <i class="em em-x" aria-role="presentation" aria-label="CROSS MARK"></i>
-                  </v-btn>
+                
               </v-card-title>
               <v-divider></v-divider>
               <v-card-text>
@@ -28,8 +22,7 @@
                   </div>
               </v-card-text>
           </v-card>
-      </v-dialog>
-  </v-app>
+  </v-container>
 </template>
 
 <script>
