@@ -8,10 +8,11 @@
       </v-card>
 
       <v-card class="mt-3">
+          <!-- <pre> {{checkoutcart}} </pre> -->
           <v-card-text>
               <p class="font-weight-bold">ที่อยู่ในการจัดส่ง</p>
               <v-divider></v-divider>
-              address
+              {{userdata.addr}}
           </v-card-text>
       </v-card>
 
@@ -33,12 +34,12 @@
                           </thead>
                           <tbody>
                               <template>
-                                  <tr>
-                                      <td>img</td>
-                                      <td>เสื้อ</td>
-                                      <td>1</td>
-                                      <td>&#3647;&nbsp;50</td>
-                                      <td>&#3647;&nbsp;50</td>
+                                  <tr v-for="item in checkoutcart" :key="item.cid">
+                                      <td><v-img class="cartimage" :src="`${item.image}`"></v-img></td>
+                                      <td>{{ item.name }}</td>
+                                      <td>&#3647;&nbsp;{{ item.price }}</td>
+                                      <td>{{ item.qty }}</td>
+                                      <td>&#3647;&nbsp;{{ item.price * item.qty }}</td>
                                   </tr>
                                   <tr>
                                       <td></td>
@@ -71,8 +72,34 @@
 </template>
 
 <script>
-export default {
+import { Core } from "@/vuexes/core";
+import { User } from "@/vuexes/auth";
 
+export default {
+    data: ()=>{
+        return({
+            userdata: {},
+            checkoutcart: {}
+        })
+    },
+    async created(){
+        await this.checkUser();
+    },
+    methods:{
+        async checkUser(){
+          let token = User.token;
+          if(token){
+            this.userdata = await Core.get(`/user/profile`)
+            await this.getcart();
+          }
+        },
+        async getcart(){
+            this.checkoutcart = await Core.get(`/cart/get`)
+        },
+        async checkout(){
+            
+        }
+    }
 }
 </script>
 
