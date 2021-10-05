@@ -9,6 +9,8 @@
             หมวดหมู่สินค้า
           </v-card-title>
           <v-divider></v-divider>
+            <!-- <v-btn color="success">หมวดหมู่สินค้า</v-btn> -->
+            <pre>{{categorylist}}</pre>
           <v-card-text>
             
           </v-card-text>
@@ -50,20 +52,25 @@ import MainCard from '@/components/Card/Product'
     data () {
       return {
         carddata: [],
-        test: []
+        test: [],
+        categorylist: {}
       }
+    },
+    // async Request(){
+    //   await getProducts();
+    // },
+    async created(){
+      await this.getProducts();
+      await this.getcategory();
     },
     methods: {
       async getProducts(){
         this.carddata = await Core.get(`/product/`)
+      },
+      async getcategory(){
+        this.categorylist = await Core.get(`/category`)
       }
     },
-    async Request(){
-      await getProducts();
-    },
-    async created(){
-      await this.getProducts();
-    }
   }
 </script>
 

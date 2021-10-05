@@ -19,6 +19,7 @@
         <div class="d-lg-flex justify-center">
           <v-app>
             <v-card>
+              <Info-Product/>
               <v-card-title class="justify-center">
                 <div class="display-1">
                   <h4>สินค้าใหม่</h4>

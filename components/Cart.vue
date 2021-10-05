@@ -7,6 +7,7 @@
             <v-card-text>
                 <!-- <pre>{{cartstock}}</pre> -->
                 <!-- <pre>{{cart}}</pre> -->
+                <!-- <div v-if="`${item.cid}`">cart.id</div> -->
                 <!-- <pre> {{remove}} </pre> -->
                 <!-- <div v-if="`${cart.status}` == null"> -->
                     <v-simple-table fixed-header max-height="600px">
@@ -60,8 +61,9 @@
                     </v-simple-table>
                 <!-- </div> -->
                 <!-- <div v-else>ไม่มีสินค้าในตะกร้าสินค้า</div> -->
-                <div>
-                    <v-btn color="success" @click="getcart();">test</v-btn>
+                <div class="mt-5 d-flex justify-end">
+                    <!-- <v-btn color="success" @click="getcart();">test</v-btn> -->
+                    <v-btn color="success" @click="$router.push('/checkout'), callback()">สั่งซื้อสินค้า</v-btn>
                 </div>
             </v-card-text>
         </v-card>
@@ -131,6 +133,9 @@ export default {
                     await this.getcart();
                 }            
             }
+        },
+        async callback(){
+            this.cartdialog = false
         }
     },
 };
