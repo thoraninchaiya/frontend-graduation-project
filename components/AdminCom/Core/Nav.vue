@@ -55,6 +55,11 @@ export default {
                     to: '/admin/dashboard'
                 },
                 {
+                    icon: 'mdi-credit-card-outline',
+                    title: 'Payment',
+                    to: ''
+                },
+                {
                     icon: 'mdi-archive',
                     title: 'Product',
                     to: '/admin/product'
@@ -62,6 +67,11 @@ export default {
                 {
                     icon: 'mdi-stack-exchange',
                     title: 'Order',
+                    to: ''
+                },
+                {
+                    icon: 'mdi-moped',
+                    title: 'Delivery',
                     to: ''
                 },
                 {
@@ -77,7 +87,7 @@ export default {
                 {
                     icon: 'mdi-account-multiple',
                     title: 'User',
-                    to: ''
+                    to: '/admin/user'
                 },
                 {
                     icon: 'mdi-wallpaper',

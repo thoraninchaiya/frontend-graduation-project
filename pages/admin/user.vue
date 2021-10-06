@@ -20,19 +20,14 @@
     <div class="mt-2">
         <v-card>
             <v-card-text>
-                <v-data-table :headers="headers" :items="productlist" sort-by="product_id" class="elevation-1">
+                <v-data-table :headers="headers" :items="userlist" sort-by="product_id" class="elevation-1">
                     <template v-slot:top>
                         <v-toolbar flat>
-                            <v-toolbar-title>สินค้าทั้งหมด</v-toolbar-title>
+                            <v-toolbar-title>ผู้ใช้งานทั้งหมด</v-toolbar-title>
                             <v-divider class="mx-4" inset vertical></v-divider>
                             <v-spacer></v-spacer>
                             <v-dialog v-model="dialog" max-width="500px">
                                 <!-- Edit item and Add item -->
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                                        New Item
-                                    </v-btn>
-                                </template>
                                 <v-card>
                                     <v-card-title>
                                         <span class="text-h5">{{ formTitle }}</span>
@@ -74,18 +69,6 @@
                                     </v-card-actions>
                                 </v-card>
                             </v-dialog><!-- End Edit item -->
-
-                            <v-dialog v-model="dialogDelete" max-width="500px">
-                                <v-card>
-                                    <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                                        <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                                        <v-spacer></v-spacer>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-dialog>
                         </v-toolbar>
                     </template>
                     <template v-slot:item.image=" {item} ">
@@ -99,14 +82,6 @@
                         <v-icon small class="mr-2" @click="editItem(item)">
                             mdi-pencil
                         </v-icon>
-                        <v-icon small @click="deleteItem(item)">
-                            mdi-delete
-                        </v-icon>
-                    </template>
-                    <template v-slot:no-data>
-                        <v-btn color="primary" @click="initialize">
-                            Reset
-                        </v-btn>
                     </template>
                 </v-data-table>
             </v-card-text>
@@ -131,18 +106,16 @@ export default {
         dialogDelete: false,
         dataitems: ['active', 'unactive'],
         headers: [
-            { text: 'รหัสสินค้า', align: 'start', sortable: true, value: 'product_id' },
-            { text: 'รูปภาพ', align: 'center', sortable: false, value: 'image' },
-            { text: 'ชื่อสินค้า', align: 'start', sortable: false, value: 'product_name' },
-            { text: 'ราคาสินค้า', value: 'product_price' },
-            { text: 'จำนวนคงเหลือ', value: 'product_qty' },
-            { text: 'จำหน่ายแล้ว', value: 'sold_qty' },
-            { text: 'สถานะวางขาย', value: 'glutenfree',sortable: false },
+            { text: 'รหัส', align: 'start', sortable: true, value: 'id' },
+            { text: 'ชื่อ', align: 'center', sortable: false, value: 'firstname' },
+            { text: 'นามสกุล', align: 'start', sortable: false, value: 'lastname' },
+            { text: 'อีเมลล์', value: 'email' },
+            { text: 'เบอร์ติดต่อ', value: 'phone' },
+            { text: 'สถานะ', value: 'status' },
             { text: 'Actions', value: 'actions', sortable: false },
             // { text: 'glutenfree', value: 'glutenfree', sortable: false },
         ],
-        productlist: [],
-        desserts: [],
+        userlist: [],
         editedIndex: -1,
         editedItem: {},
         defaultItem: {},
@@ -164,7 +137,7 @@ export default {
     },
 
     async created() {
-        this.getproduct()
+        this.getalluser()
     },
 
     methods: {
@@ -172,20 +145,9 @@ export default {
             console.log(item)
         },
         editItem(item) {
-            this.editedIndex = this.productlist.indexOf(item)
+            this.editedIndex = this.userlist.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
-        },
-
-        deleteItem(item) {
-            this.editedIndex = this.productlist.indexOf(item)
-            this.editedItem = Object.assign({}, item)
-            this.dialogDelete = true
-        },
-
-        deleteItemConfirm() {
-            this.productlist.splice(this.editedIndex, 1)
-            this.closeDelete()
         },
 
         close() {
@@ -206,15 +168,18 @@ export default {
 
         save() {
             if (this.editedIndex > -1) {
-                Object.assign(this.productlist[this.editedIndex], this.editedItem)
+                Object.assign(this.userlist[this.editedIndex], this.editedItem)
             } else {
-                this.productlist.push(this.editedItem)
+                this.userlist.push(this.editedItem)
             }
             this.close()
         },
 
-        async getproduct() {
-            this.productlist = await Core.get(`/admin/product`)
+        // async getproduct() {
+        //     this.productlist = await Core.get(`/admin/product`)
+        // },
+        async getalluser() {
+            this.userlist = await Core.get(`admin/user`)
         }
     },
 }
