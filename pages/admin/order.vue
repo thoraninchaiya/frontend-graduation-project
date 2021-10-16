@@ -1,29 +1,35 @@
 <template>
 <v-app class="mt-5 ml-5 mr-5">
-    <!-- <div class="d-flex">
+    <div class="d-flex">
         <div>
             <v-card max-width="500px" min-width="100px">
                 <v-card-text>
-                    test1
+                    ออเดอร์ใหม่วันนี้
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-text>
+                   <div class="d-flex justify-center">
+                       {{ordertoday}}
+                    </div>
                 </v-card-text>
             </v-card>
         </div>
-        <div>
-            <v-card>
+        <!-- <div>
+            <v-card class="ml-5">
                 <v-card-text>
                     test2
                 </v-card-text>
             </v-card>
-        </div>
-    </div> -->
+        </div> -->
+    </div>
 
     <div class="mt-2">
         <v-card>
             <v-card-text>
-                <v-data-table :headers="headers" :items="userlist" sort-by="product_id" class="elevation-1">
+                <v-data-table :headers="headers" :items="orderlist" sort-by="product_id" class="elevation-1">
                     <template v-slot:top>
                         <v-toolbar flat>
-                            <v-toolbar-title>ผู้ใช้งานทั้งหมด</v-toolbar-title>
+                            <v-toolbar-title>ออเดอร์ทั้งหมด</v-toolbar-title>
                             <v-divider class="mx-4" inset vertical></v-divider>
                             <v-spacer></v-spacer>
                             <v-dialog v-model="dialog" max-width="500px">
@@ -71,6 +77,12 @@
                             </v-dialog><!-- End Edit item -->
                         </v-toolbar>
                     </template>
+                    <template v-slot:item.btnaction="{ item }">
+                        <v-btn-toggle v-model="btnaction" mandatory>
+                            <!-- <v-btn color="success">Success</v-btn> -->
+                            <v-btn color="error" @click="test(item)">ยกเลิกออเดอร์</v-btn>
+                        </v-btn-toggle>
+                    </template>
                     <template v-slot:item.image=" {item} ">
                         <v-img :src="`${item.product_image}`" alt="" class="imgsize"></v-img>
                     </template>
@@ -103,19 +115,22 @@ export default {
     layout: 'admin',
     data: () => ({
         dialog: false,
+        btnaction: undefined,
         dialogDelete: false,
         dataitems: ['active', 'unactive'],
         headers: [
-            { text: 'รหัส', align: 'start', sortable: true, value: 'id' },
-            { text: 'ชื่อ', align: 'center', sortable: false, value: 'firstname' },
-            { text: 'นามสกุล', align: 'start', sortable: false, value: 'lastname' },
-            { text: 'อีเมลล์', value: 'email' },
-            { text: 'เบอร์ติดต่อ', value: 'phone' },
-            { text: 'สถานะ', value: 'status' },
-            { text: 'Actions', value: 'actions', sortable: false },
+            { text: 'ลำดับที่', align: 'start', sortable: true, value: 'id' },
+            { text: 'หมายเลขออเดอร์', align: 'center', sortable: false, value: 'serial' },
+            { text: 'ชื่อลูกค้า', align: 'start', sortable: false, value: 'user' },
+            { text: 'วันที่สั่งซื้อ', align: 'start', sortable: true, value: 'datetime' },
+            { text: 'รวมทั้งหมด', align: 'start', sortable: false, value: 'total_amt' },
+            { text: 'สถานะ', value: 'status', sortable: false },
+            { text: '', value: 'btnaction', sortable: false },
+            // { text: 'Actions', value: 'actions', sortable: false },
             // { text: 'glutenfree', value: 'glutenfree', sortable: false },
         ],
-        userlist: [],
+        orderlist: [],
+        ordertoday: [],
         editedIndex: -1,
         editedItem: {},
         defaultItem: {},
@@ -142,8 +157,9 @@ export default {
 
     methods: {
         test(item){
-            console.log(item)
+            console.log(item.id)
         },
+
         editItem(item) {
             this.editedIndex = this.userlist.indexOf(item)
             this.editedItem = Object.assign({}, item)
@@ -179,8 +195,9 @@ export default {
         //     this.productlist = await Core.get(`/admin/product`)
         // },
         async getalluser() {
-            var userrawlist = await Core.get(`admin/user`)
-            this.userlist = userrawlist.users
+            var orderrawlist = await Core.get(`admin/purchase`)
+            this.orderlist = orderrawlist.order
+            this.ordertoday = orderrawlist.order_today
         }
     },
 }

@@ -1,5 +1,8 @@
 <template>
 <v-app class="mt-5 ml-5 mr-5">
+    <pre>
+        {{productlist}}
+    </pre>
     <!-- <div class="d-flex">
         <div>
             <v-card max-width="500px" min-width="100px">
@@ -93,7 +96,7 @@
                     </template>
                     <template v-slot:item.glutenfree="{ item }">
                         <!-- <v-simple-checkbox v-model="editedItem.product_status" disabled></v-simple-checkbox> -->
-                        <v-select :items="dataitems" v-model="item.product_status" @input="test(item.product_status)" class="selector"></v-select>
+                        <v-select :items="dataitems" v-model="item.product_status" @input="changstatus(item.product_id, item.product_status)" class="selector"></v-select>
                     </template>
                     <template v-slot:item.actions="{ item }">
                         <v-icon small class="mr-2" @click="editItem(item)">
@@ -104,9 +107,9 @@
                         </v-icon>
                     </template>
                     <template v-slot:no-data>
-                        <v-btn color="primary" @click="initialize">
-                            Reset
-                        </v-btn>
+                        <div>
+                            nodata
+                        </div>
                     </template>
                 </v-data-table>
             </v-card-text>
@@ -146,6 +149,16 @@ export default {
         editedIndex: -1,
         editedItem: {},
         defaultItem: {},
+        productstatus: {
+            id: {},
+            status: {},
+            type: {},
+        },        
+        defaultproductstatus: {
+            id: {},
+            status: {},
+            type: {},
+        }        
     }),
 
     computed: {
@@ -171,6 +184,28 @@ export default {
         test(item){
             console.log(item)
         },
+        async changstatus(itemid, itemstatus){
+            // console.log(itemid)
+            // console.log(itemstatus)
+            this.productstatus.type = "updatestatus"
+            this.productstatus.id = itemid
+            this.productstatus.status = itemstatus
+            let updatestatus = await Core.post(`/admin/product`, this.productstatus)
+            // console.log(updatestatus)
+            if(updatestatus.status == 200){
+                this.$nextTick(() => {
+                    this.productstatus = Object.assign({}, this.defaultproductstatus)
+                    let toast = this.$toasted.show(updatestatus.message, { 
+                    type: "success",
+	                  theme: "toasted-primary",
+	                  position: "top-right", 
+	                  duration: 5000
+                    });
+                })
+                // this.productstatus = this.defaultproductstatus
+            }
+        },
+
         editItem(item) {
             this.editedIndex = this.productlist.indexOf(item)
             this.editedItem = Object.assign({}, item)
