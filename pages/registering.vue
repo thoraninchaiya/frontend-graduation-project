@@ -45,7 +45,9 @@ import MainCard from '@/components/Card/ProductRegistering'
     },
     methods: {
       async getProducts(){
-        this.carddata = await Core.get(`/product/registering`)
+        let product = await Core.get(`/product/registering`)
+        // console.log(product)
+        this.carddata = product.product
       }
     },
     async Request(){

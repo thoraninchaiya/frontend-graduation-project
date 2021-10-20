@@ -1,5 +1,6 @@
 <template>
   <div>
+    <pre>{{post}}</pre>
     <v-card class="my-12 ml-5 mr-5" max-width="330" max-height="580">
       <div>
         <nuxt-link :to="{ name: 'post-id', params: { id: post.secretid } }"></nuxt-link>
@@ -15,7 +16,7 @@
         </div>
       </v-card-text>
       <div class="d-flex justify-center card-footer">
-        <form @submit.prevent="">
+        <form @submit.prevent="registering(post.id), test(post.id)">
           <div v-if="post.onstock == true">
             <v-btn color="success" type="submit">ลงทะเบียน</v-btn>
           </div>
@@ -37,6 +38,15 @@ export default {
         sid: {},
         pid: {},
         qty: 1
+      },
+      register: {
+        pid: null
+      },
+      registerdefault: {
+        pid: null
+      },
+      testform: {
+        message: "test"
       }
     }
   },
@@ -52,8 +62,30 @@ export default {
       this.producttocart.pid = this.post.pid
       let cartstatus = await Core.post(`/cart/add`, this.producttocart);
     },
-    async registering(){
-      
+    async registering(productid){
+      this.register.pid = productid
+      let registerindata = await Core.post(`/product/registering`, this.register)
+      console.log(registerindata)
+      if(registerindata.status == 400){
+        let toast = this.$toasted.show(registerindata.message, { 
+        type: "error",
+	      theme: "toasted-primary",
+	      position: "top-right", 
+	      duration: 5000
+        });
+      }
+      if(registerindata.status == 200){
+        let toast = this.$toasted.show(registerindata.message, { 
+        type: "success",
+	      theme: "toasted-primary",
+	      position: "top-right", 
+	      duration: 5000
+        });
+      }
+    },
+    async test(data){
+      let commenttest = await Core.post('/comment/add/'+data, this.testform)
+      console.log(commenttest)
     }
   }
 };

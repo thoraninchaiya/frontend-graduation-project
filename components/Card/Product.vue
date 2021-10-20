@@ -1,9 +1,10 @@
 <template>
   <div>
+    <!-- {{post}} -->
+    <nuxt-link :to="{ name: 'post-id', params: { id: post.secretid } }"></nuxt-link>
     <v-card class="my-12 ml-5 mr-5" max-width="330" max-height="580">
-      <a @click="console()">
+      <a @click="console(post.id)">
         <div>
-          <nuxt-link :to="{ name: 'post-id', params: { id: post.secretid } }"></nuxt-link>
             <v-img height="350" :src="`${post.image}`"></v-img>
           <v-card-title>
             {{ post.name }}
@@ -30,8 +31,23 @@
 
     <v-dialog v-model="dialog" :overlay="false" max-width="500px" transition="dialog-transition">
       <v-card>
+        <v-card-title primary-title>
+          {{post.name}}
+        </v-card-title>
+        <v-divider></v-divider>
         <v-card-text>
-          this product
+          <div>
+            <div>
+              <v-img class="imagesize" :src="`${post.image}`"></v-img>
+            </div>
+            <div>
+              sds
+            </div>
+          </div>
+          <v-divider></v-divider>
+          <div>
+            
+          </div>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -49,6 +65,11 @@ export default {
         sid: {},
         pid: {},
         qty: 1,
+      },
+      productdata: {
+        sid: null,
+        name: "ProductName",
+        price: null,
       }
     }
   },
@@ -71,12 +92,16 @@ export default {
 	    duration: 5000
       });
     },
-    async console(){
-      console.log("hello world")
+    async console(x){
+      console.log(x)
+      this.dialog = true
     }
   }
 };
 </script>
 
 <style>
+.imagesize{
+  width: 35%;
+}
 </style>
