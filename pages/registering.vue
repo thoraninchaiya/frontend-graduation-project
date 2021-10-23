@@ -2,7 +2,6 @@
   <v-app>
     <!-- <div class="d-sm-inline-flex d-md-inline-flex"> -->
     <div class="d-flex">
-
       <v-col class="" cols="">
           <v-card>
             <v-card-title>
@@ -46,7 +45,7 @@ import MainCard from '@/components/Card/ProductRegistering'
     methods: {
       async getProducts(){
         let product = await Core.get(`/product/registering`)
-        // console.log(product)
+        console.log(product)
         this.carddata = product.product
       }
     },

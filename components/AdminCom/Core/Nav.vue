@@ -66,8 +66,8 @@ export default {
                 },
                 {
                     icon: 'mdi-stack-exchange',
-                    title: 'Order',
-                    to: '/admin/order'
+                    title: 'Receipt',
+                    to: '/admin/receipt'
                 },
                 {
                     icon: 'mdi-moped',

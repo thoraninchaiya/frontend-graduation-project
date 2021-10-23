@@ -1,7 +1,8 @@
 <template>
 <v-app class="mt-5 ml-5 mr-5">
     <pre>
-        {{productlist}}
+        {{editedIndex}}
+        {{editedItem}}
     </pre>
     <!-- <div class="d-flex">
         <div>
@@ -210,6 +211,7 @@ export default {
             this.editedIndex = this.productlist.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
+            console.log(item)
         },
 
         deleteItem(item) {
