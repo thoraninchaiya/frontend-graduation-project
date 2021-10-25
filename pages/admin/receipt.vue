@@ -36,7 +36,6 @@
                             <v-toolbar-title>ใบสั่งซื้อทั้งหมด</v-toolbar-title>
                             <v-divider class="mx-4" inset vertical></v-divider>
                             <v-spacer></v-spacer>
-
                             <v-dialog v-model="dialogDelete" max-width="500px">
                                 <v-card>
                                     <v-card-title class="text-h5">ยืนยันการยกเลิกใบสั่งซื้อ {{editedItem.receiptidserial}} </v-card-title>
@@ -84,7 +83,7 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td>รวม</td>
-                                                            <td> {{receiptmaintotal.total | currency_2}} </td>
+                                                            <td> {{receiptmaintotal.total}} </td>
                                                         </tr>
                                                     </template>
 
@@ -92,16 +91,32 @@
                                             </template>
                                         </v-simple-table>
 
-                                        <v-card class="mt-5">
-                                            <v-card-text>
-                                                <div class="d-flex justify-center">
-                                                    image
-                                                </div>
-                                            </v-card-text>
-                                        </v-card>
-                                        <v-card-actions>
-                                            action
-                                        </v-card-actions>
+                                        <div class="d-flex justify-center">
+                                            <v-card class="mt-5" max-width="auto" min-width="500">
+                                                <v-card-text>
+                                                    <div class="d-flex justify-center">
+                                                        <!-- <img src="" alt=""> -->
+                                                        sdl
+                                                    </div>
+                                                </v-card-text>
+                                            </v-card>
+                                        </div>
+
+                                        <div class="d-flex justify-center mt-5">
+                                            <v-card max-width="auto" min-width="500">
+                                                <v-card-text>
+                                                    <div>ยอดที่โอน: 1000</div>
+                                                    <div>เวลา: 10:00</div>
+                                                </v-card-text>
+                                            </v-card>
+                                        </div>
+
+                                        <div class="d-flex justify-end mt-3">
+                                            <v-card-actions>
+                                                <v-btn color="success" @click="test(item)">ตรวจสอบเรียบร้อยแล้ว</v-btn>
+                                                <v-btn color="error" @click="test(item)">ยกเลิก</v-btn>
+                                            </v-card-actions>
+                                        </div>
                                     </v-card-text>
                                 </v-card>
                             </v-dialog>
@@ -118,7 +133,7 @@
                         </v-btn>
                         <!-- <v-btn color="error" @click="test(item)">ยกเลิกใบสั่งซื้อ</v-btn> -->
                         <v-btn color="error" @click="deleteItem(item)">
-                            <v-icon>mdi-cancel</v-icon>
+                            
                         </v-btn>
                         <!-- </v-btn-toggle> -->
                     </template>
@@ -228,7 +243,8 @@ export default {
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
             })
-            console.log(item)
+            // console.log(item)
+            console.log(this.receiptmain[0])
         },
 
         async receiptinfo(item){
