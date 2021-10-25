@@ -21,14 +21,15 @@
               <User-About/>
             </div>
             <div v-show="ContactTab === 1">
-              <User-Contact/>
+              <User-ReceiptHistory/>
             </div>
-            <div v-show="ContactTab === 2">
+            <!-- <div v-show="ContactTab === 2">
               <User-Payment/>
-            </div>              
-            <div v-show="ContactTab === 3">
               <User-Delivery/>
-            </div>
+            </div> -->
+            <!-- <div v-show="ContactTab === 3">
+              <User-Delivery/>
+            </div> -->
           </v-card-text>
         </v-card>
       </v-col>
@@ -44,7 +45,7 @@ export default {
   data: () => {
     return ({
       ContactTab: 0,
-      contactList: ['บัญชีของฉัน', 'การสั่งซื้อ', 'การชำระเงิน', 'ติดตามสินค้า']
+      contactList: ['บัญชีของฉัน', 'การสั่งซื้อ']
     });
   },
   async created(){

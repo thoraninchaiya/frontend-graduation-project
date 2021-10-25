@@ -3,6 +3,9 @@
     <!-- {{post}} -->
     <nuxt-link :to="{ name: 'post-id', params: { id: post.secretid } }"></nuxt-link>
     <v-card class="my-12 ml-5 mr-5" max-width="330" max-height="580">
+      <!-- <pre>
+        {{post}}
+      </pre> -->
       <a @click="console(post.id)">
         <div>
             <v-img height="350" :src="`${post.image}`"></v-img>

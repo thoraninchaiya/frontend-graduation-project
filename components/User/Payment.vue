@@ -1,13 +1,14 @@
 <template>
-  <div>
-      Payment
-      <h1>hello world</h1>
-      <v-card>
+<div>
+    <v-card>
         <v-card-title primary-title>
-          title
+            ประวัติการชำระเงิน
         </v-card-title>
-      </v-card>
-  </div>
+        <v-card-text>
+          
+        </v-card-text>
+    </v-card>
+</div>
 </template>
 
 <script>

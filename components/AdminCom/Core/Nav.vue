@@ -17,9 +17,9 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
-    
+
             <v-divider></v-divider>
-    
+
             <v-list nav dense>
                 <v-list-item v-for="(item, i) in adminlink" :key="i" :to="item.to">
                     <v-list-item-icon>
@@ -28,9 +28,9 @@
                     <v-list-item-title>{{item.title}}</v-list-item-title>
                 </v-list-item>
             </v-list>
-    
+
             <v-divider></v-divider>
-    
+
             <v-list nav dense>
                 <v-list-item to="/">
                     <v-list-item-icon>
@@ -46,10 +46,9 @@
 
 <script>
 export default {
-    data(){
-        return{
-            adminlink: [
-                {
+    data() {
+        return {
+            adminlink: [{
                     icon: 'mdi-view-dashboard',
                     title: 'Dashboard',
                     to: '/admin/dashboard'
@@ -57,7 +56,7 @@ export default {
                 {
                     icon: 'mdi-credit-card-outline',
                     title: 'Payment',
-                    to: ''
+                    to: '/admin/payment'
                 },
                 {
                     icon: 'mdi-archive',
@@ -70,19 +69,19 @@ export default {
                     to: '/admin/receipt'
                 },
                 {
-                    icon: 'mdi-moped',
+                    icon: 'mdi-truck-fast-outline',
                     title: 'Delivery',
                     to: ''
                 },
                 {
                     icon: 'mdi-sync',
                     title: 'Random',
-                    to: ''
+                    to: '/admin/random'
                 },
                 {
                     icon: 'mdi-comment-text-multiple-outline',
                     title: 'Comment',
-                    to: ''
+                    to: '/admin/comment'
                 },
                 {
                     icon: 'mdi-account-multiple',
@@ -92,7 +91,7 @@ export default {
                 {
                     icon: 'mdi-wallpaper',
                     title: 'Banner',
-                    to: ''
+                    to: '/admin/banner'
                 }
             ]
         }

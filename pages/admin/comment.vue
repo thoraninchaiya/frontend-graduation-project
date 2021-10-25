@@ -134,9 +134,9 @@ export default {
         dialogDelete: false,
         dataitems: ['active', 'unactive'],
         headers: [
-            { text: 'รหัสสินค้า', sortable: true, value: 'product_id' },
-            { text: 'รูปภาพ', sortable: false, value: 'image' },
-            { text: 'ชื่อสินค้า', sortable: false, value: 'product_name' },
+            { text: 'รหัสสินค้า', align: 'start', sortable: true, value: 'product_id' },
+            { text: 'รูปภาพ', align: 'center', sortable: false, value: 'image' },
+            { text: 'ชื่อสินค้า', align: 'start', sortable: false, value: 'product_name' },
             { text: 'ราคาสินค้า', value: 'product_price' },
             { text: 'จำนวนคงเหลือ', value: 'product_qty' },
             { text: 'จำหน่ายแล้ว', value: 'sold_qty' },
