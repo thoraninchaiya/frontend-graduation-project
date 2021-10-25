@@ -1,10 +1,39 @@
 <template>
 <div class="app">
-    <apexcharts width="550" type="bar" :options="chartOptions" :series="series"></apexcharts>
-    <div>
+    <div class="d-flex mt-5 ml-5">
+        <v-card max-width="200">
+            <v-card-title primary-title>
+                ยอดขายวันนี้
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+                <div class="d-flex justify-center">
+                    <div>100</div>
+                </div>
+            </v-card-text>
+        </v-card>
+
+        <v-card max-width="200" class="ml-5">
+            <v-card-title primary-title>
+                ยอดขายวันนี้
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+                <div class="d-flex justify-center">
+                    <div>300</div>
+                </div>
+            </v-card-text>
+        </v-card>
+    </div>
+    <div class="ml-5 mt-5">
+        <v-card max-width="600" class="ml-1">
+            <apexcharts apexcharts width="550" type="bar" :options="chartOptions" :series="series"></apexcharts>
+        </v-card>
+    </div>
+    <!-- <div>
         <button @click="updateChart">Update!</button>
     </div>
-    <pre> {{series}} </pre>
+    <pre> {{series}} </pre> -->
 </div>
 </template>
 

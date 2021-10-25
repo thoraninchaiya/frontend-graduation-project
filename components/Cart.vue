@@ -55,13 +55,14 @@
                                             </div>
                                         </td>
                                     </tr>
+         
                                 </template>
                             </tbody>
                         </template>
                     </v-simple-table>
                 <!-- </div> -->
                 <!-- <div v-else>ไม่มีสินค้าในตะกร้าสินค้า</div> -->
-                <div class="mt-5 d-flex justify-end">
+                <div class="mt-5 d-flex justify-end" v-if="cart">
                     <!-- <v-btn color="success" @click="getcart();">test</v-btn> -->
                     <v-btn color="success" @click="$router.push('/checkout'), callback()">สั่งซื้อสินค้า</v-btn>
                 </div>
@@ -98,11 +99,13 @@ export default {
         async getcart() {
             let token = User.token;
             if (token) {
-                this.cart = await Core.get(`/cart/get`);
+                const cartraw = await Core.get(`/cart/get`);
+                this.cart = cartraw.cart
+                // var cartraw = await Core.get(`/cart/get`);
+                // this.cart = cartraw
             }
         },
         async removeitem(itemid, productid){
-            // console.log(itemid)
             this.remove.cid = itemid
             // this.remove.pid = productid
             let cartremoveitem = await Core.post(`/cart/remove`, this.remove)
@@ -133,6 +136,9 @@ export default {
                     await this.getcart();
                 }            
             }
+        },
+        async order(){
+            let order = await Core.post('`/purchase/', this.cart)
         },
         async callback(){
             this.cartdialog = false

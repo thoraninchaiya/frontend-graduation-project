@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="fontsize">
     <Core-NavTop/>
     <Core-NavSec/>
     <Nuxt/>
@@ -46,6 +46,10 @@ export default {
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+.fontsize{
+  font-size: 30px;
 }
 
 </style>

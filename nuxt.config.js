@@ -22,10 +22,10 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://emoji-css.afeld.me/emoji.css'},
       { rel: 'stylesheet', href: 'https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css'},
-      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css'}
+      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css'},
+      // { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Prompt'}
     ]
   },
-
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/addon/css/reset.css',
@@ -48,6 +48,7 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    // '@nuxtjs/google-fonts',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -68,6 +69,18 @@ export default {
         }
       }
     ]
+  },
+  googleFonts: {
+    // families: {
+    //   Roboto: false,
+    //   'Josefin+Sans': false,
+    //   'Prompt': true,
+    //   Lato: [100, 300],
+    //   Raleway: {
+    //     wght: [100, 400],
+    //     ital: [100]
+    //   },
+    // }
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

@@ -19,7 +19,7 @@
         <div class="d-lg-flex justify-center">
           <v-app>
             <v-card>
-              <Info-Product/>
+              <!-- <Info-Product/> -->
               <v-card-title class="justify-center">
                 <div class="display-1">
                   <h4>สินค้าใหม่</h4>
@@ -72,7 +72,9 @@ import MainCard from '@/components/Card/Product'
     },
     methods: {
       async getProducts(){
-        this.carddata = await Core.get(`/product/new`)
+        // this.carddata = await Core.get(`/product/new`)
+        var cardrawdata = await Core.get(`/product/new`)
+        this.carddata = cardrawdata
       },
       async getCarousel(){
         this.carousel = await Core.get(`/carousel/`)

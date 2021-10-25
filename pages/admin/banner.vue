@@ -1,8 +1,8 @@
 <template>
 <v-app class="mt-5 ml-5 mr-5">
     <pre>
-        {{editedIndex}}
-        {{editedItem}}
+    {{editedIndex}}
+    {{editedItem}}
     </pre>
     <!-- <div class="d-flex">
         <div>
@@ -27,14 +27,14 @@
                 <v-data-table :headers="headers" :items="productlist" sort-by="product_id" class="elevation-1">
                     <template v-slot:top>
                         <v-toolbar flat>
-                            <v-toolbar-title>สินค้าทั้งหมด</v-toolbar-title>
+                            <v-toolbar-title>จัดการแบนเนอร์</v-toolbar-title>
                             <v-divider class="mx-4" inset vertical></v-divider>
                             <v-spacer></v-spacer>
                             <v-dialog v-model="dialog" max-width="500px">
                                 <!-- Edit item and Add item -->
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                                        เพิ่มสินค้าใหม่
+                                        เพิ่มแบนเนอร์
                                     </v-btn>
                                 </template>
                                 <v-card>
@@ -46,21 +46,24 @@
                                         <v-container>
                                             <v-row>
                                                 <v-col cols="12" sm="6" md="12">
-                                                    <v-text-field v-model="editedItem.product_id" label="รหัสสินค้า"></v-text-field>
+                                                    <v-file-input class="mt-2" label="เลือกแบนเนอร์" v-model="imagefile" v-on:change="selectFile" required accept="image/*"></v-file-input>
                                                 </v-col>
-                                                <v-col cols="12" sm="6" md="12">
-                                                    <v-text-field v-model="editedItem.product_name" label="ชื่อสินค้า"></v-text-field>
+                                                <v-col cols="12" sm="6" md="8">
+                                                    <v-text-field v-model="editedItem.product_id" label="ชื่อแบนเนอร์"></v-text-field>
                                                 </v-col>
-                                                <v-col cols="12" sm="6" md="4">
+                                                <!-- <v-col cols="12" sm="6" md="12">
+                                                    <v-text-field v-model="editedItem.product_name" label="สถานะแบนเนอร์"></v-text-field>
+                                                </v-col> -->
+                                                <!-- <v-col cols="12" sm="6" md="4">
                                                     <v-text-field v-model="editedItem.product_price" label="ราคาสินค้า"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12" sm="6" md="4">
                                                     <v-text-field v-model="editedItem.product_qty" label="จำนวนคงเหลือ"></v-text-field>
-                                                </v-col>
+                                                </v-col> -->
                                                 <v-col cols="12" sm="6" md="4">
                                                     <!-- <v-text-field v-model="editedItem.product_status" label="สถานะสินค้า"></v-text-field> -->
                                                     <!-- <v-select :items="dataitems" v-model="editedItem.product_status" @input="changstatus(item.product_id, item.product_status)" class="selector"></v-select> -->
-                                                    <v-select :items="dataitems" label="สถานะสินค้า" v-model="editedItem.product_status" class="selector"></v-select>
+                                                    <v-select :items="dataitems" label="สถานะแบนเนอร์" v-model="editedItem.product_status" class="selector"></v-select>
                                                 </v-col>
                                             </v-row>
                                         </v-container>
@@ -118,7 +121,7 @@
     <!-- <div>
         <pre>
         {{editedItem}}
-        
+
         {{productlist}}
         </pre>
     </div> -->
@@ -134,13 +137,13 @@ export default {
         dialogDelete: false,
         dataitems: ['active', 'unactive'],
         headers: [
-            { text: 'รหัสสินค้า', sortable: true, value: 'product_id' },
-            { text: 'รูปภาพ', sortable: false, value: 'image' },
-            { text: 'ชื่อสินค้า', sortable: false, value: 'product_name' },
-            { text: 'ราคาสินค้า', value: 'product_price' },
-            { text: 'จำนวนคงเหลือ', value: 'product_qty' },
-            { text: 'จำหน่ายแล้ว', value: 'sold_qty' },
-            { text: 'สถานะวางขาย', value: 'glutenfree',sortable: false },
+            // { text: 'รหัสสินค้า', align: 'start', sortable: true, value: 'product_id' },
+            { text: 'รูปภาพ', align: 'center', sortable: false, value: 'image' },
+            { text: 'ชื่อแบนเนอร์', align: 'start', sortable: false, value: 'product_name' },
+            // { text: 'ราคาสินค้า', value: 'product_price' },
+            // { text: 'จำนวนคงเหลือ', value: 'product_qty' },
+            // { text: 'จำหน่ายแล้ว', value: 'sold_qty' },
+            { text: 'สถานะแบนเนอร์', value: 'glutenfree', sortable: false },
             { text: 'Actions', value: 'actions', sortable: false },
             // { text: 'glutenfree', value: 'glutenfree', sortable: false },
         ],
@@ -153,12 +156,12 @@ export default {
             id: {},
             status: {},
             type: {},
-        },        
+        },
         defaultproductstatus: {
             id: {},
             status: {},
             type: {},
-        }        
+        }
     }),
 
     computed: {
@@ -181,10 +184,10 @@ export default {
     },
 
     methods: {
-        test(item){
+        test(item) {
             console.log(item)
         },
-        async changstatus(itemid, itemstatus){
+        async changstatus(itemid, itemstatus) {
             // console.log(itemid)
             // console.log(itemstatus)
             this.productstatus.type = "updatestatus"
@@ -192,14 +195,14 @@ export default {
             this.productstatus.status = itemstatus
             let updatestatus = await Core.post(`/admin/product`, this.productstatus)
             // console.log(updatestatus)
-            if(updatestatus.status == 200){
+            if (updatestatus.status == 200) {
                 this.$nextTick(() => {
                     this.productstatus = Object.assign({}, this.defaultproductstatus)
-                    let toast = this.$toasted.show(updatestatus.message, { 
-                    type: "success",
-	                  theme: "toasted-primary",
-	                  position: "top-right", 
-	                  duration: 5000
+                    let toast = this.$toasted.show(updatestatus.message, {
+                        type: "success",
+                        theme: "toasted-primary",
+                        position: "top-right",
+                        duration: 5000
                     });
                 })
                 // this.productstatus = this.defaultproductstatus
@@ -257,10 +260,11 @@ export default {
 </script>
 
 <style>
-.selector{
+.selector {
     max-width: 100px;
 }
-.imgsize{
+
+.imgsize {
     max-width: 50px;
 }
 </style>
