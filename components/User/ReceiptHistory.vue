@@ -27,13 +27,13 @@
                         <td>EP1111</td>
                         <td>
                             <v-card-actions>
-                                <v-btn color="success">
+                                <v-btn color="success" @click="receiptinfo = !receiptinfo">
                                     <v-icon>mdi-magnify</v-icon>
                                 </v-btn>
-                                <v-btn color="warning">
+                                <!-- <v-btn color="warning">
                                     <v-icon>mdi-receipt</v-icon>
-                                </v-btn>
-                                <v-btn color="info">
+                                </v-btn> -->
+                                <v-btn color="info" @click="dialogpayment = !dialogpayment">
                                     <v-icon>mdi-credit-card-outline</v-icon>
                                 </v-btn>
                                 <v-btn color="accent">
@@ -49,7 +49,8 @@
             </v-simple-table>
         </v-card-text>
     </v-card>
-    <v-dialog v-model="receiptinfo" :overlay="false" max-width="1000px" transition="dialog-transition">
+
+    <v-dialog v-model="receiptinfo" :overlay="false" max-width="1000" transition="dialog-transition">
         <v-card>
             <template>
                 <v-card-title class="justify-center">SALAFEX</v-card-title>
@@ -126,13 +127,105 @@
             </template>
         </v-card>
     </v-dialog>
+
+    <v-dialog v-model="dialogpayment" :overlay="false" max-width="700" transition="dialog-transition">
+        <v-card>
+            <v-card-title primary-title>
+                ชำระเงิน
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+                <div class="mt-3">
+                    รายการที่ต้องชำระ
+                </div>
+                <v-row>
+                    <v-col cols="6">
+                        <div class="mt-3">
+                            หมายเลขการสั่งซื้อ
+                            <v-text-field disabled value="10000" ></v-text-field>
+                        </div>
+                    </v-col>
+                    <v-col cols="6">
+                        <div class="mt-3">
+                            เลขที่ใบเสร็จ
+                            <v-text-field disabled value="10000" ></v-text-field>
+                        </div>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="6">
+                        <div class="mt-3">
+                            จำนวนเงินที่ต้องชำระ
+                            <v-text-field disabled value="10000" ></v-text-field>
+                        </div>
+                    </v-col>
+                    <v-col cols="6">
+                        <div class="mt-3">
+                            กรุณาชำระภายใน
+                            <v-text-field disabled value="10000" ></v-text-field>
+                        </div>
+                    </v-col>
+                </v-row>
+
+                <div class="mt-5">
+                    <v-divider></v-divider>
+                    <div>
+                        <div>
+                            <span class="red--text">
+                                ** กรุณาอัพรูปหลักฐานการชำเงิน
+                            </span>
+                        </div>
+                        <div>
+                            <span class="red--text">
+                                ** แอดมินจะตรวจสอบยอดเงินของคุณภายใน 3 วันทำการ
+                            </span>
+                        </div>
+                    </div>
+
+                    <v-divider></v-divider>
+
+                    <div class="d-flex justify-center">
+                        <v-card max-width="500px">
+                            <v-card-title primary-title>
+                                ช่องทางการชำระเงิน
+                            </v-card-title>
+                            <v-card-text>
+                                <img src="/img/placeholder_600x400.svg" alt="">
+                                <form class="mt-3">
+                                    <!-- <form @submit.prevent="upload(), payment()" class="mt-3"> -->
+                                    <v-row>
+                                        <!-- <input type="text" v-model="formpayment.orderid" :value="listcheckoutdata.orderid"> -->
+                                        <!-- <v-text-field type="text" v-model="formpayment.orderid" :value="listcheckoutdata.orderid"></v-text-field> -->
+                                        <v-col cols="6">
+                                            <!-- <v-text-field type="number" class="test" v-model="formpayment.price" label="กรุณากรอกจำนวนเงินที่โอน"></v-text-field> -->
+                                            <v-text-field type="number" class="test" label="กรุณากรอกจำนวนเงินที่โอน"></v-text-field>
+                                        </v-col>
+                                        <v-col cols="6">
+                                            <v-text-field type="time" label="กรุณากรอกเวลา"></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                    <v-file-input class="mt-2" label="แนบสลิป" v-on:change="selectFile" required accept="image/*"></v-file-input>
+                                    <!-- <input type="file" name="" id="" @change="selectFile" accept="image/*"> -->
+                                    <!-- <v-file-input class="mt-2" label="แนบสลิป" v-on:change="selectFile()" required accept="image/*"></v-file-input> -->
+                                    <div class="d-flex justify-end mt-4">
+                                        <v-btn color="success" type="submit">แจ้งชำระเงิน</v-btn>
+                                    </div>
+                                </form>
+                            </v-card-text>
+                        </v-card>
+                    </div>
+                </div>
+            </v-card-text>
+        </v-card>
+    </v-dialog>
 </div>
 </template>
 
 <script>
 export default {
     data: () => ({
-        receiptinfo: true
+        receiptinfo: false,
+        dialogpayment: false
     })
 }
 </script>
