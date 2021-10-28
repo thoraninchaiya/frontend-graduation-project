@@ -3,10 +3,6 @@
     <div class="mt-2">
         <v-card>
             <v-card-text>
-                <pre>
-                {{editedItem}}
-                </pre>
-
                 <v-data-table :headers="headers" :items="itemWithIndex" sort-by="product_id" class="elevation-1">
                     <template v-slot:top>
                         <v-toolbar flat>
@@ -23,11 +19,11 @@
                                         <v-row>
                                             <v-col cols="6">
                                                 หมายเลขการสั่งซื้อ
-                                                <v-text-field disabled :value="editedItem.receiptserial"></v-text-field>
+                                                <v-text-field disabled :value="editedItem.orderserial"></v-text-field>
                                             </v-col>
                                             <v-col cols="6">
                                                 หมายเลขใบเสร็จ
-                                                <v-text-field disabled :value="editedItem.orderserial"></v-text-field>
+                                                <v-text-field disabled :value="editedItem.receiptserial"></v-text-field>
                                             </v-col>
                                         </v-row>
                                     </v-card-text>
@@ -136,13 +132,13 @@
                                             <v-col cols="6">
                                                 <div class="mt-3">
                                                     หมายเลขการสั่งซื้อ
-                                                    <v-text-field disabled value="10000"></v-text-field>
+                                                    <v-text-field disabled :value="editedItem.orderserial"></v-text-field>
                                                 </div>
                                             </v-col>
                                             <v-col cols="6">
                                                 <div class="mt-3">
                                                     เลขที่ใบเสร็จ
-                                                    <v-text-field disabled value="10000"></v-text-field>
+                                                    <v-text-field disabled :value="editedItem.receiptserial"></v-text-field>
                                                 </div>
                                             </v-col>
                                         </v-row>
@@ -150,13 +146,7 @@
                                             <v-col cols="6">
                                                 <div class="mt-3">
                                                     จำนวนเงินที่ต้องชำระ
-                                                    <v-text-field disabled value="10000"></v-text-field>
-                                                </div>
-                                            </v-col>
-                                            <v-col cols="6">
-                                                <div class="mt-3">
-                                                    กรุณาชำระภายใน
-                                                    <v-text-field disabled value="10000"></v-text-field>
+                                                    <v-text-field disabled :value="receiptorderdatamain.receipttoalamt"></v-text-field>
                                                 </div>
                                             </v-col>
                                         </v-row>
@@ -192,13 +182,13 @@
                                                                 <!-- <v-text-field type="text" v-model="formpayment.orderid" :value="listcheckoutdata.orderid"></v-text-field> -->
                                                                 <v-col cols="6">
                                                                     <!-- <v-text-field type="number" class="test" v-model="formpayment.price" label="กรุณากรอกจำนวนเงินที่โอน"></v-text-field> -->
-                                                                    <v-text-field type="number" class="test" v-model="formpayment.price" label="กรุณากรอกจำนวนเงินที่โอน"></v-text-field>
+                                                                    <v-text-field type="number" class="test" required v-model="formpayment.price" label="กรุณากรอกจำนวนเงินที่โอน"></v-text-field>
                                                                 </v-col>
                                                                 <v-col cols="6">
-                                                                    <v-text-field type="time" v-model="formpayment.time" label="กรุณากรอกเวลา"></v-text-field>
+                                                                    <v-text-field type="time" v-model="formpayment.time" required label="กรุณากรอกเวลา"></v-text-field>
                                                                 </v-col>
                                                             </v-row>
-                                                            <v-file-input class="mt-2" label="แนบสลิป" v-model="imagefile" v-on:change="selectFile" required accept="image/*"></v-file-input>
+                                                            <v-file-input class="mt-2" label="แนบสลิป" v-on:change="selectFile" required accept="image/*"></v-file-input>
                                                             <!-- <input type="file" name="" id="" @change="selectFile" accept="image/*"> -->
                                                             <!-- <v-file-input class="mt-2" label="แนบสลิป" v-on:change="selectFile()" required accept="image/*"></v-file-input> -->
                                                             <div class="d-flex justify-end mt-4">
@@ -285,6 +275,42 @@
                                     </v-card-text>
                                 </v-card>
                             </v-dialog>
+
+                            <v-dialog v-model="dialogdelivery" :overlay="false" max-width="500px" transition="dialog-transition">
+                                <v-card>
+                                    <v-card-title>
+                                        รายละเอียดการจัดส่งสินค้า
+                                    </v-card-title>
+                                    <v-divider></v-divider>
+                                    <v-card-text>
+                                        <div>เลขที่ใบเสร็จ</div>
+                                        <v-row>
+                                            <v-col cols="6">
+                                                <v-text-field disabled :value="editedItem.receiptserial"></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                        <div class="d-flex">
+                                            <div>
+                                                <div>บริษัทขนส่ง</div>
+                                                <v-row>
+                                                    <v-col cols="9">
+                                                        <v-text-field disabled :value="deliverydata.company"></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                            </div>
+                                            <div>
+                                                <div>หมายเลขติดตามสินค้า</div>
+                                                <v-row>
+                                                    <v-col cols="9">
+                                                        <v-text-field disabled :value="deliverydata.serial"></v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                            </div>
+                                        </div>
+                                    </v-card-text>
+                                </v-card>
+                            </v-dialog>
+
                         </v-toolbar>
                     </template>
                     <template v-slot:item.status="{item}">
@@ -304,6 +330,9 @@
                             <v-btn color="warning" @click="payment(item)">
                                 <v-icon>mdi-credit-card-outline</v-icon>
                             </v-btn>
+                            <v-btn color="warning" disabled @click="delivery(item)">
+                                <v-icon>mdi-truck-fast-outline</v-icon>
+                            </v-btn>
                             <v-btn color="error" @click="deleteItem(item)">
                                 <v-icon>mdi-cancel</v-icon>
                             </v-btn>
@@ -315,16 +344,22 @@
                             <v-btn color="warning" disabled @click="payment(item)">
                                 <v-icon>mdi-credit-card-outline</v-icon>
                             </v-btn>
+                            <v-btn color="warning" disabled @click="delivery(item)">
+                                <v-icon>mdi-truck-fast-outline</v-icon>
+                            </v-btn>
                             <v-btn color="error" disabled @click="deleteItem(item)">
                                 <v-icon>mdi-cancel</v-icon>
                             </v-btn>
                         </div>
-                        <div v-if="item.orderstatus == 'pending' || item.orderstatus == 'success'" class="mt-1">
+                        <div v-if="item.orderstatus == 'success'" class="mt-1">
                             <v-btn color="info" @click="inforeceipt(item)">
                                 <v-icon>mdi-magnify</v-icon>
                             </v-btn>
                             <v-btn color="warning" disabled @click="payment(item)">
                                 <v-icon>mdi-credit-card-outline</v-icon>
+                            </v-btn>
+                            <v-btn color="warning" @click="delivery(item)">
+                                <v-icon>mdi-truck-fast-outline</v-icon>
                             </v-btn>
                             <v-btn color="error" disabled @click="deleteItem(item)">
                                 <v-icon>mdi-cancel</v-icon>
@@ -349,6 +384,9 @@ import { User } from "@/vuexes/auth";
 export default {
     layout: 'admin',
     data: () => ({
+        defaultdata: {},
+        deliverydata: {},
+        dialogdelivery: false,
         infodialog: false,
         dialog: false,
         btnaction: undefined,
@@ -425,6 +463,12 @@ export default {
         dialogpayment(val) {
             val || this.close()
         },
+        dialogdelivery(val) {
+            val || this.close()
+        },
+        deliverydata(val) {
+            val || this.close()
+        }
     },
 
     async created() {
@@ -435,6 +479,18 @@ export default {
         formatDate(date) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' }
             return new Date(date).toLocaleDateString('en', options)
+        },
+        async delivery(item) {
+            this.editedItem = Object.assign({}, item)
+            let deliverydata = await Core.get(`/delivery/` + item.receiptid)
+            console.log(deliverydata)
+            if(deliverydata.status == 200){
+                this.dialogdelivery = true
+                this.deliverydata = deliverydata
+            }
+            if(deliverydata.status == 400){
+                this.toast(deliverydata.status, deliverydata.message)
+            }
         },
 
         async selectFile(event) {
@@ -464,6 +520,9 @@ export default {
         async payment(item) {
             this.editedItem = Object.assign({}, item)
             this.dialogpayment = true
+            let receiptdata = await Core.get(`/user/receipt/` + item.receiptid)
+            this.receiptorderdatamain = receiptdata.data[0]
+            this.receiptorderdata = receiptdata.detail
         },
 
         editItem(item) {
@@ -487,9 +546,12 @@ export default {
         close() {
             this.dialog = false
             this.receiptinfo = false
+            this.dialogdelivery = false
+            this.deliverydata = false
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
+                this.deliverydata = this.defaultdata
             })
         },
 

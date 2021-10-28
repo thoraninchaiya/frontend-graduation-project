@@ -27,10 +27,6 @@
         </div> -->
     </div>
 
-    <pre>
-    {{editedItem}}
-    </pre>
-
     <div class="mt-2">
         <v-card>
             <v-card-text>
@@ -141,18 +137,30 @@
                                     </v-card-title>
                                     <v-card-text>
                                         <v-row>
-                                            <v-col>
-                                                <v-text-field label="กรุณากรอกหมายเลขพัสดุ"></v-text-field>
+                                            <v-col cols="6">
+                                                <v-text-field disabled label="หมายเลขใบสั่งซื้อ" :value="editedItem.receiptidserial"></v-text-field>
                                             </v-col>
                                         </v-row>
-                                        <div class="d-flex justify-end">
-                                            <v-btn color="error">ยกเลิก</v-btn>
-                                            <v-btn color="success" class="ml-2">ยืนยัน</v-btn>
-                                        </div>
+
+                                        <form @submit.prevent="updatedelivery(editedItem.receiptid)">
+                                            <v-row>
+                                                <v-col cols="4">
+                                                    <!-- <v-text-field label=""></v-text-field> -->
+                                                    <v-select :items="deliverylistdata" v-model="updatedeliverydata.company" label="บริษัทขนส่ง" item-text="name" item-value="id"></v-select>
+                                                </v-col>
+                                                <v-col cols="8">
+                                                    <v-text-field v-model="updatedeliverydata.serial" label="กรุณากรอกหมายเลขพัสดุ"></v-text-field>
+                                                </v-col>
+                                            </v-row>
+
+                                            <div class="d-flex justify-end">
+                                                <v-btn color="error" @click="close()">ยกเลิก</v-btn>
+                                                <v-btn color="success" class="ml-2" type="submit">ยืนยัน</v-btn>
+                                            </div>
+                                        </form>
                                     </v-card-text>
                                 </v-card>
                             </v-dialog>
-
 
                         </v-toolbar>
                     </template>
@@ -174,7 +182,7 @@
                             <v-btn color="accent" @click="receiptinfo(item)">
                                 <v-icon>mdi-magnify</v-icon>
                             </v-btn>
-                            <v-btn disabled color="warning" >
+                            <v-btn disabled color="warning">
                                 <v-icon>mdi-truck-fast-outline</v-icon>
                             </v-btn>
                             <v-btn color="error" disabled>
@@ -193,7 +201,7 @@
                                 <v-icon>mdi-cancel</v-icon>
                             </v-btn>
                         </div>
-                        
+
                     </template>
 
                     <template v-slot:item.date=" {item} ">
@@ -222,6 +230,8 @@ import { User } from "@/vuexes/auth";
 export default {
     layout: 'admin',
     data: () => ({
+        deliverylistdata:{},
+        updatedeliverydata: {},
         dialogdelivery: false,
         deliverydata: {},
         dialog: false,
@@ -229,13 +239,13 @@ export default {
         dialogDelete: false,
         dataitems: ['active', 'unactive'],
         headers: [
-            { text: 'ลำดับที่', align: 'start',sortable: false, value: 'sort' },
-            { text: 'หมายเลขใบสั่งซื้อ',sortable: false, align: 'center', value: 'receiptidserial' },
-            { text: 'ชื่อลูกค้า', align: 'start',sortable: false, value: 'name' },
-            { text: 'วันที่สั่งซื้อ', align: 'start',sortable: false, value: 'date' },
-            { text: 'รวมทั้งหมด', align: 'start',sortable: false, value: 'receipttotal' },
-            { text: 'สถานะ',sortable: false, value: 'receiptstatus' },
-            { text: '', align: 'right',sortable: false, value: 'btnaction' },
+            { text: 'ลำดับที่', align: 'start', sortable: false, value: 'sort' },
+            { text: 'หมายเลขใบสั่งซื้อ', sortable: false, align: 'center', value: 'receiptidserial' },
+            { text: 'ชื่อลูกค้า', align: 'start', sortable: false, value: 'name' },
+            { text: 'วันที่สั่งซื้อ', align: 'start', sortable: false, value: 'date' },
+            { text: 'รวมทั้งหมด', align: 'start', sortable: false, value: 'receipttotal' },
+            { text: 'สถานะ', sortable: false, value: 'receiptstatus' },
+            { text: '', align: 'right', sortable: false, value: 'btnaction' },
             // { text: 'Actions', value: 'actions', sortable: false },
             // { text: 'glutenfree', value: 'glutenfree', sortable: false },
         ],
@@ -285,15 +295,17 @@ export default {
         infodialog(val) {
             val || this.close()
         },
-        dialogdelivery(val){
+        dialogdelivery(val) {
             val || this.close()
-        }
+        },
+        // dialogdelivery(val){
+        //     val || this.close()
+        // }
     },
 
     async created() {
         this.getalluser()
         this.getreceipt()
-        this.test()
     },
 
     methods: {
@@ -303,29 +315,45 @@ export default {
             // this.$nextTick(() => {
             //     this.editedItem = Object.assign({}, this.defaultItem)
             // })
-            // console.log(item)
+
             // console.log(this.receiptmain[0])
-            // console.log(item)
-            console.log(Date.now().valueOf()/1000)
-            var datetest = Date.now().valueOf()
-            console.log(datetest)
+
+            // console.log(Date.now().valueOf()/1000)
+            // var datetest = Date.now().valueOf()
+            // console.log(datetest)
         },
 
         formatDate(date) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' }
             return new Date(date).toLocaleDateString('en', options)
         },
-        async delivery(item){
+        async delivery(item) {
             this.editedItem = Object.assign({}, item)
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.editedItem)
-            })
             this.dialogdelivery = true
-            console.log(item)
+            let deliverylist = await Core.get(`/admin/purchase/deliverylist`)
+            if (deliverylist.status == 400) {
+                this.toast(deliverylist.status, deliverylist.message)
+            }
+            if(deliverylist.status == 200){
+                this.deliverylistdata = deliverylist.data
+            }
+        },
+
+        async updatedelivery(x) {
+            this.updatedeliverydata.receiptid = x
+            let updatedelivery = await Core.post('/admin/purchase/delivery', this.updatedeliverydata)
+            if(updatedelivery.status == 200){
+                this.toast(updatedelivery.status, updatedelivery.message)
+                this.getreceipt()
+                this.close()
+            }
+            if(updatedelivery.status == 400){
+                this.toast(updatedelivery.status, updatedelivery.message)
+                this.close()
+            }
         },
 
         async confirmpayment(x) {
-            // console.log(x)
             let payment = await Core.post('/admin/purchase/receipt/payment', this.editedItem)
             if (payment.status == 200) {
                 this.toast(payment.status, payment.message)
@@ -349,9 +377,7 @@ export default {
             let info = await Core.post('/admin/purchase/getreceipt', this.editedItem)
             this.receiptdata = info.data
             this.receiptmain = info.main
-            // console.log(info.main[0]['receipttotalamt'])
             this.receiptmaintotal.total = info.main[0]['receipttotalamt']
-            // console.log(info.paymentdata[0])
             this.getpayment = info.paymentdata[0]
 
             this.infodialog = true
@@ -377,7 +403,6 @@ export default {
         },
 
         deleteItem(item) {
-            console.log(item)
             this.editedIndex = this.orderlist.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true
@@ -392,10 +417,13 @@ export default {
             this.dialog = false
             this.infodialog = false
             this.dialogDelete = false
+            // this.dialogdelivery = false
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
-                this.paymentdata = this.paymentdatadefault
+                this.paymentdata = {}
+                this.updatedeliverydata = {}
+                this.dialogdelivery = false
             })
         },
 

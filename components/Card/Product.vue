@@ -6,7 +6,7 @@
         <!-- <pre>
         {{post}}
       </pre> -->
-        <a @click="console(post.id)">
+        <a @click="opendialog(post.id)">
             <div>
                 <v-img height="350" :src="`${post.image}`"></v-img>
                 <v-card-title>
@@ -96,7 +96,7 @@ export default {
             this.producttocart.sid = this.post.id
             this.producttocart.pid = this.post.pid
             let cartstatus = await Core.post(`/cart/add`, this.producttocart);
-            console.log(cartstatus);
+            // console.log(cartstatus);
             if (cartstatus.status == 200) {
                 let toast = this.$toasted.show("ท่านได้เพิ่มสินค้าลงตะกร้า", {
                     type: "success",
@@ -105,7 +105,7 @@ export default {
                     duration: 5000
                 });
             }
-            if(cartstatus.status == 401 || cartstatus.status == 400){
+            if (cartstatus.status == 401 || cartstatus.status == 400) {
                 let toast = this.$toasted.show(cartstatus.message, {
                     type: "error",
                     theme: "toasted-primary",
@@ -114,8 +114,7 @@ export default {
                 });
             }
         },
-        async console(x) {
-            console.log(x)
+        async opendialog(x) {
             this.dialog = true
         }
     }
