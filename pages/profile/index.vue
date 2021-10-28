@@ -20,8 +20,11 @@
             <div v-show="ContactTab === 0">
               <User-About/>
             </div>
-            <div v-show="ContactTab === 1">
+            <!-- <div v-show="ContactTab === 1">
               <User-ReceiptHistory/>
+            </div> -->
+            <div v-show="ContactTab === 1">
+              <User-Receipt/>
             </div>
             <!-- <div v-show="ContactTab === 2">
               <User-Payment/>

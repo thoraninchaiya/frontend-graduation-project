@@ -36,10 +36,10 @@
                                 <v-btn color="info" @click="dialogpayment = !dialogpayment">
                                     <v-icon>mdi-credit-card-outline</v-icon>
                                 </v-btn>
-                                <v-btn color="accent">
+                                <!-- <v-btn color="accent" @click="delivery = !delivery">
                                     <v-icon>mdi-truck-fast-outline</v-icon>
-                                </v-btn>
-                                <v-btn color="error">
+                                </v-btn> -->
+                                <v-btn color="error" @click="ordercancel = !ordercancel">
                                     <v-icon>mdi-cancel</v-icon>
                                 </v-btn>
                             </v-card-actions>
@@ -142,13 +142,13 @@
                     <v-col cols="6">
                         <div class="mt-3">
                             หมายเลขการสั่งซื้อ
-                            <v-text-field disabled value="10000" ></v-text-field>
+                            <v-text-field disabled value="10000"></v-text-field>
                         </div>
                     </v-col>
                     <v-col cols="6">
                         <div class="mt-3">
                             เลขที่ใบเสร็จ
-                            <v-text-field disabled value="10000" ></v-text-field>
+                            <v-text-field disabled value="10000"></v-text-field>
                         </div>
                     </v-col>
                 </v-row>
@@ -156,13 +156,13 @@
                     <v-col cols="6">
                         <div class="mt-3">
                             จำนวนเงินที่ต้องชำระ
-                            <v-text-field disabled value="10000" ></v-text-field>
+                            <v-text-field disabled value="10000"></v-text-field>
                         </div>
                     </v-col>
                     <v-col cols="6">
                         <div class="mt-3">
                             กรุณาชำระภายใน
-                            <v-text-field disabled value="10000" ></v-text-field>
+                            <v-text-field disabled value="10000"></v-text-field>
                         </div>
                     </v-col>
                 </v-row>
@@ -218,6 +218,36 @@
             </v-card-text>
         </v-card>
     </v-dialog>
+
+    <v-dialog v-model="ordercancel" :overlay="false" max-width="500px" transition="dialog-transition">
+        <v-card>
+            <v-card-title primary-title>
+                คุณยืนยันที่จะยกเลิกออเดอร์
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+                <v-row>
+                    <v-col cols="6">
+                        หมายเลขการสั่งซื้อ
+                        <v-text-field disabled value="10000"></v-text-field>
+                    </v-col>
+                    <v-col cols="6">
+                        หมายเลขใบเสร็จ
+                        <v-text-field disabled value="20000"></v-text-field>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-card-text>
+                <div class="d-flex justify-end">
+                    <div>
+                        <v-btn color="error"><v-icon>mdi-cancel</v-icon></v-btn>
+                        <v-btn color="success"><v-icon>mdi-check</v-icon></v-btn>
+                    </div>
+                </div>
+            </v-card-text>
+        </v-card>
+    </v-dialog>
+
 </div>
 </template>
 
@@ -225,7 +255,8 @@
 export default {
     data: () => ({
         receiptinfo: false,
-        dialogpayment: false
+        dialogpayment: false,
+        ordercancel: false
     })
 }
 </script>

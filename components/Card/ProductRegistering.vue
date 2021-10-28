@@ -29,36 +29,41 @@
         </div>
     </v-card>
 
-    <v-dialog v-model="dialog" :overlay="false" max-width="500px" transition="dialog-transition">
+    <v-dialog v-model="dialog" :overlay="false" max-width="600px" transition="dialog-transition">
         <v-card>
             <v-card-title primary-title>
                 {{post.name}}
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
-                <v-row class="">
-                    <v-img class="imagesize" :src="`${post.image}`"></v-img>
+                <v-row>
+                    <v-img max-height="300" contain :src="`${post.image}`"></v-img>
                 </v-row>
-                <div class="d-flex flex-wrap mt-5">
+                <!-- <div class="d-flex justify-center mt-5">
                     {{post.name}}
-                </div>
+                </div> -->
                 <v-divider></v-divider>
                 <div>
                     <div>
                         <v-btn color="success" @click="detail(-1)">รายละเอียดสินค้า</v-btn>
                         <v-btn color="success" @click="detail(0)">รายชื่อลงทะเบียน</v-btn>
+                        <v-btn color="success" @click="detail(1)">รายผู้ที่มีสิทธิการซื้อสินค้า</v-btn>
                     </div>
                     <v-divider></v-divider>
                     <div v-show="itemdetils === -1">
-                        <div v-if="post.detail = null">
-                            {{post.detail}}
+                        <div>
+                            <span>ชื่อสินค้า: {{post.name}}</span>
+                        </div>
+                        <v-divider></v-divider>
+                        <div v-if="post.pdetail === null || post.pdetail === ''">
+                            <!-- {{post.pdetail}} -->
+                            ไม่มีรายละเอียดสินค้า
                         </div>
                         <div v-else>
-                            ไม่มีรายละเอียดสินค้า
+                            {{post.pdetail}}
                         </div>
                     </div>
                     <div v-show="itemdetils === 0">
-
                         <v-simple-table>
                             <thead>
 
@@ -110,7 +115,7 @@ export default {
         }
     },
     async created() {
-        console.log(this.post)
+        // console.log(this.post)
         // console.log(this.post.id)
     },
     methods: {
