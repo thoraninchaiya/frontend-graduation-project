@@ -1,8 +1,8 @@
 <template>
 <v-app class="mt-5 ml-5 mr-5">
     <pre>
-        {{editedIndex}}
-        {{editedItem}}
+    {{editedIndex}}
+    {{editedItem}}
     </pre>
     <!-- <div class="d-flex">
         <div>
@@ -118,7 +118,7 @@
     <!-- <div>
         <pre>
         {{editedItem}}
-        
+
         {{productlist}}
         </pre>
     </div> -->
@@ -140,7 +140,7 @@ export default {
             { text: 'ราคาสินค้า', value: 'product_price' },
             { text: 'จำนวนคงเหลือ', value: 'product_qty' },
             { text: 'จำหน่ายแล้ว', value: 'sold_qty' },
-            { text: 'สถานะวางขาย', value: 'glutenfree',sortable: false },
+            { text: 'สถานะวางขาย', value: 'glutenfree', sortable: false },
             { text: 'Actions', value: 'actions', sortable: false },
             // { text: 'glutenfree', value: 'glutenfree', sortable: false },
         ],
@@ -153,12 +153,12 @@ export default {
             id: {},
             status: {},
             type: {},
-        },        
+        },
         defaultproductstatus: {
             id: {},
             status: {},
             type: {},
-        }        
+        }
     }),
 
     computed: {
@@ -181,10 +181,10 @@ export default {
     },
 
     methods: {
-        test(item){
+        test(item) {
             console.log(item)
         },
-        async changstatus(itemid, itemstatus){
+        async changstatus(itemid, itemstatus) {
             // console.log(itemid)
             // console.log(itemstatus)
             this.productstatus.type = "updatestatus"
@@ -192,14 +192,14 @@ export default {
             this.productstatus.status = itemstatus
             let updatestatus = await Core.post(`/admin/product`, this.productstatus)
             // console.log(updatestatus)
-            if(updatestatus.status == 200){
+            if (updatestatus.status == 200) {
                 this.$nextTick(() => {
                     this.productstatus = Object.assign({}, this.defaultproductstatus)
-                    let toast = this.$toasted.show(updatestatus.message, { 
-                    type: "success",
-	                  theme: "toasted-primary",
-	                  position: "top-right", 
-	                  duration: 5000
+                    let toast = this.$toasted.show(updatestatus.message, {
+                        type: "success",
+                        theme: "toasted-primary",
+                        position: "top-right",
+                        duration: 5000
                     });
                 })
                 // this.productstatus = this.defaultproductstatus
@@ -257,10 +257,11 @@ export default {
 </script>
 
 <style>
-.selector{
+.selector {
     max-width: 100px;
 }
-.imgsize{
+
+.imgsize {
     max-width: 50px;
 }
 </style>

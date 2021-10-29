@@ -13,10 +13,12 @@ export default {
         }
     },
     async created(){
-        
+        this.dashboard()
     },
     methods: {
-        
+        async dashboard(){
+            this.$router.push('/admin/dashboard')
+        }
     } 
 }
 </script>

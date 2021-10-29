@@ -53,11 +53,11 @@ export default {
                     title: 'Dashboard',
                     to: '/admin/dashboard'
                 },
-                {
-                    icon: 'mdi-credit-card-outline',
-                    title: 'Payment',
-                    to: '/admin/payment'
-                },
+                // {
+                //     icon: 'mdi-credit-card-outline',
+                //     title: 'Payment',
+                //     to: '/admin/payment'
+                // },
                 {
                     icon: 'mdi-archive',
                     title: 'Product',
@@ -68,11 +68,11 @@ export default {
                     title: 'Receipt',
                     to: '/admin/receipt'
                 },
-                {
-                    icon: 'mdi-truck-fast-outline',
-                    title: 'Delivery',
-                    to: ''
-                },
+                // {
+                //     icon: 'mdi-truck-fast-outline',
+                //     title: 'Delivery',
+                //     to: ''
+                // },
                 {
                     icon: 'mdi-sync',
                     title: 'Random',

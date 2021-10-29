@@ -1,61 +1,60 @@
 <template>
-  <v-app>
+<v-app>
     <!-- <div class="d-sm-inline-flex d-md-inline-flex"> -->
     <div class="d-flex">
-      <v-col class="" cols="">
-          <v-card>
-            <v-card-title>
-              <div>สินค้าลงทะเบียน</div>
-            </v-card-title>
-            <!-- <pre>{{carddata}} </pre> -->
-            <v-divider></v-divider>
-            <!-- <v-card-text class="d-flex align-content-start flex-wrap justify-center"> -->
+        <v-col class="" cols="">
+            <v-card>
+                <v-card-title>
+                    <div>สินค้าลงทะเบียน</div>
+                </v-card-title>
+                <!-- <pre>{{carddata}} </pre> -->
+                <v-divider></v-divider>
+                <!-- <v-card-text class="d-flex align-content-start flex-wrap justify-center"> -->
 
-            <div v-if="carddata.status != 404">
-              <v-card-text>{{carddata.message}}</v-card-text>
-              <v-card-text class="d-flex align-content-start flex-wrap">
-                  <Card-ProductRegistering v-for="post in carddata" :key="post.secretid" :post="post" />
-              </v-card-text>
-            </div>
-            <div v-else>
-              <v-card-text>{{carddata.message}}</v-card-text>
-            </div>
-          </v-card>
-      </v-col>
+                <div v-if="carddata.status != 404">
+                    <v-card-text>{{carddata.message}}</v-card-text>
+                    <v-card-text class="d-flex align-content-start flex-wrap">
+                        <Card-ProductRegistering v-for="post in carddata" :key="post.secretid" :post="post" />
+                    </v-card-text>
+                </div>
+                <div v-else>
+                    <v-card-text>{{carddata.message}}</v-card-text>
+                </div>
+            </v-card>
+        </v-col>
     </div>
-  </v-app>
-
+</v-app>
 </template>
 
 <script>
-import  {Core} from '@/vuexes/core'
-import {Web} from '@/vuexes/web'
+import { Core } from '@/vuexes/core'
+import { Web } from '@/vuexes/web'
 import MainCard from '@/components/Card/ProductRegistering'
 
-  export default {
-    components:{
-      MainCard
+export default {
+    components: {
+        MainCard
     },
-    data () {
-      return {
-        carddata: [],
-        test: []
-      }
+    data() {
+        return {
+            carddata: [],
+            test: []
+        }
     },
     methods: {
-      async getProducts(){
-        let product = await Core.get(`/product/registering`)
-        console.log(product)
-        this.carddata = product.product
-      }
+        async getProducts() {
+            let product = await Core.get(`/product/registering`)
+            console.log(product)
+            this.carddata = product.product
+        }
     },
-    async Request(){
-      await getProducts();
+    async Request() {
+        await getProducts();
     },
-    async created(){
-      await this.getProducts();
+    async created() {
+        await this.getProducts();
     }
-  }
+}
 </script>
 
 <style>

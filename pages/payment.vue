@@ -139,8 +139,7 @@
 <script>
 import { Core } from "@/vuexes/core";
 export default {
-    data: () => {
-        return {
+    data: () => ({
             listcheckoutdata: {},
             orderdetail: {},
             order: {
@@ -148,9 +147,7 @@ export default {
                 serial: null,
                 receiptserial: null
             },
-            filedata: {
-                payment: null
-            },
+            filedata: {},
             defaultfile: null,
             imagefile: null,
             formpayment: {
@@ -168,8 +165,7 @@ export default {
             modal: false,
             menu2: false,
             confirmdialog: false
-        }
-    },
+    }),
     async created() {
         this.listcheckout()
     },
@@ -200,7 +196,7 @@ export default {
         async listcheckout() {
             let listcheckoutraw = await Core.get(`/purchase/listcheckout`)
             if (listcheckoutraw.status == 400) {
-                this.$router.push('/')
+                // this.$router.push('/')
             }
             if (listcheckoutraw.status == 200) {
                 this.listcheckoutdata = listcheckoutraw.order
