@@ -8,6 +8,8 @@
             <div v-if="token != null">
               <v-btn @click="$router.push('/profile/')"><i class="fas fa-user-alt mr-3"></i> {{" สวัสดีคุณ " + user.fname + " " + user.lname}} </v-btn>
             </div>
+            <div>
+            </div>
             <div class="ml-5" v-if="token != null">
               <!-- <pre> {{cart}} </pre> -->
               <Cart/>
