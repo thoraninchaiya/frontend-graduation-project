@@ -4,91 +4,13 @@
         {{editedIndex}}
         {{editedItem}}
     </pre>
-    <!-- <div class="d-flex">
-        <div>
-            <v-card max-width="500px" min-width="100px">
-                <v-card-text>
-                    test1
-                </v-card-text>
-            </v-card>
-        </div>
-        <div>
-            <v-card>
-                <v-card-text>
-                    test2
-                </v-card-text>
-            </v-card>
-        </div>
-    </div> -->
-
     <div class="mt-2">
         <v-card>
             <v-card-text>
                 <v-data-table :headers="headers" :items="productlist" sort-by="product_id" class="elevation-1">
                     <template v-slot:top>
                         <v-toolbar flat>
-                            <v-toolbar-title>สินค้าทั้งหมด</v-toolbar-title>
-                            <v-divider class="mx-4" inset vertical></v-divider>
-                            <v-spacer></v-spacer>
-                            <v-dialog v-model="dialog" max-width="500px">
-                                <!-- Edit item and Add item -->
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                                        เพิ่มสินค้าใหม่
-                                    </v-btn>
-                                </template>
-                                <v-card>
-                                    <v-card-title>
-                                        <span class="text-h5">{{ formTitle }}</span>
-                                    </v-card-title>
-
-                                    <v-card-text>
-                                        <v-container>
-                                            <v-row>
-                                                <v-col cols="12" sm="6" md="12">
-                                                    <v-text-field v-model="editedItem.product_id" label="รหัสสินค้า"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" md="12">
-                                                    <v-text-field v-model="editedItem.product_name" label="ชื่อสินค้า"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" md="4">
-                                                    <v-text-field v-model="editedItem.product_price" label="ราคาสินค้า"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" md="4">
-                                                    <v-text-field v-model="editedItem.product_qty" label="จำนวนคงเหลือ"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" md="4">
-                                                    <!-- <v-text-field v-model="editedItem.product_status" label="สถานะสินค้า"></v-text-field> -->
-                                                    <!-- <v-select :items="dataitems" v-model="editedItem.product_status" @input="changstatus(item.product_id, item.product_status)" class="selector"></v-select> -->
-                                                    <v-select :items="dataitems" label="สถานะสินค้า" v-model="editedItem.product_status" class="selector"></v-select>
-                                                </v-col>
-                                            </v-row>
-                                        </v-container>
-                                    </v-card-text>
-
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="blue darken-1" text @click="close">
-                                            Cancel
-                                        </v-btn>
-                                        <v-btn color="blue darken-1" text @click="save">
-                                            Save
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-dialog><!-- End Edit item -->
-
-                            <v-dialog v-model="dialogDelete" max-width="500px">
-                                <v-card>
-                                    <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                                        <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                                        <v-spacer></v-spacer>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-dialog>
+                            <v-toolbar-title>สินค้าที่ลงทะเบียน</v-toolbar-title>
                         </v-toolbar>
                     </template>
                     <template v-slot:item.image=" {item} ">
@@ -101,12 +23,12 @@
                         <v-select :items="dataitems" v-model="item.product_status" @input="changstatus(item.product_id, item.product_status)" class="selector"></v-select>
                     </template>
                     <template v-slot:item.actions="{ item }">
-                        <v-icon small class="mr-2" @click="editItem(item)">
-                            mdi-pencil
+                        <v-icon class="mr-2" @click="editItem(item)">
+                            mdi-magnify
                         </v-icon>
-                        <v-icon small @click="deleteItem(item)">
+                        <!-- <v-icon small @click="deleteItem(item)">
                             mdi-delete
-                        </v-icon>
+                        </v-icon> -->
                     </template>
                     <template v-slot:no-data>
                         <div>
@@ -142,7 +64,7 @@ export default {
             { text: 'ราคาสินค้า', value: 'product_price' },
             { text: 'จำนวนผู้ลงทะเบียน', value: 'product_qty' },
             // { text: 'd', value: 'sold_qty' },
-            { text: 'สถานะวางขาย', value: 'glutenfree',sortable: false },
+            // { text: 'สถานะวางขาย', value: 'glutenfree',sortable: false },
             { text: 'Actions', value: 'actions', sortable: false },
             // { text: 'glutenfree', value: 'glutenfree', sortable: false },
         ],
@@ -252,7 +174,8 @@ export default {
         },
 
         async getproduct() {
-            this.productlist = await Core.get(`/admin/product`)
+             let productlistraw = await Core.get(`/admin/product/registering`)
+             this.productlist = productlistraw.data
         }
     },
 }

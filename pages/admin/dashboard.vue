@@ -2,6 +2,7 @@
 <div class="app">
     <v-card width="96%" class="ml-5">
         <v-card-text>
+            <!-- <pre> {{chartOptions}} </pre> -->
             <div class="d-flex mt-5 ml-3">
                 <v-card max-width="200">
                     <v-card-title primary-title>
@@ -28,13 +29,21 @@
                 </v-card>
             </div>
 
-            <div class="ml-3 mt-5">
+            <!-- <div class="ml-3 mt-5">
+
                 <v-card max-width="600" class="ml-1">
+                    <div class="mt-5 ml-2">
+                        สินค้าขายดีวันนี้
+                    </div>
                     <apexcharts apexcharts width="550" type="bar" :options="chartOptions" :series="series"></apexcharts>
                 </v-card>
             </div>
 
-            <v-card max-width="45%" class="mt-5 ml-3">
+            <pre>
+                {{series}}
+            </pre> -->
+
+            <v-card max-width="50%" class="mt-5 ml-3">
                 <v-card-text>
                     <v-data-table :headers="headers" :items="itemWithIndex" sort-by="sort" :items-per-page="10" class="elevation-1">
                         <template v-slot:top>
@@ -157,7 +166,7 @@ export default {
                 },
             },
             series: [{
-                name: 'series-1',
+                name: 'จำนวนชิ้น',
                 data: [30, 40, 45, 50, 49, 60, 70, 81]
             }],
             headers: [
@@ -165,9 +174,11 @@ export default {
                 { text: 'รหัสใบเสร็จ', align: 'start', sortable: false, value: 'receipt_serial' },
                 { text: 'ชื่อลูกค้า', align: 'start', sortable: false, value: 'users_name' },
                 { text: 'สถานะ', align: 'start', sortable: false, value: 'receipt_status' },
-                { text: 'ที่ต้องชำระ', align: 'start', sortable: false, value: 'receipt_toal_amt' },
+                { text: 'จำนวนชำระ', align: 'start', sortable: false, value: 'receipt_toal_amt' },
                 { text: '', align: 'center', sortable: false, value: 'actions' },
             ],
+            bestsellertitle: [],
+            bestsellerlist: [],
             todaydata: {
                 ordercount: null,
                 todaysales: null,
@@ -229,6 +240,9 @@ export default {
             let todayraw = await Core.get(`/admin/dashboard/today`)
             this.todaydata = todayraw.ordercount
             this.todaydataorderlist = todayraw.orderlist
+            this.chartOptions.xaxis.categories = todayraw.bestsellerproduct.redblack
+            this.series.data = todayraw.bestsellerproduct.sold_qty
+            console.log(todayraw.bestsellerproduct)
         },
         async orderinfo(item) {
 

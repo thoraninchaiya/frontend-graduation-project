@@ -1,21 +1,5 @@
 <template>
 <v-app class="mt-5 ml-5 mr-5">
-    <!-- <div class="d-flex">
-        <div>
-            <v-card max-width="500px" min-width="100px">
-                <v-card-text>
-                    test1
-                </v-card-text>
-            </v-card>
-        </div>
-        <div>
-            <v-card>
-                <v-card-text>
-                    test2
-                </v-card-text>
-            </v-card>
-        </div>
-    </div> -->
     <div class="mt-2">
         <v-card>
             <v-card-text>

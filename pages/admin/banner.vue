@@ -1,30 +1,9 @@
 <template>
 <v-app class="mt-5 ml-5 mr-5">
-    <pre>
-    {{editedIndex}}
-    {{editedItem}}
-    </pre>
-    <!-- <div class="d-flex">
-        <div>
-            <v-card max-width="500px" min-width="100px">
-                <v-card-text>
-                    test1
-                </v-card-text>
-            </v-card>
-        </div>
-        <div>
-            <v-card>
-                <v-card-text>
-                    test2
-                </v-card-text>
-            </v-card>
-        </div>
-    </div> -->
-
     <div class="mt-2">
         <v-card>
             <v-card-text>
-                <v-data-table :headers="headers" :items="productlist" sort-by="product_id" class="elevation-1">
+                <v-data-table :headers="headers" :items="bannerlsit" :items-per-page="30" sort-by="id" class="elevation-1">
                     <template v-slot:top>
                         <v-toolbar flat>
                             <v-toolbar-title>จัดการแบนเนอร์</v-toolbar-title>
@@ -34,7 +13,7 @@
                                 <!-- Edit item and Add item -->
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                                        เพิ่มแบนเนอร์
+                                        <v-icon class="mr-3">mdi-plus-box</v-icon> เพิ่มแบนเนอร์
                                     </v-btn>
                                 </template>
                                 <v-card>
@@ -45,37 +24,37 @@
                                     <v-card-text>
                                         <v-container>
                                             <v-row>
-                                                <v-col cols="12" sm="6" md="12">
-                                                    <v-file-input class="mt-2" label="เลือกแบนเนอร์" v-model="imagefile" v-on:change="selectFile" required accept="image/*"></v-file-input>
+                                                <v-col cols="7" sm="3" md="7" v-if="editedIndex == -1">
+                                                    <!-- <v-text-field v-model="editedItem.image" label="รูป"></v-text-field> -->
+                                                    <v-file-input class="mt-2" label="เลือกรูปภาพ" v-on:change="selectFile" required accept="image/*"></v-file-input>
                                                 </v-col>
-                                                <v-col cols="12" sm="6" md="8">
-                                                    <v-text-field v-model="editedItem.product_id" label="ชื่อแบนเนอร์"></v-text-field>
+                                                <v-col cols="7" sm="3" md="7" v-if="editedIndex == 0">
+                                                    <!-- <v-text-field v-model="editedItem.image" label="รูป"></v-text-field> -->
+                                                    <v-file-input class="mt-2" disabled label="เลือกรูปภาพ" v-on:change="selectFile" required accept="image/*"></v-file-input>
                                                 </v-col>
-                                                <!-- <v-col cols="12" sm="6" md="12">
-                                                    <v-text-field v-model="editedItem.product_name" label="สถานะแบนเนอร์"></v-text-field>
-                                                </v-col> -->
-                                                <!-- <v-col cols="12" sm="6" md="4">
-                                                    <v-text-field v-model="editedItem.product_price" label="ราคาสินค้า"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" md="4">
-                                                    <v-text-field v-model="editedItem.product_qty" label="จำนวนคงเหลือ"></v-text-field>
-                                                </v-col> -->
-                                                <v-col cols="12" sm="6" md="4">
-                                                    <!-- <v-text-field v-model="editedItem.product_status" label="สถานะสินค้า"></v-text-field> -->
-                                                    <!-- <v-select :items="dataitems" v-model="editedItem.product_status" @input="changstatus(item.product_id, item.product_status)" class="selector"></v-select> -->
-                                                    <v-select :items="dataitems" label="สถานะแบนเนอร์" v-model="editedItem.product_status" class="selector"></v-select>
+                                                <v-col cols="5" sm="3" md="5">
+                                                    <v-select :items="dataitems" label="สถานะแสดง" v-model="editedItem.status_code" item-value="id" item-text="name" class="selector"></v-select>
                                                 </v-col>
                                             </v-row>
                                         </v-container>
                                     </v-card-text>
 
-                                    <v-card-actions>
+                                    <v-card-actions v-if="editedIndex == -1">
                                         <v-spacer></v-spacer>
                                         <v-btn color="blue darken-1" text @click="close">
-                                            Cancel
+                                            ยกเลิก
                                         </v-btn>
-                                        <v-btn color="blue darken-1" text @click="save">
-                                            Save
+                                        <v-btn color="blue darken-1" text @click="addItem()">
+                                            บันทึก
+                                        </v-btn>
+                                    </v-card-actions>
+                                    <v-card-actions v-if="editedIndex == 0">
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="blue darken-1" text @click="close">
+                                            ยกเลิก
+                                        </v-btn>
+                                        <v-btn color="blue darken-1" text @click="addItem()">
+                                            บันทึก
                                         </v-btn>
                                     </v-card-actions>
                                 </v-card>
@@ -83,29 +62,31 @@
 
                             <v-dialog v-model="dialogDelete" max-width="500px">
                                 <v-card>
-                                    <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                                    <v-card-title class="text-h5">ยืนยันการลบสินค้า</v-card-title>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                                        <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                                        <v-btn color="blue darken-1" text @click="closeDelete">ยกเลิก</v-btn>
+                                        <v-btn color="blue darken-1" text @click="deleteItemConfirm">ยืนยัน</v-btn>
                                         <v-spacer></v-spacer>
                                     </v-card-actions>
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
                     </template>
+
                     <template v-slot:item.image=" {item} ">
-                        <v-img :src="`${item.product_image}`" alt="" class="imgsize"></v-img>
+                        <v-img :src="`${item.image}`" alt="" max-width="200px" max-height="200px" contain></v-img>
                     </template>
-                    <template v-slot:item.glutenfree="{ item }">
-                        <!-- <v-simple-checkbox v-model="editedItem.product_status" disabled></v-simple-checkbox> -->
-                        <v-select :items="dataitems" v-model="item.product_status" @input="changstatus(item.product_id, item.product_status)" class="selector"></v-select>
+                    <template v-slot:item.actionstatus="{ item }">
+                        <!-- <v-select :items="dataitems" v-model="item.status_code" @input="changstatus(item.id, item.status)" item-value="id" item-text="name" class="selector"></v-select> -->
+                        <v-select :items="dataitems" v-model="item.status_code" @input="changstatus(item)" item-value="id" :value="item.status_code" item-text="name" class="selector"></v-select>
+                        <!-- <v-select :items="dataitems" v-model="item.status_code" item-value="id" item-text="name" class="selector"></v-select> -->
                     </template>
                     <template v-slot:item.actions="{ item }">
-                        <v-icon small class="mr-2" @click="editItem(item)">
+                        <v-icon class="mr-2" @click="editItem(item)">
                             mdi-pencil
                         </v-icon>
-                        <v-icon small @click="deleteItem(item)">
+                        <v-icon @click="deleteItem(item)">
                             mdi-delete
                         </v-icon>
                     </template>
@@ -118,13 +99,6 @@
             </v-card-text>
         </v-card>
     </div>
-    <!-- <div>
-        <pre>
-        {{editedItem}}
-
-        {{productlist}}
-        </pre>
-    </div> -->
 </v-app>
 </template>
 
@@ -133,40 +107,31 @@ import { Core } from '@/vuexes/core'
 export default {
     layout: 'admin',
     data: () => ({
+        bannerlsit: [],
+        editbannerstatus: {},
         dialog: false,
         dialogDelete: false,
-        dataitems: ['active', 'unactive'],
-        headers: [
-            // { text: 'รหัสสินค้า', align: 'start', sortable: true, value: 'product_id' },
-            { text: 'รูปภาพ', align: 'center', sortable: false, value: 'image' },
-            { text: 'ชื่อแบนเนอร์', align: 'start', sortable: false, value: 'product_name' },
-            // { text: 'ราคาสินค้า', value: 'product_price' },
-            // { text: 'จำนวนคงเหลือ', value: 'product_qty' },
-            // { text: 'จำหน่ายแล้ว', value: 'sold_qty' },
-            { text: 'สถานะแบนเนอร์', value: 'glutenfree', sortable: false },
-            { text: 'Actions', value: 'actions', sortable: false },
-            // { text: 'glutenfree', value: 'glutenfree', sortable: false },
+        dataitems: [
+            { id: 1, name: 'แสดง' },
+            { id: 2, name: 'ไม่แสดง' },
         ],
-        productlist: [],
+        headers: [
+            { text: 'รหัสแบนเนอร์', sortable: true, align: 'center', value: 'id' },
+            { text: 'รูปภาพ', sortable: false, value: 'image' },
+            { text: 'สถานะแสดง', sortable: false, value: 'actionstatus' },
+            { text: '', value: 'actions', sortable: false },
+        ],
         desserts: [],
         editedIndex: -1,
         editedItem: {},
         defaultItem: {},
-        productstatus: {
-            id: {},
-            status: {},
-            type: {},
-        },
-        defaultproductstatus: {
-            id: {},
-            status: {},
-            type: {},
-        }
+        filedata: null,
+
     }),
 
     computed: {
         formTitle() {
-            return this.editedIndex === -1 ? 'เพิ่มสินค้าใหม่' : 'Edit Item'
+            return this.editedIndex === -1 ? 'เพิ่มแบนเนอร์' : 'แก้ไขแบนเนอร์'
         },
     },
 
@@ -180,58 +145,65 @@ export default {
     },
 
     async created() {
-        this.getproduct()
+        this.getbanner()
     },
 
     methods: {
         test(item) {
             console.log(item)
         },
-        async changstatus(itemid, itemstatus) {
-            // console.log(itemid)
-            // console.log(itemstatus)
-            this.productstatus.type = "updatestatus"
-            this.productstatus.id = itemid
-            this.productstatus.status = itemstatus
-            let updatestatus = await Core.post(`/admin/product`, this.productstatus)
-            // console.log(updatestatus)
-            if (updatestatus.status == 200) {
-                this.$nextTick(() => {
-                    this.productstatus = Object.assign({}, this.defaultproductstatus)
-                    let toast = this.$toasted.show(updatestatus.message, {
-                        type: "success",
-                        theme: "toasted-primary",
-                        position: "top-right",
-                        duration: 5000
-                    });
-                })
-                // this.productstatus = this.defaultproductstatus
+        async changstatus(item) {
+            console.log(item)
+            this.editbannerstatus.type = "updatestatus"
+            this.editbannerstatus.id = item.id
+            this.editbannerstatus.status_code = item.status_code
+            let updatestatus = await Core.post(`/admin/banner/edit`, this.editbannerstatus)
+            if (updatestatus) {
+                this.toast(updatestatus.status, updatestatus.message)
             }
         },
+        async addItem(item) {
+            console.log(item)
+            console.log(this.editedItem.status_code)
+            let formData = new FormData();
+            formData.append('image', this.filedata);
+            formData.append('status_code', this.editedItem.status_code);
+            let additem = await Core.post(`/admin/banner/add`, formData)
 
+            if (additem) {
+                this.toast(additem.status, additem.message)
+                this.close()
+                this.getbanner()
+            }
+        },
         editItem(item) {
-            this.editedIndex = this.productlist.indexOf(item)
+            this.editedIndex = this.bannerlsit.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
-            console.log(item)
         },
 
         deleteItem(item) {
-            this.editedIndex = this.productlist.indexOf(item)
+            this.editedIndex = this.bannerlsit.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true
         },
-
-        deleteItemConfirm() {
-            this.productlist.splice(this.editedIndex, 1)
-            this.closeDelete()
+        async deleteItemConfirm() {
+            console.log(this.editedItem)
+            let delitem = await Core.post(`/admin/banner/del`, this.editedItem)
+            if (delitem) {
+                this.toast(delitem.status, delitem.message)
+                this.getbanner()
+                this.close()
+            }
         },
 
         close() {
             this.dialog = false
+            this.dialogDelete = false
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
+
             })
         },
 
@@ -242,19 +214,35 @@ export default {
                 this.editedIndex = -1
             })
         },
+        async getbanner() {
+            let bannerraw = await Core.get(`/admin/banner`)
+            this.bannerlsit = bannerraw.data
+            console.log(bannerraw)
 
-        save() {
-            if (this.editedIndex > -1) {
-                Object.assign(this.productlist[this.editedIndex], this.editedItem)
-            } else {
-                this.productlist.push(this.editedItem)
-            }
-            this.close()
         },
 
-        async getproduct() {
-            this.productlist = await Core.get(`/admin/product`)
+        async selectFile(event) {
+            this.filedata = event
+        },
+        async toast(a, b) {
+            if (a == 400) {
+                let toast = this.$toasted.show(b, {
+                    type: "error",
+                    theme: "toasted-primary",
+                    position: "top-right",
+                    duration: 5000
+                });
+            }
+            if (a == 200) {
+                let toast = this.$toasted.show(b, {
+                    type: "success",
+                    theme: "toasted-primary",
+                    position: "top-right",
+                    duration: 5000
+                });
+            }
         }
+
     },
 }
 </script>
