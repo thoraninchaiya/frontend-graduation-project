@@ -3,7 +3,7 @@
     <!-- <pre>{{post}}</pre> -->
     <nuxt-link :to="{ name: 'post-id', params: { id: post.secretid } }"></nuxt-link>
     <v-card class="my-12 ml-5 mr-5" max-width="330" max-height="580">
-        <a @click="getregistering(post.id)">
+        <a @click="getregistering(post.id), getsuccess(post.id)">
             <div>
                 <v-img height="350" :src="`${post.image}`"></v-img>
                 <v-card-title>
@@ -75,6 +75,19 @@
                             </tbody>
                         </v-simple-table>
                     </div>
+
+                    <div v-show="itemdetils === 1">
+                        <v-simple-table>
+                            <thead>
+
+                            </thead>
+                            <tbody>
+                                <tr v-for="item,index in registeringsuccess" :key="index">
+                                    {{item.name}}
+                                </tr>
+                            </tbody>
+                        </v-simple-table>
+                    </div>
                 </div>
             </v-card-text>
         </v-card>
@@ -103,7 +116,8 @@ export default {
                 message: "test"
             },
             dialog: false,
-            registeringlist: []
+            registeringlist: [],
+            registeringsuccess: []
         }
     },
     props: {
@@ -172,6 +186,19 @@ export default {
             if (regiterraw.status == 200) {
                 // console.log(regiterraw)
                 this.registeringlist = regiterraw.users
+            }
+        },
+        async getsuccess(x) {
+            // console.log(x)
+            this.dialog = true;
+            let successraw = await Core.get(`/product/registering/users/success/` + x)
+            console.log(successraw)
+            if (successraw.status == 400) {
+
+            }
+            if (successraw.status == 200) {
+                // console.log(regiterraw)
+                this.registeringsuccess = successraw.users
             }
         }
     }

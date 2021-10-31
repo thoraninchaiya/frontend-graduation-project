@@ -78,11 +78,11 @@ export default {
                     title: 'Random',
                     to: '/admin/random'
                 },
-                // {
-                //     icon: 'mdi-comment-text-multiple-outline',
-                //     title: 'Comment',
-                //     to: '/admin/comment'
-                // },
+                {
+                    icon: 'mdi-comment-text-multiple-outline',
+                    title: 'Comment',
+                    to: '/admin/comment'
+                },
                 {
                     icon: 'mdi-account-multiple',
                     title: 'User',

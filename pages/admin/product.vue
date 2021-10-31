@@ -28,7 +28,7 @@
                                                     <!-- <v-text-field v-model="editedItem.image" label="รูป"></v-text-field> -->
                                                     <v-file-input class="mt-2" label="เลือกรูปภาพ" v-on:change="selectFile" required accept="image/*"></v-file-input>
                                                 </v-col>
-                                                <v-col cols="12" sm="3" md="12" v-if="editedIndex == 0">
+                                                <v-col cols="12" sm="3" md="12" v-if="editedIndex > -1">
                                                     <!-- <v-text-field v-model="editedItem.image" label="รูป"></v-text-field> -->
                                                     <v-file-input class="mt-2" disabled label="เลือกรูปภาพ" v-on:change="selectFile" required accept="image/*"></v-file-input>
                                                 </v-col>
@@ -211,24 +211,25 @@ export default {
             this.productstatus.status = itemstatus
             let updatestatus = await Core.post(`/admin/product/edit`, this.productstatus)
             // console.log(updatestatus)
-            if (updatestatus.status == 200) {
-                this.$nextTick(() => {
-                    this.productstatus = Object.assign({}, this.defaultproductstatus)
-                    let toast = this.$toasted.show(updatestatus.message, {
-                        type: "success",
-                        theme: "toasted-primary",
-                        position: "top-right",
-                        duration: 5000
-                    });
-                })
-                // this.productstatus = this.defaultproductstatus
+            if (updatestatus) {
+                this.toast(updatestatus.status, updatestatus.message)
             }
+            this.$nextTick(() => {
+                this.productstatus = Object.assign({}, this.defaultproductstatus)
+            })
         },
 
         async saveedititem() {
             this.editedItem.type = 'updateproduct'
-            console.log(this.editedItem)
+            // console.log(this.editedItem)
             let edititem = await Core.post('/admin/product/edit', this.editedItem)
+            if(edititem){
+                this.toast(edititem.status, edititem.message)
+            }
+            if(edititem.status == 200){
+                this.getproduct()
+                this.close();
+            }
         },
 
         editItem(item) {

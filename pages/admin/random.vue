@@ -1,8 +1,5 @@
 <template>
 <v-app class="mt-5 ml-5 mr-5">
-    <!-- <pre>
-    {{editedItem}}
-    </pre> -->
     <div class="mt-2">
         <v-card max-width="50%">
             <v-card-text>
@@ -28,8 +25,8 @@
                                         </div>
                                         <div class="mt-3">
                                             <v-btn color="success" @click="changepage(0)">ระบบสุ่ม</v-btn>
-                                            <v-btn color="success" @click="changepage(1)">รายชื่อผู้ที่ลงทะเบียน</v-btn>
-                                            <v-btn color="success" @click="changepage(2)">รายชื่อผู้ที่ได้รับรางวัล</v-btn>
+                                            <v-btn color="success" @click="changepage(1), getregisteringinfo(editedItem.secretid)">รายชื่อผู้ที่ลงทะเบียน</v-btn>
+                                            <v-btn color="success" @click="changepage(2), getsuccessconfirm()">รายชื่อผู้ที่ได้รับรางวัล</v-btn>
                                         </div>
                                     </v-card-text>
                                     <v-divider></v-divider>
@@ -37,10 +34,13 @@
                                         <div class="d-flex justify-center">
                                             <v-row>
                                                 <v-col cols="5">
-                                                    <v-text-field label="จำนวนผู้ที่จะได้รับรางวัล"></v-text-field>
+                                                    <v-text-field v-model="randomsend.count" type="number" label="จำนวนผู้ที่จะได้รับรางวัล"></v-text-field>
                                                 </v-col>
                                                 <v-col>
-                                                    <v-btn color="success">เริ่มการสุ่ม</v-btn>
+                                                    <v-btn color="warning" @click="randomregistering()">เริ่มการสุ่ม</v-btn>
+                                                    <v-btn color="warning" @click="getregisteringnone()">
+                                                        <v-icon>mdi-refresh</v-icon>
+                                                    </v-btn>
                                                     <!-- <v-btn color="success" class="ml-3">ยกเลิกผลการสุ่ม</v-btn> -->
                                                     <!-- <v-btn color="success" class="ml-3">ยืนยันผลการสุ่ม</v-btn> -->
                                                 </v-col>
@@ -49,20 +49,34 @@
                                     </v-card-text>
 
                                     <v-card-text v-if="pagestate == 1">
-                                        รายชื่อผู้ที่ลงทะเบียน
+                                        <div>รายชื่อผู้ที่ลงทะเบียน</div>
+                                        <div class="d-flex">
+                                            <div class="ml-5" v-for="index, i in registeringinfo" :key="i">
+                                                {{index.user}}
+                                            </div>
+                                        </div>
                                     </v-card-text>
                                     <v-card-text v-if="pagestate == 2">
-                                        รายชื่อผู้ที่ได้รับรางวัล
+                                        <div class="d-flex justify-center">รายชื่อผู้ที่ได้รับรางวัล</div>
+                                        <div class="d-flex">
+                                            <div class="ml-5" v-for="index, i in successdata" :key="i">
+                                                {{index.user}}
+                                            </div>
+                                        </div>
                                     </v-card-text>
 
                                     <v-card-text v-if="pagestate == 0">
-                                        <div class="d-flex justify-center">รายชื่อผลการสุ่มที่ไม่ยืนยัน</div>
-                                        <div>
-                                            name
-                                        </div>
-                                        <div class="d-flex justify-end">
-                                            <v-btn color="success" class="ml-3">ยกเลิกผลการสุ่ม</v-btn>
-                                            <v-btn color="success" class="ml-3">ยืนยันผลการสุ่ม</v-btn>
+                                        <div v-if="randomdatanone">
+                                            <div class="d-flex justify-center">รายชื่อผลการสุ่มที่ไม่ยืนยัน</div>
+                                            <div class="d-flex">
+                                                <div class="ml-5" v-for="index, i in randomdatanone" :key="i">
+                                                    {{index.user}}
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-end">
+                                                <v-btn color="error" class="ml-3" @click="clearregisteringnone()">เคลียผลการสุ่ม</v-btn>
+                                                <v-btn color="success" class="ml-3" @click="confirmrandom()">ยืนยันผลการสุ่ม</v-btn>
+                                            </div>
                                         </div>
                                     </v-card-text>
 
@@ -76,7 +90,7 @@
                         </div>
                     </template>
                     <template v-slot:item.actions="{ item }">
-                        <v-icon class="mr-2" @click="getlistdata(item)">
+                        <v-icon class="mr-2" @click="getlistdata(item), getregisteringnone(item)">
                             mdi-magnify
                         </v-icon>
                         <!-- <v-icon small @click="deleteItem(item)">
@@ -135,7 +149,13 @@ export default {
             id: {},
             status: {},
             type: {},
-        }
+        },
+        registeringinfo: {},
+        registeringsend: {},
+        randomsend: {},
+        randomsenddata: {},
+        randomdatanone: {},
+        successdata: {}
     }),
 
     computed: {
@@ -189,12 +209,79 @@ export default {
                 // this.productstatus = this.defaultproductstatus
             }
         },
+        async getregisteringinfo(item) {
+            this.registeringsend.product_id = item
+            console.log(this.registeringsend)
+            //registeringinfo
+            var getreg = await Core.post(`/admin/registering`, this.registeringsend)
+            this.registeringinfo = getreg.data
+            // console.log(getreg)
+        },
+        async randomregistering() {
+            this.randomsenddata.product_id = this.editedItem.secretid
+            this.randomsenddata.count = this.randomsend.count
+            // console.log(this.randomsenddata)
+            var sendregister = await Core.post(`/admin/registering/register`, this.randomsenddata)
+            // console.log(sendregister)
+            if (sendregister) {
+                this.toast(sendregister.status, sendregister.message)
+            }
+            if (sendregister.status == 200) {
+                this.getregisteringnone()
+            }
+            this.$nextTick(() => {
+                this.randomsend = {}
+                this.randomsenddata = {}
+            })
+        },
+        async getregisteringnone() {
+            this.registeringsend.product_id = this.editedItem.secretid
+            // console.log(this.registeringsend)
+            var getnone = await Core.post(`/admin/registering/noconfirm`, this.registeringsend)
+            this.randomdatanone = getnone.data
+            if (getnone) {
+                this.toast(getnone.status, getnone.message)
+            }
+            // console.log(getreg)
+        },
+        async clearregisteringnone() {
+            this.registeringsend.product_id = this.editedItem.secretid
+            var getnone = await Core.post(`/admin/registering/noconfirm/clear`, this.registeringsend)
+            if (getnone) {
+                this.toast(getnone.status, getnone.message)
+            }
+            if (getnone.status == 200) {
+                this.getregisteringnone()
+            }
+            // console.log(getreg)
+        },
+        async confirmrandom() {
+            this.registeringsend.product_id = this.editedItem.secretid
+            var getnone = await Core.post(`/admin/registering/confirm`, this.registeringsend)
+            if (getnone) {
+                this.toast(getnone.status, getnone.message)
+            }
+            if (getnone.status == 200) {
+                this.getregisteringnone()
+            }
+            // console.log(getreg)
+        },
+        async getsuccessconfirm() {
+            this.registeringsend.product_id = this.editedItem.secretid
+            var getnone = await Core.post(`/admin/registering/success`, this.registeringsend)
+            console.log(getnone)
+            this.successdata = getnone.data
+
+            if (getnone) {
+                this.toast(getnone.status, getnone.message)
+            }
+        },
 
         editItem(item) {
             this.editedIndex = this.productlist.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
-            console.log(item)
+            // console.log(item)
         },
 
         deleteItem(item) {
@@ -237,6 +324,24 @@ export default {
         async getproduct() {
             let productlistraw = await Core.get(`/admin/product/registering`)
             this.productlist = productlistraw.data
+        },
+        async toast(a, b) {
+            if (a == 400) {
+                let toast = this.$toasted.show(b, {
+                    type: "error",
+                    theme: "toasted-primary",
+                    position: "top-right",
+                    duration: 5000
+                });
+            }
+            if (a == 200) {
+                let toast = this.$toasted.show(b, {
+                    type: "success",
+                    theme: "toasted-primary",
+                    position: "top-right",
+                    duration: 5000
+                });
+            }
         }
     },
 }
