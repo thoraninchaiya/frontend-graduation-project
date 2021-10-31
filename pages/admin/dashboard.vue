@@ -174,7 +174,7 @@ export default {
                 { text: 'รหัสใบเสร็จ', align: 'start', sortable: false, value: 'receipt_serial' },
                 { text: 'ชื่อลูกค้า', align: 'start', sortable: false, value: 'users_name' },
                 { text: 'สถานะ', align: 'start', sortable: false, value: 'receipt_status' },
-                { text: 'จำนวนชำระ', align: 'start', sortable: false, value: 'receipt_toal_amt' },
+                { text: 'ราคารวม', align: 'start', sortable: false, value: 'receipt_toal_amt' },
                 { text: '', align: 'center', sortable: false, value: 'actions' },
             ],
             bestsellertitle: [],
