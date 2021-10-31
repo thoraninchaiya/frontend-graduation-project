@@ -15,16 +15,6 @@
                 </v-card-text>
             </v-card>
         </div>
-        <!-- <pre>
-            {{orderlist}}
-        </pre> -->
-        <!-- <div>
-            <v-card class="ml-5">
-                <v-card-text>
-                    test2
-                </v-card-text>
-            </v-card>
-        </div> -->
     </div>
 
     <div class="mt-2">
@@ -36,6 +26,7 @@
                             <v-toolbar-title>ใบสั่งซื้อทั้งหมด</v-toolbar-title>
                             <v-divider class="mx-4" inset vertical></v-divider>
                             <v-spacer></v-spacer>
+                            
                             <v-dialog v-model="dialogDelete" max-width="500px">
                                 <v-card>
                                     <v-card-title class="text-h5">ยืนยันการยกเลิกใบสั่งซื้อ {{editedItem.receiptidserial}} </v-card-title>
