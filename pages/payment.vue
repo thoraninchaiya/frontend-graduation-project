@@ -5,6 +5,7 @@
         {{listcheckoutdata}}
         {{formpayment}}
         </pre> -->
+
         <v-dialog v-model="confirmdialog" persistent :overlay="false" max-width="500px" transition="dialog-transition">
             <v-card>
                 <v-card-title primary-title>
@@ -119,7 +120,7 @@
                                             <v-text-field type="time" v-model="formpayment.time" label="กรุณากรอกเวลา"></v-text-field>
                                         </v-col>
                                     </v-row>
-                                    <v-file-input class="mt-2" label="แนบสลิป" v-model="imagefile" v-on:change="selectFile" required accept="image/*"></v-file-input>
+                                    <v-file-input class="mt-2" label="แนบสลิป" v-model="imgupload" v-on:change="selectFile" required accept="image/*"></v-file-input>
                                     <!-- <input type="file" name="" id="" @change="selectFile" accept="image/*"> -->
                                     <!-- <v-file-input class="mt-2" label="แนบสลิป" v-on:change="selectFile()" required accept="image/*"></v-file-input> -->
                                     <div class="d-flex justify-end mt-4">
@@ -140,31 +141,33 @@
 import { Core } from "@/vuexes/core";
 export default {
     data: () => ({
-            listcheckoutdata: {},
-            orderdetail: {},
-            order: {
-                total: 0,
-                serial: null,
-                receiptserial: null
-            },
-            filedata: {},
-            defaultfile: null,
-            imagefile: null,
-            formpayment: {
-                receiptid: null,
-                price: null,
-                time: null,
-            },
-            formpaymentdefault: {
-                receiptid: null,
-                price: null,
-                time: null
-            },
-            date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-            menu: false,
-            modal: false,
-            menu2: false,
-            confirmdialog: false
+        
+        imgupload: {},
+        listcheckoutdata: {},
+        orderdetail: {},
+        order: {
+            total: 0,
+            serial: null,
+            receiptserial: null
+        },
+        filedata: {},
+        defaultfile: null,
+        imagefile: null,
+        formpayment: {
+            receiptid: null,
+            price: null,
+            time: null,
+        },
+        formpaymentdefault: {
+            receiptid: null,
+            price: null,
+            time: null
+        },
+        date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        menu: false,
+        modal: false,
+        menu2: false,
+        confirmdialog: false
     }),
     async created() {
         this.listcheckout()
@@ -188,9 +191,12 @@ export default {
             console.log(uploaddata)
             if (uploaddata.status == 200) {
                 this.filedata = this.defaultfile
-                this.formpayment = this.formpaymentdefault
+                this.formpayment = {}
                 this.imagefile = null
                 this.confirmdialog = true
+                this.$nextTick({
+                    imgupload: {}
+                })
             }
         },
         async listcheckout() {
@@ -206,9 +212,10 @@ export default {
                 this.order.serial = listcheckoutraw.order.orderserial
             }
         },
-        async confirmpay(){
+        async confirmpay() {
             this.$router.push('/')
-        }
+        },
+
     }
 }
 </script>

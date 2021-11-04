@@ -99,8 +99,9 @@
                                         <div class="d-flex justify-center mt-5">
                                             <v-card max-width="auto" min-width="500">
                                                 <v-card-text>
-                                                    <div>ยอดที่โอน: 1000</div>
-                                                    <div>เวลา: 10:00</div>
+                                                    <!-- <pre> {{getpayment}} </pre> -->
+                                                    <div>ยอดที่โอน: {{getpayment.payment_price}} </div>
+                                                    <div>เวลา: {{getpayment.payment_time}}</div>
                                                 </v-card-text>
                                             </v-card>
                                         </div>
@@ -137,7 +138,7 @@
                                             <v-row>
                                                 <v-col cols="4">
                                                     <!-- <v-text-field label=""></v-text-field> -->
-                                                    <v-select :items="deliverylistdata" v-model="updatedeliverydata.company" label="บริษัทขนส่ง" item-text="name" item-value="id"></v-select>
+                                                    <v-select :items="deliverylistdata" v-model="updatedeliverydata.company" disable label="บริษัทขนส่ง" item-text="name" item-value="id"></v-select>
                                                 </v-col>
                                                 <v-col cols="8">
                                                     <v-text-field v-model="updatedeliverydata.serial" label="กรุณากรอกหมายเลขพัสดุ"></v-text-field>
@@ -252,6 +253,7 @@ export default {
         },
         getpayment: {},
         getpaymentdefault: {},
+        
     }),
 
     computed: {
@@ -324,6 +326,7 @@ export default {
             let deliverylist = await Core.get(`/admin/purchase/deliverylist`)
             if (deliverylist.status == 400) {
                 this.toast(deliverylist.status, deliverylist.message)
+                this.close()
             }
             if(deliverylist.status == 200){
                 this.deliverylistdata = deliverylist.data

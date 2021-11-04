@@ -118,7 +118,7 @@ export default {
             this.cartstock.cid = itemid
             this.cartstock.productid = productid
             this.cartstock.status = "add"
-            if(qty < 5){
+            if(qty < 10){
                 let cartstockqty = await Core.put(`/cart/update`, this.cartstock)
                 if(cartstockqty.status == 200){
                     await this.getcart();

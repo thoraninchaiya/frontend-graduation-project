@@ -23,40 +23,42 @@
 
                                     <v-card-text>
                                         <v-container>
-                                            <v-row>
-                                                <v-col cols="12" sm="3" md="12" v-if="editedIndex == -1">
-                                                    <!-- <v-text-field v-model="editedItem.image" label="รูป"></v-text-field> -->
-                                                    <v-file-input class="mt-2" label="เลือกรูปภาพ" v-on:change="selectFile" required accept="image/*"></v-file-input>
+                                            <v-row v-if="editedIndex > -1" class="d-flex justify-center">
+                                                <v-col cols="6">
+                                                    <v-img :src="editedItem.product_image"></v-img>
                                                 </v-col>
-                                                <v-col cols="12" sm="3" md="12" v-if="editedIndex > -1">
+                                            </v-row>
+
+                                            <v-row>
+                                                <v-col cols="12" sm="3" md="12">
                                                     <!-- <v-text-field v-model="editedItem.image" label="รูป"></v-text-field> -->
-                                                    <v-file-input class="mt-2" disabled label="เลือกรูปภาพ" v-on:change="selectFile" required accept="image/*"></v-file-input>
+                                                    <v-file-input class="mt-2" label="เลือกรูปภาพ" v-model="imgupload" v-on:change="selectFile" required accept="image/*"></v-file-input>
                                                 </v-col>
                                                 <v-col cols="12" sm="3" md="6">
-                                                    <v-text-field v-model="editedItem.product_id" label="รหัสสินค้า"></v-text-field>
+                                                    <v-text-field v-model="editedItem.product_id" required label="รหัสสินค้า"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12" sm="6" md="6">
-                                                    <v-text-field v-model="editedItem.product_name" label="ชื่อสินค้า"></v-text-field>
+                                                    <v-text-field v-model="editedItem.product_name" lrequired abel="ชื่อสินค้า"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12" sm="6" md="6">
-                                                    <v-select :items="categorylist" label="หมวดหมู่สินค้า" full-width v-model="editedItem.category_id" item-value="id" item-text="cname" class="selector"></v-select>
+                                                    <v-select :items="categorylist" label="หมวดหมู่สินค้า" required full-width v-model="editedItem.category_id" item-value="id" item-text="cname" class="selector"></v-select>
                                                 </v-col>
                                                 <v-col cols="12" sm="6" md="6">
-                                                    <v-text-field v-model="editedItem.product_cost" label="ราคาต้นทุน"></v-text-field>
+                                                    <v-text-field v-model="editedItem.product_cost" required label="ราคาต้นทุน"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12" sm="6" md="6">
-                                                    <v-text-field v-model="editedItem.product_price" label="ราคาสินค้า"></v-text-field>
+                                                    <v-text-field v-model="editedItem.product_price" required label="ราคาสินค้า"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12" sm="6" md="6">
-                                                    <v-text-field v-model="editedItem.product_qty" label="จำนวนคงเหลือ"></v-text-field>
+                                                    <v-text-field v-model="editedItem.product_qty" required label="จำนวนคงเหลือ"></v-text-field>
                                                 </v-col>
                                                 <v-col cols="12" sm="6" md="6">
                                                     <!-- <v-text-field v-model="editedItem.product_status" label="สถานะสินค้า"></v-text-field> -->
                                                     <!-- <v-select :items="dataitems" v-model="editedItem.product_status" @input="changstatus(item.product_id, item.product_status)" class="selector"></v-select> -->
-                                                    <v-select :items="dataitems" label="สถานะสินค้า" v-model="editedItem.product_status_code" item-value="id" item-text="name" class="selector"></v-select>
+                                                    <v-select :items="dataitems" label="สถานะสินค้า" required v-model="editedItem.product_status_code" item-value="id" item-text="name" class="selector"></v-select>
                                                 </v-col>
                                                 <v-col cols="12" sm="6" md="6">
-                                                    <v-select :items="registeringlist" label="สินค้าลงทะเบียน" v-model="editedItem.product_registering_code" item-value="id" item-text="name" class="selector"></v-select>
+                                                    <v-select :items="registeringlist" label="สินค้าลงทะเบียน" required v-model="editedItem.product_registering_code" item-value="id" item-text="name" class="selector"></v-select>
                                                 </v-col>
                                                 <v-col cols="12" sm="6" md="6">
                                                     <v-text-field v-model="editedItem.product_detail" label="รายละเอียดสินค้า"></v-text-field>
@@ -74,7 +76,7 @@
                                             บันทึก
                                         </v-btn>
                                     </v-card-actions>
-                                    <v-card-actions v-if="editedIndex == 0">
+                                    <v-card-actions v-if="editedIndex > -1">
                                         <v-spacer></v-spacer>
                                         <v-btn color="blue darken-1" text @click="close">
                                             ยกเลิก
@@ -139,6 +141,7 @@ import { Core } from '@/vuexes/core'
 export default {
     layout: 'admin',
     data: () => ({
+        imgupload: {},
         dialog: false,
         dialogDelete: false,
         dataitems: [
@@ -220,9 +223,22 @@ export default {
         },
 
         async saveedititem() {
-            this.editedItem.type = 'updateproduct'
-            // console.log(this.editedItem)
-            let edititem = await Core.post('/admin/product/edit', this.editedItem)
+            // this.editedItem.type = 'updateproduct'
+            let formData = new FormData();
+            formData.append('image', this.filedata);
+            formData.append('product_id', this.editedItem.product_id);
+            formData.append('product_name', this.editedItem.product_name);
+            formData.append('product_cost', this.editedItem.product_cost);
+            formData.append('product_price', this.editedItem.product_price);
+            formData.append('product_qty', this.editedItem.product_qty);
+            formData.append('product_status', this.editedItem.product_status_code);
+            formData.append('product_category', this.editedItem.category_id);
+            formData.append('product_detail', this.editedItem.product_detail);
+            formData.append('product_registering_code', this.editedItem.product_registering_code);
+            formData.append('secretid', this.editedItem.secretid);
+            formData.append('category_id', this.editedItem.category_id);
+            formData.append('type', 'updateproduct');
+            let edititem = await Core.post('/admin/product/edit', formData)
             if(edititem){
                 this.toast(edititem.status, edititem.message)
             }
@@ -263,6 +279,7 @@ export default {
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
+                this.imgupload = null
             })
         },
 
@@ -304,7 +321,7 @@ export default {
             formData.append('product_status', this.editedItem.product_status_code);
             formData.append('product_category', this.editedItem.category_id);
             formData.append('product_detail', this.editedItem.product_detail);
-            formData.append('registering_code', this.editedItem.product_registering_code);
+            formData.append('product_registering_code', this.editedItem.product_registering_code);
             let addproduct = await Core.post(`/admin/product/new`, formData)
             if (addproduct.status == 200) {
                 this.toast(addproduct.status, addproduct.message)

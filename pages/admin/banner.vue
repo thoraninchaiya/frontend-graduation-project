@@ -24,13 +24,9 @@
                                     <v-card-text>
                                         <v-container>
                                             <v-row>
-                                                <v-col cols="7" sm="3" md="7" v-if="editedIndex == -1">
+                                                <v-col cols="7" sm="3" md="7">
                                                     <!-- <v-text-field v-model="editedItem.image" label="รูป"></v-text-field> -->
-                                                    <v-file-input class="mt-2" label="เลือกรูปภาพ" v-on:change="selectFile" required accept="image/*"></v-file-input>
-                                                </v-col>
-                                                <v-col cols="7" sm="3" md="7" v-if="editedIndex == 0">
-                                                    <!-- <v-text-field v-model="editedItem.image" label="รูป"></v-text-field> -->
-                                                    <v-file-input class="mt-2" disabled label="เลือกรูปภาพ" v-on:change="selectFile" required accept="image/*"></v-file-input>
+                                                    <v-file-input class="mt-2" label="เลือกรูปภาพ" v-model="imagefiles" v-on:change="selectFile" required accept="image/*"></v-file-input>
                                                 </v-col>
                                                 <v-col cols="5" sm="3" md="5">
                                                     <v-select :items="dataitems" label="สถานะแสดง" v-model="editedItem.status_code" item-value="id" item-text="name" class="selector"></v-select>
@@ -48,12 +44,12 @@
                                             บันทึก
                                         </v-btn>
                                     </v-card-actions>
-                                    <v-card-actions v-if="editedIndex == 0">
+                                    <v-card-actions v-if="editedIndex > -1">
                                         <v-spacer></v-spacer>
                                         <v-btn color="blue darken-1" text @click="close">
                                             ยกเลิก
                                         </v-btn>
-                                        <v-btn color="blue darken-1" text @click="addItem()">
+                                        <v-btn color="blue darken-1" text @click="editbanner()">
                                             บันทึก
                                         </v-btn>
                                     </v-card-actions>
@@ -107,6 +103,7 @@ import { Core } from '@/vuexes/core'
 export default {
     layout: 'admin',
     data: () => ({
+        imagefiles: null,
         bannerlsit: [],
         editbannerstatus: {},
         dialog: false,
@@ -153,18 +150,16 @@ export default {
             console.log(item)
         },
         async changstatus(item) {
-            console.log(item)
             this.editbannerstatus.type = "updatestatus"
-            this.editbannerstatus.id = item.id
-            this.editbannerstatus.status_code = item.status_code
+            this.editbannerstatus.banner_id = item.id
+            this.editbannerstatus.banner_status_code = item.status_code
             let updatestatus = await Core.post(`/admin/banner/edit`, this.editbannerstatus)
             if (updatestatus) {
                 this.toast(updatestatus.status, updatestatus.message)
             }
         },
         async addItem(item) {
-            console.log(item)
-            console.log(this.editedItem.status_code)
+            // console.log(this.editedItem.status_code)
             let formData = new FormData();
             formData.append('image', this.filedata);
             formData.append('status_code', this.editedItem.status_code);
@@ -176,6 +171,24 @@ export default {
                 this.getbanner()
             }
         },
+        async editbanner(){
+            // console.log(this.editedItem)
+            let formData = new FormData();
+            formData.append('image', this.filedata);
+            formData.append('banner_id', this.editedItem.id);
+            formData.append('banner_status', this.editedItem.status);
+            formData.append('banner_status_code', this.editedItem.status_code);
+            formData.append('type', "edit");
+            let edititemraw = await Core.post(`/admin/banner/edit`, formData)
+            if(edititemraw){
+                this.toast(edititemraw.status, edititemraw.message)
+            }
+            if(edititemraw.status == 200){
+                this.getbanner();
+                this.close();
+            }
+        },
+
         editItem(item) {
             this.editedIndex = this.bannerlsit.indexOf(item)
             this.editedItem = Object.assign({}, item)
@@ -188,7 +201,6 @@ export default {
             this.dialogDelete = true
         },
         async deleteItemConfirm() {
-            console.log(this.editedItem)
             let delitem = await Core.post(`/admin/banner/del`, this.editedItem)
             if (delitem) {
                 this.toast(delitem.status, delitem.message)
@@ -203,7 +215,7 @@ export default {
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
-
+                this.imagefiles = null
             })
         },
 
@@ -217,7 +229,7 @@ export default {
         async getbanner() {
             let bannerraw = await Core.get(`/admin/banner`)
             this.bannerlsit = bannerraw.data
-            console.log(bannerraw)
+            // console.log(bannerraw)
 
         },
 

@@ -2,9 +2,7 @@
 <v-app>
     <!-- <div class="d-sm-inline-flex d-md-inline-flex"> -->
     <div class="d-flex">
-
         <v-col cols="2">
-
             <v-card>
                 <v-card-title class="justify-center">
                     หมวดหมู่สินค้า
