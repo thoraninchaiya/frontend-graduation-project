@@ -107,7 +107,7 @@
                     </template>
                     <template v-slot:item.glutenfree="{ item }">
                         <!-- <v-simple-checkbox v-model="editedItem.product_status" disabled></v-simple-checkbox> -->
-                        <v-select :items="dataitems" v-model="item.product_status_code" @input="changstatus(item.product_id, item.product_status_code)" item-value="id" item-text="name" class="selector"></v-select>
+                        <v-select :items="dataitems" v-model="item.product_status_code" @input="changstatus(item.product_id, item.product_status_code, item.secretid)" item-value="id" item-text="name" class="selector"></v-select>
                     </template>
                     <template v-slot:item.actions="{ item }">
                         <v-icon class="mr-2" @click="editItem(item)">
@@ -206,14 +206,12 @@ export default {
         test(item) {
             console.log(item)
         },
-        async changstatus(itemid, itemstatus) {
-            // console.log(itemid)
-            // console.log(itemstatus)
+        async changstatus(itemid, itemstatus, a) {
             this.productstatus.type = "updatestatus"
             this.productstatus.id = itemid
             this.productstatus.status = itemstatus
+            this.productstatus.secretid = a
             let updatestatus = await Core.post(`/admin/product/edit`, this.productstatus)
-            // console.log(updatestatus)
             if (updatestatus) {
                 this.toast(updatestatus.status, updatestatus.message)
             }

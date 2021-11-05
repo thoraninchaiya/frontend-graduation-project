@@ -33,7 +33,7 @@
                                                 <v-btn color="error" @click="closeDelete">
                                                     <v-icon>mdi-cancel</v-icon>
                                                 </v-btn>
-                                                <v-btn color="success">
+                                                <v-btn color="success" @click="cancelreceipt()">
                                                     <v-icon>mdi-check</v-icon>
                                                 </v-btn>
                                             </div>
@@ -398,7 +398,7 @@ export default {
             { text: 'หมายเลขใบสั่งซื้อ', sortable: false, value: 'receiptserial' },
             { text: 'วันที่สั่งซื้อ', sortable: false, value: 'date' },
             { text: 'สถานะ', value: 'status', sortable: false },
-            { text: 'ติดตามพัสดุ', value: 'orderstatus', sortable: false },
+            // { text: 'ติดตามพัสดุ', value: 'orderstatus', sortable: false },
             { text: '', align: 'end', value: 'btnaction', sortable: false },
         ],
         receipt: [],
@@ -483,7 +483,6 @@ export default {
         async delivery(item) {
             this.editedItem = Object.assign({}, item)
             let deliverydata = await Core.get(`/delivery/` + item.receiptid)
-            console.log(deliverydata)
             if(deliverydata.status == 200){
                 this.dialogdelivery = true
                 this.deliverydata = deliverydata
@@ -500,21 +499,26 @@ export default {
         async inforeceipt(item) {
             this.editedItem = Object.assign({}, item)
             this.receiptinfo = true
-            // console.log(item)
             let receiptdata = await Core.get(`/user/receipt/` + item.receiptid)
-            // console.log(receiptdata)
             this.receiptorderdatamain = receiptdata.data[0]
             this.receiptorderdata = receiptdata.detail
-            // console.log(this.receiptorderdatamain)
 
         },
 
-        async cancelreceipt(item) {
-            this.editedItem = Object.assign({}, item)
-            this.$nextTick(() => {
+        async cancelreceipt() {
+            let cancelreceiptraw = await Core.post(`/user/cancelreceipt`, this.editedItem)
+            if(cancelreceiptraw){
+                this.toast(cancelreceiptraw.status, cancelreceiptraw.message)
+                this.close()
+            }
+            if(cancelreceiptraw.status == 200){
                 this.getreceipt()
-                this.editedItem = Object.assign({}, this.defaultItem)
-            })
+            }
+            // this.editedItem = Object.assign({}, item)
+            // this.$nextTick(() => {
+            //     this.getreceipt()
+            //     this.editedItem = Object.assign({}, this.defaultItem)
+            // })
         },
 
         async payment(item) {
@@ -532,7 +536,6 @@ export default {
         },
 
         deleteItem(item) {
-            console.log(item)
             this.editedIndex = this.receipt.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true
@@ -548,6 +551,7 @@ export default {
             this.receiptinfo = false
             this.dialogdelivery = false
             this.deliverydata = false
+            this.dialogDelete = false
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
@@ -576,9 +580,7 @@ export default {
             formData.append('receiptid', this.formpayment.receiptid);
             formData.append('price', this.formpayment.price);
             formData.append('time', this.formpayment.time);
-            // console.log(formData)
             let uploaddata = await Core.post(`/purchase/receipt/payment`, formData)
-            // console.log(uploaddata)
             if (uploaddata.status == 200) {
                 this.filedata = this.defaultfile
                 this.formpayment = this.formpaymentdefault

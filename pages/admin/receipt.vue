@@ -20,13 +20,13 @@
     <div class="mt-2">
         <v-card>
             <v-card-text>
-                <v-data-table :headers="headers" :items="itemWithIndex" sort-by="product_id" class="elevation-1">
+                <v-data-table :headers="headers" :items="itemWithIndex" :items-per-page="30" sort-by="product_id" class="elevation-1">
                     <template v-slot:top>
                         <v-toolbar flat>
                             <v-toolbar-title>ใบสั่งซื้อทั้งหมด</v-toolbar-title>
                             <v-divider class="mx-4" inset vertical></v-divider>
                             <v-spacer></v-spacer>
-                            
+
                             <v-dialog v-model="dialogDelete" max-width="500px">
                                 <v-card>
                                     <v-card-title class="text-h5">ยืนยันการยกเลิกใบสั่งซื้อ {{editedItem.receiptidserial}} </v-card-title>
@@ -222,7 +222,7 @@ import { User } from "@/vuexes/auth";
 export default {
     layout: 'admin',
     data: () => ({
-        deliverylistdata:{},
+        deliverylistdata: {},
         updatedeliverydata: {},
         dialogdelivery: false,
         deliverydata: {},
@@ -253,7 +253,7 @@ export default {
         },
         getpayment: {},
         getpaymentdefault: {},
-        
+
     }),
 
     computed: {
@@ -328,7 +328,7 @@ export default {
                 this.toast(deliverylist.status, deliverylist.message)
                 this.close()
             }
-            if(deliverylist.status == 200){
+            if (deliverylist.status == 200) {
                 this.deliverylistdata = deliverylist.data
             }
         },
@@ -336,12 +336,12 @@ export default {
         async updatedelivery(x) {
             this.updatedeliverydata.receiptid = x
             let updatedelivery = await Core.post('/admin/purchase/delivery', this.updatedeliverydata)
-            if(updatedelivery.status == 200){
+            if (updatedelivery.status == 200) {
                 this.toast(updatedelivery.status, updatedelivery.message)
                 this.getreceipt()
                 this.close()
             }
-            if(updatedelivery.status == 400){
+            if (updatedelivery.status == 400) {
                 this.toast(updatedelivery.status, updatedelivery.message)
                 this.close()
             }

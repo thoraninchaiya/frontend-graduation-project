@@ -95,6 +95,7 @@ export default {
                 }
             }
             if (x < 0) {
+                this.categorystatus = 200
                 this.getProducts();
             }
         }
