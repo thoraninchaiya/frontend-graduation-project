@@ -19,7 +19,7 @@
         </a>
         <div class="d-flex justify-center card-footer">
             <div v-if="post.onstock == true">
-                <v-btn color="success" @click="registering(post.id)">ลงทะเบียน</v-btn>
+                <v-btn color="success" :disabled="post.product_registering_exp === true" @click="registering(post.id)">ลงทะเบียน</v-btn>
                 <v-btn color="warning">
                     <v-icon @click="registertocart(post.id)">mdi-cart</v-icon>
                 </v-btn>
@@ -202,7 +202,7 @@ export default {
             }
         },
         async registertocart(x) {
-            console.log(x)
+            // console.log(x)
             this.cartsent.productid = x
             let tocartraw = await Core.post(`/product/registering/cart/`, this.cartsent)
             if (tocartraw) {

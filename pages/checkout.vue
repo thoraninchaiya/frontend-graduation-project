@@ -143,7 +143,7 @@ export default {
         async checkout() {
             var checkout = await Core.post(`/purchase/checkout`, this.senddelivery)
             if (checkout.status == 200) {
-                // this.$router.push('/payment')
+                this.$router.push('/payment')
             }
             if (checkout) {
                 this.toast(checkout.status, checkout.message)

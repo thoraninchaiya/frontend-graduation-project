@@ -60,9 +60,28 @@
                                                 <v-col cols="12" sm="6" md="6">
                                                     <v-select :items="registeringlist" label="สินค้าลงทะเบียน" required v-model="editedItem.product_registering_code" item-value="id" item-text="name" class="selector"></v-select>
                                                 </v-col>
-                                                <v-col cols="12" sm="6" md="6">
+                                                <v-col cols="12" sm="6" md="12">
                                                     <v-text-field v-model="editedItem.product_detail" label="รายละเอียดสินค้า"></v-text-field>
                                                 </v-col>
+
+                                                <v-col cols="12" class="d-block">
+                                                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="auto">
+                                                        <template v-slot:activator="{ on, attrs }">
+                                                            <!-- <v-text-field v-model="dateRangeText" :value="editedItem.product_registering_dates" :disabled="editedItem.product_registering_code == 1" label="กรอกเวลา" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field> -->
+                                                            <v-text-field v-model="dateRangeText" :disabled="editedItem.product_registering_code == 1" label="กรอกเวลา" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                                        </template>
+                                                        <v-date-picker v-model="dates" range no-title scrollable>
+                                                            <v-spacer></v-spacer>
+                                                            <v-btn text color="error" @click="menu = false">
+                                                                <v-icon>mdi-cancel</v-icon>
+                                                            </v-btn>
+                                                            <v-btn text color="success" @click="$refs.menu.save(date)">
+                                                                <v-icon>mdi-check</v-icon>
+                                                            </v-btn>
+                                                        </v-date-picker>
+                                                    </v-menu>
+                                                </v-col>
+
                                             </v-row>
                                         </v-container>
                                     </v-card-text>
@@ -141,6 +160,9 @@ import { Core } from '@/vuexes/core'
 export default {
     layout: 'admin',
     data: () => ({
+        date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        menu: false,
+        dates: [],
         imgupload: {},
         dialog: false,
         dialogDelete: false,
@@ -180,11 +202,16 @@ export default {
             type: {},
         },
         filedata: null,
+
     }),
 
     computed: {
         formTitle() {
             return this.editedIndex === -1 ? 'เพิ่มสินค้าใหม่' : 'แก้ไขสินค้า'
+        },
+        dateRangeText() {
+            // return this.editedItem.product_registering_dates.join(' ถึง ')
+            return this.dates.join(' ถึง ')
         },
     },
 
@@ -221,7 +248,7 @@ export default {
         },
 
         async saveedititem() {
-            // this.editedItem.type = 'updateproduct'
+            this.editedItem.type = 'updateproduct'
             let formData = new FormData();
             formData.append('image', this.filedata);
             formData.append('product_id', this.editedItem.product_id);
@@ -236,11 +263,12 @@ export default {
             formData.append('secretid', this.editedItem.secretid);
             formData.append('category_id', this.editedItem.category_id);
             formData.append('type', 'updateproduct');
-            let edititem = await Core.post('/admin/product/edit', formData)
-            if(edititem){
-                this.toast(edititem.status, edititem.message)
+            formData.append('product_registering_date', this.dates);
+            let edititemraw = await Core.post('/admin/product/edit', formData)
+            if (edititemraw) {
+                this.toast(edititemraw.status, edititemraw.message)
             }
-            if(edititem.status == 200){
+            if (edititemraw.status == 200) {
                 this.getproduct()
                 this.close();
             }
@@ -249,6 +277,21 @@ export default {
         editItem(item) {
             this.editedIndex = this.productlist.indexOf(item)
             this.editedItem = Object.assign({}, item)
+            // this.dates = this.editedItem.product_registering_date
+            let appdates = []
+            if(this.editedItem.product_registering_dates_max || this.editedItem.product_registering_dates_min){
+                var datemin = this.editedItem.product_registering_dates_min
+                var dateminsplit = datemin.split('T')
+                var datecutmin = dateminsplit[0]
+
+                var datemax = this.editedItem.product_registering_dates_max
+                var datemaxsplit = datemax.split('T')
+                var datecutmax = datemaxsplit[0]
+
+                appdates.push(datecutmin)
+                appdates.push(datecutmax)
+            }
+            this.dates = appdates
             this.dialog = true
         },
 
@@ -274,10 +317,12 @@ export default {
 
         close() {
             this.dialog = false
+
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
                 this.imgupload = null
+                this.dates = []
             })
         },
 
@@ -299,7 +344,8 @@ export default {
         },
 
         async getproduct() {
-            this.productlist = await Core.get(`/admin/product`)
+             var productraw = await Core.get(`/admin/product`)
+             this.productlist = productraw
         },
         async getcategory() {
             this.categorylist = await Core.get(`/category`)

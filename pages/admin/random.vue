@@ -189,13 +189,10 @@ export default {
             this.pagestate = x
         },
         async changstatus(itemid, itemstatus) {
-            // console.log(itemid)
-            // console.log(itemstatus)
             this.productstatus.type = "updatestatus"
             this.productstatus.id = itemid
             this.productstatus.status = itemstatus
             let updatestatus = await Core.post(`/admin/product`, this.productstatus)
-            // console.log(updatestatus)
             if (updatestatus.status == 200) {
                 this.$nextTick(() => {
                     this.productstatus = Object.assign({}, this.defaultproductstatus)
@@ -211,18 +208,14 @@ export default {
         },
         async getregisteringinfo(item) {
             this.registeringsend.product_id = item
-            console.log(this.registeringsend)
             //registeringinfo
             var getreg = await Core.post(`/admin/registering`, this.registeringsend)
             this.registeringinfo = getreg.data
-            // console.log(getreg)
         },
         async randomregistering() {
             this.randomsenddata.product_id = this.editedItem.secretid
             this.randomsenddata.count = this.randomsend.count
-            // console.log(this.randomsenddata)
             var sendregister = await Core.post(`/admin/registering/register`, this.randomsenddata)
-            // console.log(sendregister)
             if (sendregister) {
                 this.toast(sendregister.status, sendregister.message)
             }
@@ -236,13 +229,11 @@ export default {
         },
         async getregisteringnone() {
             this.registeringsend.product_id = this.editedItem.secretid
-            // console.log(this.registeringsend)
             var getnone = await Core.post(`/admin/registering/noconfirm`, this.registeringsend)
             this.randomdatanone = getnone.data
             if (getnone) {
                 this.toast(getnone.status, getnone.message)
             }
-            // console.log(getreg)
         },
         async clearregisteringnone() {
             this.registeringsend.product_id = this.editedItem.secretid
@@ -253,7 +244,6 @@ export default {
             if (getnone.status == 200) {
                 this.getregisteringnone()
             }
-            // console.log(getreg)
         },
         async confirmrandom() {
             this.registeringsend.product_id = this.editedItem.secretid
@@ -264,12 +254,10 @@ export default {
             if (getnone.status == 200) {
                 this.getregisteringnone()
             }
-            // console.log(getreg)
         },
         async getsuccessconfirm() {
             this.registeringsend.product_id = this.editedItem.secretid
             var getnone = await Core.post(`/admin/registering/success`, this.registeringsend)
-            console.log(getnone)
             this.successdata = getnone.data
 
             if (getnone) {
@@ -281,7 +269,6 @@ export default {
             this.editedIndex = this.productlist.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
-            // console.log(item)
         },
 
         deleteItem(item) {

@@ -1,12 +1,47 @@
 <template>
-<div class="app">
-    <v-card width="96%" class="ml-5">
+<v-app class="app">
+    <v-card width="96%" class="ml-5 mt-5">
         <v-card-text>
             <!-- <pre> {{chartOptions}} </pre> -->
-            <div class="d-flex mt-5 ml-3">
+            <v-card-text>
+                <div class="ml-3">
+                    <v-row>
+                        <v-col cols="3">
+                            <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="16.10rem">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <!-- <v-text-field v-model="dateRangeText" :value="editedItem.product_registering_dates" :disabled="editedItem.product_registering_code == 1" label="กรอกเวลา" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field> -->
+                                    <v-text-field v-model="dateRangeText" :disabled="editedItem.product_registering_code == 1" label="ช่วงเวลายอดการขาย" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                                </template>
+                                <v-date-picker v-model="dates" range no-title scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="error" @click="menu = false; resetdate()">
+                                        <v-icon>mdi-cancel</v-icon>
+                                    </v-btn>
+                                    <v-btn text color="success" @click="$refs.menu.save(date)">
+                                        <v-icon>mdi-check</v-icon>
+                                    </v-btn>
+                                </v-date-picker>
+                            </v-menu>
+                        </v-col>
+                        <v-col cols="1">
+                            <div class="d-inline-flex">
+                                <v-btn color="success" @click="getdatedates()">
+                                    <v-icon>mdi-magnify</v-icon>
+                                </v-btn>
+                                <v-btn color="error" @click="resetalldates()">
+                                    <v-icon>mdi-autorenew</v-icon>
+                                </v-btn>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </div>
+            </v-card-text>
+
+            <div class="d-flex ml-3">
+
                 <v-card max-width="200">
                     <v-card-title primary-title>
-                        ยอดขายวันนี้
+                        ยอดขาย
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
@@ -18,7 +53,7 @@
 
                 <v-card max-width="300" class="ml-3">
                     <v-card-title primary-title>
-                        จำนวนการสั่งซื้อวันนี้
+                        จำนวนการสั่งซื้อทั้งหมด
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
@@ -130,7 +165,7 @@
                             </v-toolbar>
                         </template>
                         <template v-slot:item.actions=" {item} ">
-                            <v-btn color="success" text @click="receiptinfo(item)">
+                            <v-btn color="success" @click="receiptinfo(item)">
                                 <v-icon>mdi-magnify</v-icon>
                             </v-btn>
                         </template>
@@ -140,7 +175,7 @@
 
         </v-card-text>
     </v-card>
-</div>
+</v-app>
 </template>
 
 <script>
@@ -155,6 +190,9 @@ export default {
     },
     data() {
         return {
+            date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            menu: false,
+            dates: [],
             infodialog: false,
             dialog: false,
             chartOptions: {
@@ -198,6 +236,7 @@ export default {
                 total: null
             },
             getpayment: {},
+            getdatadates: [],
         }
     },
     async created() {
@@ -223,8 +262,20 @@ export default {
         formTitle() {
             return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
         },
+        dateRangeText() {
+            // return this.editedItem.product_registering_dates.join(' ถึง ')
+            return this.dates.join(' ถึง ')
+        },
     },
     methods: {
+        async resetdate() {
+            this.dates = []
+            
+        },
+        async resetalldates() {
+            this.dates = []
+            this.gettoday()
+        },
         updateChart() {
             const max = 90;
             const min = 20;
@@ -236,22 +287,34 @@ export default {
                 data: newData
             }]
         },
+        async getdatedates() {
+            this.getdatadates = this.dates
+            let datesraw = await Core.post(`/admin/dashboard/dates`, this.getdatadates)
+            if(datesraw.status == 400){
+                this.toast(datesraw.status , datesraw.message)
+            }
+            if(datesraw.status == 200){
+                this.todaydata = datesraw.ordercount
+                this.todaydataorderlist = datesraw.orderlist
+                this.chartOptions.xaxis.categories = datesraw.bestsellerproduct.redblack
+                this.series.data = datesraw.bestsellerproduct.sold_qty
+                this.toast(datesraw.status , datesraw.message)
+            }
+
+        },
         async gettoday() {
             let todayraw = await Core.get(`/admin/dashboard/today`)
             this.todaydata = todayraw.ordercount
             this.todaydataorderlist = todayraw.orderlist
             this.chartOptions.xaxis.categories = todayraw.bestsellerproduct.redblack
             this.series.data = todayraw.bestsellerproduct.sold_qty
-            console.log(todayraw.bestsellerproduct)
         },
         async orderinfo(item) {
 
             this.sendform.receiptid = item.receipt_id
-            console.log(this.sendform)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
             let senddata = await Core.post(`/admin/purchase/getreceipt`, this.sendform)
-            console.log(senddata)
         },
         close() {
             this.dialog = false
@@ -271,6 +334,24 @@ export default {
             this.getpayment = info.paymentdata[0]
             this.infodialog = true
         },
+        async toast(a, b) {
+            if (a == 400) {
+                let toast = this.$toasted.show(b, {
+                    type: "error",
+                    theme: "toasted-primary",
+                    position: "top-right",
+                    duration: 5000
+                });
+            }
+            if (a == 200) {
+                let toast = this.$toasted.show(b, {
+                    type: "success",
+                    theme: "toasted-primary",
+                    position: "top-right",
+                    duration: 5000
+                });
+            }
+        }
     }
 }
 </script>
