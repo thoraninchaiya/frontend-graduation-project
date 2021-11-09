@@ -15,27 +15,18 @@
                 </v-card-text>
             </v-card>
         </div>
-        <!-- <pre>
-            {{orderlist}}
-        </pre> -->
-        <!-- <div>
-            <v-card class="ml-5">
-                <v-card-text>
-                    test2
-                </v-card-text>
-            </v-card>
-        </div> -->
     </div>
 
     <div class="mt-2">
         <v-card>
             <v-card-text>
-                <v-data-table :headers="headers" :items="itemWithIndex" sort-by="product_id" class="elevation-1">
+                <v-data-table :headers="headers" :items="itemWithIndex" :items-per-page="30" sort-by="product_id" class="elevation-1">
                     <template v-slot:top>
                         <v-toolbar flat>
                             <v-toolbar-title>ใบสั่งซื้อทั้งหมด</v-toolbar-title>
                             <v-divider class="mx-4" inset vertical></v-divider>
                             <v-spacer></v-spacer>
+
                             <v-dialog v-model="dialogDelete" max-width="500px">
                                 <v-card>
                                     <v-card-title class="text-h5">ยืนยันการยกเลิกใบสั่งซื้อ {{editedItem.receiptidserial}} </v-card-title>
@@ -108,8 +99,9 @@
                                         <div class="d-flex justify-center mt-5">
                                             <v-card max-width="auto" min-width="500">
                                                 <v-card-text>
-                                                    <div>ยอดที่โอน: 1000</div>
-                                                    <div>เวลา: 10:00</div>
+                                                    <!-- <pre> {{getpayment}} </pre> -->
+                                                    <div>ยอดที่โอน: {{getpayment.payment_price}} </div>
+                                                    <div>เวลา: {{getpayment.payment_time}}</div>
                                                 </v-card-text>
                                             </v-card>
                                         </div>
@@ -146,7 +138,7 @@
                                             <v-row>
                                                 <v-col cols="4">
                                                     <!-- <v-text-field label=""></v-text-field> -->
-                                                    <v-select :items="deliverylistdata" v-model="updatedeliverydata.company" label="บริษัทขนส่ง" item-text="name" item-value="id"></v-select>
+                                                    <v-select :items="deliverylistdata" v-model="updatedeliverydata.company" disable label="บริษัทขนส่ง" item-text="name" item-value="id"></v-select>
                                                 </v-col>
                                                 <v-col cols="8">
                                                     <v-text-field v-model="updatedeliverydata.serial" label="กรุณากรอกหมายเลขพัสดุ"></v-text-field>
@@ -230,7 +222,7 @@ import { User } from "@/vuexes/auth";
 export default {
     layout: 'admin',
     data: () => ({
-        deliverylistdata:{},
+        deliverylistdata: {},
         updatedeliverydata: {},
         dialogdelivery: false,
         deliverydata: {},
@@ -261,6 +253,7 @@ export default {
         },
         getpayment: {},
         getpaymentdefault: {},
+
     }),
 
     computed: {
@@ -333,8 +326,9 @@ export default {
             let deliverylist = await Core.get(`/admin/purchase/deliverylist`)
             if (deliverylist.status == 400) {
                 this.toast(deliverylist.status, deliverylist.message)
+                this.close()
             }
-            if(deliverylist.status == 200){
+            if (deliverylist.status == 200) {
                 this.deliverylistdata = deliverylist.data
             }
         },
@@ -342,12 +336,12 @@ export default {
         async updatedelivery(x) {
             this.updatedeliverydata.receiptid = x
             let updatedelivery = await Core.post('/admin/purchase/delivery', this.updatedeliverydata)
-            if(updatedelivery.status == 200){
+            if (updatedelivery.status == 200) {
                 this.toast(updatedelivery.status, updatedelivery.message)
                 this.getreceipt()
                 this.close()
             }
-            if(updatedelivery.status == 400){
+            if (updatedelivery.status == 400) {
                 this.toast(updatedelivery.status, updatedelivery.message)
                 this.close()
             }

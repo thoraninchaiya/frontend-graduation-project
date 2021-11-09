@@ -44,7 +44,6 @@ export default {
     methods: {
         async getProducts() {
             let product = await Core.get(`/product/registering`)
-            console.log(product)
             this.carddata = product.product
         }
     },

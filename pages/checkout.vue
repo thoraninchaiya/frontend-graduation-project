@@ -17,6 +17,12 @@
 
     <v-card class="mt-3">
         <v-card-text>
+
+            <!-- <pre>
+            {{companylist}}
+            {{senddelivery}}
+            </pre> -->
+
             <p class="font-weight-bold">รายการสินค้า</p>
             <v-divider></v-divider>
             <v-card-text>
@@ -77,7 +83,9 @@
             <p class="font-weight-bold">บริษัทขนส่ง</p>
             <v-divider></v-divider>
             <div>
-                <input type="radio" name="" id=""> kerry
+                <v-radio-group v-model="senddelivery.delivery_id" required>
+                    <v-radio :label="item.deli_companyu_name" :value="item.deli_companyu_id" v-for="item, i in companylist" :key="i"></v-radio>
+                </v-radio-group>
             </div>
             <v-divider></v-divider>
             <div class="d-flex justify-end">
@@ -95,6 +103,9 @@ import { User } from "@/vuexes/auth";
 export default {
     data: () => {
         return ({
+            senddelivery: {
+                delivery_id: null
+            },
             userdata: {},
             checkoutcart: {},
             remove: {
@@ -107,10 +118,12 @@ export default {
                 qty: 0,
                 status: null
             },
+            companylist: {},
         })
     },
     async created() {
         await this.checkUser();
+        await this.getdeliverycompany();
     },
     computed: {
 
@@ -128,16 +141,19 @@ export default {
             this.checkoutcart = checkoutraw.cart
         },
         async checkout() {
-            var checkout = await Core.post(`/purchase/checkout`)
+            var checkout = await Core.post(`/purchase/checkout`, this.senddelivery)
             if (checkout.status == 200) {
                 this.$router.push('/payment')
             }
+            if (checkout) {
+                this.toast(checkout.status, checkout.message)
+            }
         },
-        async removeitem(itemid, productid){
+        async removeitem(itemid, productid) {
             this.remove.cid = itemid
             // this.remove.pid = productid
             let cartremoveitem = await Core.post(`/cart/remove`, this.remove)
-            if(cartremoveitem.status == 200){
+            if (cartremoveitem.status == 200) {
                 await this.getcart();
             }
         },
@@ -146,11 +162,11 @@ export default {
             this.cartstock.cid = itemid
             this.cartstock.productid = productid
             this.cartstock.status = "add"
-            if(qty < 5){
+            if (qty < 5) {
                 let cartstockqty = await Core.put(`/cart/update`, this.cartstock)
-                if(cartstockqty.status == 200){
+                if (cartstockqty.status == 200) {
                     await this.getcart();
-                }            
+                }
             }
         },
         async removeone(itemid, productid, qty) {
@@ -158,13 +174,35 @@ export default {
             this.cartstock.cid = itemid
             this.cartstock.productid = productid
             this.cartstock.status = "minus"
-            if(qty > 0){
+            if (qty > 0) {
                 let cartstockqty = await Core.put(`/cart/update`, this.cartstock)
-                if(cartstockqty.status == 200){
+                if (cartstockqty.status == 200) {
                     await this.getcart();
-                }            
+                }
             }
         },
+        async getdeliverycompany() {
+            var deliveryraw = await Core.get(`/delivery/`)
+            this.companylist = deliveryraw.data
+        },
+        async toast(a, b) {
+            if (a == 400) {
+                let toast = this.$toasted.show(b, {
+                    type: "error",
+                    theme: "toasted-primary",
+                    position: "top-right",
+                    duration: 5000
+                });
+            }
+            if (a == 200) {
+                let toast = this.$toasted.show(b, {
+                    type: "success",
+                    theme: "toasted-primary",
+                    position: "top-right",
+                    duration: 5000
+                });
+            }
+        }
     }
 }
 </script>

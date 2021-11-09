@@ -1,109 +1,74 @@
 <template>
 <v-app class="mt-5 ml-5 mr-5">
-    <pre>
-        {{editedIndex}}
-        {{editedItem}}
-    </pre>
-    <!-- <div class="d-flex">
-        <div>
-            <v-card max-width="500px" min-width="100px">
-                <v-card-text>
-                    test1
-                </v-card-text>
-            </v-card>
-        </div>
-        <div>
-            <v-card>
-                <v-card-text>
-                    test2
-                </v-card-text>
-            </v-card>
-        </div>
-    </div> -->
-
+    <!-- <pre>
+    {{editedIndex}}
+    {{editedItem}}
+    {{commentdata}}
+    </pre> -->
     <div class="mt-2">
         <v-card>
             <v-card-text>
                 <v-data-table :headers="headers" :items="productlist" sort-by="product_id" class="elevation-1">
                     <template v-slot:top>
                         <v-toolbar flat>
-                            <v-toolbar-title>สินค้าทั้งหมด</v-toolbar-title>
                             <v-divider class="mx-4" inset vertical></v-divider>
-                            <v-spacer></v-spacer>
-                            <v-dialog v-model="dialog" max-width="500px">
-                                <!-- Edit item and Add item -->
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                                        เพิ่มสินค้าใหม่
-                                    </v-btn>
-                                </template>
+                            <!-- <v-spacer></v-spacer> -->
+                            <v-dialog v-model="dialog" :overlay="false" max-width="1000px" transition="dialog-transition">
                                 <v-card>
                                     <v-card-title>
-                                        <span class="text-h5">{{ formTitle }}</span>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="error" text @click="close()">
+                                            <v-icon>mdi-close</v-icon>
+                                        </v-btn>
                                     </v-card-title>
-
                                     <v-card-text>
-                                        <v-container>
-                                            <v-row>
-                                                <v-col cols="12" sm="6" md="12">
-                                                    <v-text-field v-model="editedItem.product_id" label="รหัสสินค้า"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" md="12">
-                                                    <v-text-field v-model="editedItem.product_name" label="ชื่อสินค้า"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" md="4">
-                                                    <v-text-field v-model="editedItem.product_price" label="ราคาสินค้า"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" md="4">
-                                                    <v-text-field v-model="editedItem.product_qty" label="จำนวนคงเหลือ"></v-text-field>
-                                                </v-col>
-                                                <v-col cols="12" sm="6" md="4">
-                                                    <!-- <v-text-field v-model="editedItem.product_status" label="สถานะสินค้า"></v-text-field> -->
-                                                    <!-- <v-select :items="dataitems" v-model="editedItem.product_status" @input="changstatus(item.product_id, item.product_status)" class="selector"></v-select> -->
-                                                    <v-select :items="dataitems" label="สถานะสินค้า" v-model="editedItem.product_status" class="selector"></v-select>
-                                                </v-col>
-                                            </v-row>
-                                        </v-container>
+                                        <v-simple-table fixed-header>
+                                            <template v-slot:default>
+                                                <thead>
+                                                    <tr>
+                                                        <th>รหัสรีวิว</th>
+                                                        <th>ชื่อผู้รีวิว</th>
+                                                        <th>ข้อความ</th>
+                                                        <th>ระดับ</th>
+                                                        <th>วันที่รีวิว</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="item, i in commentdata" :key="i">
+                                                        <td> {{item.comment_id}} </td>
+                                                        <td> {{item.user}} </td>
+                                                        <td> {{item.comment_detail}} </td>
+                                                        <td> {{item.comment_rating}} </td>
+                                                        <td> {{item.comment_date}} </td>
+                                                        <td>
+                                                            <v-btn color="error" @click="cancel(item.comment_id)" text>
+                                                                <v-icon>mdi-cancel</v-icon>
+                                                            </v-btn>
+                                                            <v-btn color="success" @click="approve(item.comment_id)" text>
+                                                                <v-icon>mdi-check</v-icon>
+                                                            </v-btn>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </template>
+                                        </v-simple-table>
                                     </v-card-text>
-
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="blue darken-1" text @click="close">
-                                            Cancel
-                                        </v-btn>
-                                        <v-btn color="blue darken-1" text @click="save">
-                                            Save
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-dialog><!-- End Edit item -->
-
-                            <v-dialog v-model="dialogDelete" max-width="500px">
-                                <v-card>
-                                    <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                                        <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                                        <v-spacer></v-spacer>
-                                    </v-card-actions>
                                 </v-card>
                             </v-dialog>
+
                         </v-toolbar>
                     </template>
                     <template v-slot:item.image=" {item} ">
-                        <v-img :src="`${item.product_image}`" alt="" class="imgsize"></v-img>
+                        <v-img :src="`${item.product_image}`" alt="" max-width="100px" max-height="100px" contain></v-img>
                     </template>
                     <template v-slot:item.glutenfree="{ item }">
                         <!-- <v-simple-checkbox v-model="editedItem.product_status" disabled></v-simple-checkbox> -->
                         <v-select :items="dataitems" v-model="item.product_status" @input="changstatus(item.product_id, item.product_status)" class="selector"></v-select>
                     </template>
                     <template v-slot:item.actions="{ item }">
-                        <v-icon small class="mr-2" @click="editItem(item)">
-                            mdi-pencil
-                        </v-icon>
-                        <v-icon small @click="deleteItem(item)">
-                            mdi-delete
+                        <v-icon class="mr-2" @click="editItem(item)">
+                            mdi-magnify
                         </v-icon>
                     </template>
                     <template v-slot:no-data>
@@ -115,13 +80,6 @@
             </v-card-text>
         </v-card>
     </div>
-    <!-- <div>
-        <pre>
-        {{editedItem}}
-        
-        {{productlist}}
-        </pre>
-    </div> -->
 </v-app>
 </template>
 
@@ -137,10 +95,7 @@ export default {
             { text: 'รหัสสินค้า', align: 'start', sortable: true, value: 'product_id' },
             { text: 'รูปภาพ', align: 'center', sortable: false, value: 'image' },
             { text: 'ชื่อสินค้า', align: 'start', sortable: false, value: 'product_name' },
-            { text: 'ราคาสินค้า', value: 'product_price' },
-            { text: 'จำนวนคงเหลือ', value: 'product_qty' },
-            { text: 'จำหน่ายแล้ว', value: 'sold_qty' },
-            { text: 'สถานะวางขาย', value: 'glutenfree',sortable: false },
+            // { text: 'จำนวนการรีวิว', value: '' },
             { text: 'Actions', value: 'actions', sortable: false },
             // { text: 'glutenfree', value: 'glutenfree', sortable: false },
         ],
@@ -153,12 +108,17 @@ export default {
             id: {},
             status: {},
             type: {},
-        },        
+        },
         defaultproductstatus: {
             id: {},
             status: {},
             type: {},
-        }        
+        },
+        commentdata: {},
+        commentdatasend: {},
+        commentlist: {},
+        approvesend: {},
+
     }),
 
     computed: {
@@ -181,10 +141,10 @@ export default {
     },
 
     methods: {
-        test(item){
+        test(item) {
             console.log(item)
         },
-        async changstatus(itemid, itemstatus){
+        async changstatus(itemid, itemstatus) {
             // console.log(itemid)
             // console.log(itemstatus)
             this.productstatus.type = "updatestatus"
@@ -192,24 +152,58 @@ export default {
             this.productstatus.status = itemstatus
             let updatestatus = await Core.post(`/admin/product`, this.productstatus)
             // console.log(updatestatus)
-            if(updatestatus.status == 200){
+            if (updatestatus.status == 200) {
                 this.$nextTick(() => {
                     this.productstatus = Object.assign({}, this.defaultproductstatus)
-                    let toast = this.$toasted.show(updatestatus.message, { 
-                    type: "success",
-	                  theme: "toasted-primary",
-	                  position: "top-right", 
-	                  duration: 5000
+                    let toast = this.$toasted.show(updatestatus.message, {
+                        type: "success",
+                        theme: "toasted-primary",
+                        position: "top-right",
+                        duration: 5000
                     });
                 })
                 // this.productstatus = this.defaultproductstatus
             }
+        },
+        async getcomment() {
+            this.commentdatasend.product_id = this.editedItem.secretid
+            var commentsend = await Core.post(`/admin/comment/`, this.commentdatasend)
+            this.commentdata = commentsend.data
+            // console.log(commentsend)
+            // console.log(this.commentdatasend.product_id)
+        },
+        async approve(x) {
+            this.approvesend.comment_id = x
+            let approveraw = await Core.post(`/admin/comment/approve`, this.approvesend)
+            if (approveraw) {
+                this.toast(approveraw.status, approveraw.message)
+            }
+            if (approveraw.status == 200) {
+                this.getcomment()
+            }
+            this.$nextTick(() =>{
+                this.approvesend = {}
+            })
+        },
+        async cancel(x) {
+            this.approvesend.comment_id = x
+            let cancelraw = await Core.post(`/admin/comment/cancel`, this.approvesend)
+            if (cancelraw) {
+                this.toast(cancelraw.status, cancelraw.message)
+            }
+            if (cancelraw.status == 200) {
+                this.getcomment()
+            }
+            this.$nextTick(() =>{
+                this.approvesend = {}
+            })
         },
 
         editItem(item) {
             this.editedIndex = this.productlist.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
+            this.getcomment();
             console.log(item)
         },
 
@@ -229,6 +223,7 @@ export default {
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
+                this.commentdata = []
             })
         },
 
@@ -251,16 +246,35 @@ export default {
 
         async getproduct() {
             this.productlist = await Core.get(`/admin/product`)
+        },
+        async toast(a, b) {
+            if (a == 400) {
+                let toast = this.$toasted.show(b, {
+                    type: "error",
+                    theme: "toasted-primary",
+                    position: "top-right",
+                    duration: 5000
+                });
+            }
+            if (a == 200) {
+                let toast = this.$toasted.show(b, {
+                    type: "success",
+                    theme: "toasted-primary",
+                    position: "top-right",
+                    duration: 5000
+                });
+            }
         }
     },
 }
 </script>
 
 <style>
-.selector{
+.selector {
     max-width: 100px;
 }
-.imgsize{
+
+.imgsize {
     max-width: 50px;
 }
 </style>

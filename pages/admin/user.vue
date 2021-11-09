@@ -112,7 +112,7 @@ export default {
             { text: 'อีเมลล์', value: 'email' },
             { text: 'เบอร์ติดต่อ', value: 'phone' },
             { text: 'สถานะ', value: 'status' },
-            { text: 'Actions', value: 'actions', sortable: false },
+            // { text: 'Actions', value: 'actions', sortable: false },
             // { text: 'glutenfree', value: 'glutenfree', sortable: false },
         ],
         userlist: [],
