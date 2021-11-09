@@ -138,7 +138,7 @@ export default {
             }
         },
         async order(){
-            let order = await Core.post('`/purchase/', this.cart)
+            let order = await Core.post('/purchase/', this.cart)
         },
         async callback(){
             this.cartdialog = false
